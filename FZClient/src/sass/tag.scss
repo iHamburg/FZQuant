@@ -1,0 +1,191 @@
+@charset "utf-8";
+@import "tobe/function";
+
+.tag{
+    padding: rem(88) 0 rem(150) 0;
+	.fback{
+	  @include i-fback()
+	}
+	.title{
+		width: rem(400);
+		height: rem(88);
+		line-height: rem(88);
+		margin: 0 auto;
+	}
+	.hrad-right{
+		font-size: rem(30);
+		color: #fff;
+		margin-right: rem(30);
+		cursor: pointer;
+	}
+	.icon{
+		font-size: rem(36);
+		line-height: rem(88);
+		margin:0;
+		color:#fff;
+		-webkit-transition: font-size 0.25s ease-out 0s;
+		-moz-transition: font-size 0.25s ease-out 0s;
+		transition: font-size 0.25s ease-out 0s;
+		position:absolute;
+		right:0;
+		width: rem(88);
+		text-align: center;
+	}
+	.tagitem{
+	    padding: 0 0 0 rem(30);
+	    background: #fff;
+	    position: relative;
+	    .count{
+	    	color: #888;
+	    	font-size: rem(24);
+	    	padding: rem(30);
+	    	text-align: right;
+	    	span{
+	    		color: #111;
+	    	}
+	    }
+	    .number{
+	    	position: absolute;
+	    	right: rem(30);
+	    	bottom: rem(30);
+	    	color: #888;
+	    	font-size: rem(24);
+	    }
+	    .init{
+	    	border: none;
+	    	width: 100%;
+	    	height: rem(60);
+	    	margin-right: rem(30);
+	    }
+	    .tagname{
+	      height: rem(96);
+	      line-height: rem(96);
+	      border-bottom: 1px solid #d9d9d9;
+	      color: #585858;
+	      font-size: rem(34);
+	      span{
+	        float: right;
+	        padding: 0 rem(30);
+	        color: #00A699;
+	        font-size: rem(26);
+	      }
+	      i{
+	        color: #888;
+	        font-size: rem(26);
+	        font-style: normal;
+	        margin: 0 rem(10);
+	      }
+	    }
+	    .iful{
+	    	width: 100%;
+	    	position: absolute;
+	    	padding: 0 0 0 rem(30);
+	    	top: rem(96);
+	    	left: 0;
+	    	background: #F8F8FA ;
+	    	li{
+	    		border-bottom: 1px solid #d9d9d9;
+	    	}
+	    }
+	    .tagbox{
+	      overflow: hidden;
+	      padding: rem(40) rem(30) rem(80) 0;
+	      p{
+	        color: #888;
+	        font-size: rem(26);
+	        padding: rem(30) 0 rem(20) 0;
+	      }
+	      span{
+	        background: #F4F4F4;
+	        border-radius: rem(4);
+	        float: left;
+	        font-size: rem(20);
+	        color: #666;
+	        padding: rem(12) rem(20);
+	        margin: 0 rem(20) rem(20) 0;
+	        border: 1px solid #f4f4f4;
+	      }
+	      .check{
+	        color: #333;
+	        border: 1px solid #00A699;
+	        background: #fff url(base64/icheck.png) no-repeat bottom right;
+	        background-size: rem(30);
+	      }
+	    }
+	    .tip{
+	      color: #888;
+	      font-size: rem(24);
+	      padding: rem(20) 0 0 0;
+	    }
+	    .line{
+	      border-bottom: 1px solid #d9d9d9;
+	      padding: 0 0 rem(30) 0;
+	    }
+	    .button{
+	    	width: rem(196);
+	    	height: rem(60);
+	    	line-height: rem(58);
+	    	color: #00a699;
+	    	font-size: rem(26);
+	    	border: 1px solid #aaa;
+	    	background: #fff;
+	    	display: block;
+	    	margin: rem(40) 0 0;
+	    }
+	}
+    .tagshop{
+    	margin: rem(40) 0 0 0;
+    	.tagbox{
+    		padding: rem(40) rem(30) rem(40) 0;
+    	}
+    }
+
+    .tagname{
+      height: rem(96);
+      line-height: rem(96);
+      border-bottom: 1px solid #d9d9d9;
+      color: #585858;
+      font-size: rem(34);
+      span{
+        float: right;
+        padding: 0 rem(30);
+        color: #00A699;
+        font-size: rem(26);
+      }
+    }
+    .tagarrs{
+      overflow: hidden;
+      p{
+        color: #888;
+        font-size: rem(26);
+        padding: rem(30) 0 rem(20) 0;
+      }
+      span{
+        background: #F4F4F4;
+        border-radius: rem(4);
+        float: left;
+        font-size: rem(20);
+        color: #666;
+        padding: rem(12) rem(20) rem(10) rem(20);
+        margin: 0 rem(20) rem(20) 0;
+        border: 1px solid #f4f4f4;
+        vertical-align: middle;
+      }
+      .check{
+        color: #333;
+        border: 1px solid #00A699;
+        background: #fff url(base64/icheck.png) no-repeat bottom right;
+        background-size: rem(30);
+      }
+    }
+    .tip{
+      color: #888;
+      font-size: rem(24);
+      padding: rem(20) 0 0 0;
+    }
+    .line{
+      border-bottom: 1px solid #d9d9d9;
+      padding: 0 0 rem(30) 0;
+    }
+}
+

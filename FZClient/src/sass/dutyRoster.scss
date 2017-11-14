@@ -1,0 +1,288 @@
+@charset "utf-8";
+@import "tobe/function";
+
+.content{
+  .fback{
+    @include i-fback();
+    //font-style: normal;
+    //position: absolute;
+    //left: rem(52);
+    //top: rem(26);
+    //font-size: rem(30);
+
+  }
+
+}
+
+.calendar,.duty-roster{
+  background: #fff;
+  p{
+    height: rem(88);
+    line-height: rem(88);
+    font-size: rem(36);
+    color: #999;
+    width: 100%;
+    @include hair(bottom, #d9d9d9);
+    span{
+      padding: 0 0 0 rem(24);
+    }
+  }
+  .month{
+    color: #333;
+  }
+  .calendar-box{
+    width: 100%;
+    overflow-x:auto;
+    height: rem(280);
+    position: relative;
+    z-index: 9;
+    .calendar-body{
+      overflow: hidden;
+      padding: rem(40) 0;
+      width: auto;
+      position: absolute;
+     /*  visibility: hidden; */
+    }
+    li{
+      width: rem(100);
+      height: rem(200);
+      float: left;
+      margin-right: rem(8);
+      text-align: center;
+      border-radius: rem(50);
+      font-size: rem(40);
+      color: #333;
+      position: relative;
+      i{
+        width: 10px;
+        height: 10px;
+        border-radius: 5px;
+        background: #66667b;
+        position: absolute;
+        right: rem(0);
+        top: rem(0);
+        display: none;
+        box-sizing:border-box;
+      }
+      cite{
+        font-style: normal;
+        width: rem(100);
+        display: block;
+        font-size: rem(24);
+        color: #999;
+        padding: rem(48) 0 0;
+        margin-bottom: rem(20);
+      }
+    }
+    .plan{
+      i{
+        display: block;
+      }
+    }
+    .today{
+      color: #00a699;
+      background: #f7f7f7;
+    }
+    .curr{
+      background: #f9e15d;
+    }
+  }
+  .calendar-body{
+    width: 100%;
+    position: relative;
+
+    .currentday{
+      width: rem(100);
+      height: rem(200);
+      float: left;
+      margin-left: - rem(50);
+      text-align: center;
+      border-radius: rem(50);
+      position: absolute;
+      left: 50%;
+      top: rem(40);
+      background: #f9e15d;
+      display: none;
+      i{
+        width: 10px;
+        height: 10px;
+        border-radius: 5px;
+        background: #66667b;
+        position: absolute;
+        right: rem(0);
+        top: rem(0);
+        display: none;
+        box-sizing:border-box;
+      }
+      cite{
+        font-style: normal;
+        width: rem(100);
+        display: block;
+        font-size: rem(24);
+        color: #999;
+        padding: rem(48) 0 0;
+        margin-bottom: rem(20);
+      }
+    }
+    .plan{
+      i{
+        display: block;
+      }
+    }
+  }
+}
+
+.dutyroster{
+  margin-top: rem(20);
+  background: none;
+  .dutyroster-box{
+    background: #fff;
+    .no{
+      color: #999;
+      background: url(base64/plan.png) no-repeat center rem(40);
+      margin: 0 auto;
+      padding: rem(230) 0 rem(50) 0;
+      text-align: center;
+    }
+    .per{
+      font-size: rem(26);
+      color: #999;
+      height: rem(88);
+      line-height: rem(88);
+      @include hair(bottom, #d9d9d9);
+      span{
+        padding: rem(0) rem(30);
+      }
+    }
+  }
+  .dutyroster-person{
+    overflow: hidden;
+    @include hair(bottom, #d9d9d9);
+    li{
+      width: rem(120);
+      height: rem(248);
+      overflow: hidden;
+      float: left;
+      margin: 0 rem(33);
+      color: #2a2a2a;
+      text-align: center;
+      em{
+        width: rem(120);
+        height: rem(120);
+        display: block;
+        border-radius: rem(60);
+        overflow: hidden;
+        margin: rem(30) auto rem(10) auto;
+        img{
+          width: 100%;
+          height: 100%;
+        }
+      }
+      span{
+        width: rem(120);
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+  button{
+    width: rem(300);
+    height: rem(70);
+    border: 0;
+    color: #fff;
+    background: #66667b;
+    border-radius: rem(4);
+    display: block;
+  }
+  .bl{
+    float: left;
+    margin: rem(50) 0 0 rem(50);
+  }
+  .br{
+    float: right;
+    margin: rem(50) rem(50) 0 0;
+  }
+  .center{
+    margin: rem(50) auto;
+  }
+}
+
+.personitem{
+  width: 100%;
+  padding: 0 0 0 rem(30);
+  max-height: rem(700);
+  overflow-y:auto;
+}
+.person-box{
+  width: 100%;
+  background: #fff;
+  height: rem(100);
+  display: table;
+  @include hair(bottom, #d9d9d9);
+  .checkicon{
+    line-height:rem(316);
+    display: table-cell;
+    vertical-align: middle;
+    width: rem(50);
+    float: right;
+    margin: rem(30) rem(30) 0 0;
+    i{
+      width:rem(46);
+      height:rem(46);
+      border:1px solid #aaa;
+      border-radius:50%;
+      display: block;
+      margin:0 rem(10) 0 0;
+    }
+  }
+  .checkbox{
+    font-size: rem(36);
+    color: #999;
+    overflow: hidden;
+    line-height: rem(100);
+    .arrow-back{
+      @include transform(rotate(180deg));
+      font-size: rem(28);
+      margin-left: rem(10);
+      color: #C7C7CC!important;
+      line-height: rem(88);
+    }
+    .person-phone{
+      width: rem(76);
+      height: rem(76);
+      border-radius: rem(38);
+      overflow: hidden;
+      float: left;
+      margin: rem(10) rem(40) 0 0;
+      img{
+        width: 100%;
+        height: 100%;
+        float: left;
+      }
+    }
+    .person-name{
+      float: left;
+    }
+  }
+  .check{
+    color: #333;
+    i{
+      background:url("base64/check.png") no-repeat center;
+      background-size: 120%;
+    }
+
+  }
+}
+
+.modal-bg{
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.6);
+  z-index: 10;
+}
+

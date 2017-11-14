@@ -1,0 +1,34 @@
+/* creat by hmm */
+@charset "utf-8";
+@import "tobe/function";
+
+.content{
+    padding-top: rem(88);
+}
+.content {
+	.title{
+		i{
+			width: rem(40);
+			height: rem(20);
+			display: inline-block;
+			background: url("base64/previous.png") no-repeat center;
+		}
+
+	}
+	.fback{
+    @include i-fback();
+		//font-style: normal;
+		//position: absolute;
+		//left: rem(52);
+		//top: rem(26);
+		//font-size: rem(30);
+
+	}
+
+}
+
+.newcast{
+	margin: rem(30) 0 0;
+	overflow: hidden;
+}
+

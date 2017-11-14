@@ -1,0 +1,126 @@
+@charset "utf-8";
+@import "tobe/function";
+.content{
+  padding-top: rem(88);
+  padding-bottom: rem(60);
+  :after{ visibility:hidden; display:block; font-size:0px;content:""; clear:both; height:0px;}
+}
+.attribute-list{
+	width:100%;
+	padding-bottom: rem(140);
+	li{
+		width:100%;
+		margin-top:rem(40);
+		background:#fafafa;
+		.attribute-name{
+			width:100%;
+			background:#ffffff;
+			height:rem(88);
+			line-height:rem(88);
+			padding-left:rem(30);
+			font-size:rem(34);
+			color:#000;
+			.line{
+				width:100%;
+				height:rem(88);
+		  	line-height:rem(88);
+			  border-bottom:1px solid #d9d9d9;
+			  em{
+			  	width:rem(24);
+			  	height:rem(16);
+          background:url("base64/down.png") no-repeat center center;
+          background-size:100% auto;
+          float:right;
+          margin:rem(36) rem(30) 0 0;
+        }
+      }
+		}
+		.attribute-line{
+			display:none;
+		}
+		.name-line{
+			width:100%;
+			height:rem(72);
+			line-height:rem(60);
+			padding:rem(12) 0 0 rem(30);
+			color:#888888;
+			background:#fafafa;
+		}
+		dl{
+			width:100%;
+			padding-bottom:rem(26);
+			background:#fff;
+			padding-right:rem(30);
+			dd{
+				width:25%;
+				padding:rem(26) 0 0 rem(30);
+				float:left;
+				display:inline;
+				.name{
+					width:100%;
+					height:rem(60);
+					line-height:rem(60);
+					background:url("base64/attribute-normal.png") no-repeat;
+					background-size:100% 100%;
+					text-align:center;
+					padding:0 rem(10);
+					overflow:hidden;
+					text-overflow:ellipsis;
+					white-space:nowrap;
+					font-size:rem(26);
+				}
+				.select{
+					background:url("base64/attribute-select.png") no-repeat;
+					background-size:100% 100%;
+				}
+				.disabled{
+					background:url("base64/attribute-disable.png") no-repeat;
+					background-size:100% 100%;
+				}
+				.add{
+					width:100%;
+					height:rem(60);
+					line-height:rem(60);
+          border:1px solid #00A699;
+          border-radius:2px;
+					text-align:center;
+					padding:0 rem(10);
+					overflow:hidden;
+					text-overflow:ellipsis;
+					white-space:nowrap;
+					font-size:rem(40);
+					color:#00A699;
+				}
+			}
+		}
+		&.show{
+			.attribute-name .line em{
+				background:url("base64/up.png") no-repeat center center;
+        		background-size:100% auto;
+			}
+			.attribute-line{
+				display:block;
+			}
+		}
+	}
+}
+.attribute-input{
+	width:rem(430);
+	height:rem(80);
+	line-height:rem(80);
+	border:1px solid #cccccc;
+	text-align:center;
+}
+.button-line{
+	width:100%;
+	padding:rem(30);
+	margin-top:rem(60);
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	background:#efeff4;
+	:after{
+		visibility:visible;
+	}
+
+}

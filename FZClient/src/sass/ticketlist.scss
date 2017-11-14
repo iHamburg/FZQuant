@@ -1,0 +1,23 @@
+/* creat by llm */
+@charset "utf-8";
+@import "tobe/function";
+.badge{
+	background:#ffffff;
+	padding-left:rem(30);
+}
+.right-box{
+	@include display(flex);
+	@include align-items(center);
+	.right-num{
+	  font-size:rem(24);
+	  line-height:rem(44);
+	}
+	.arrow-back{
+		@include transform(rotate(180deg));
+		margin-left:rem(20);
+		font-size:rem(24);
+	}
+}
+.margin-t1{
+	margin-top:rem(30);
+}

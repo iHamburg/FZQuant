@@ -1,0 +1,55 @@
+/* creat by hmm */
+@charset "utf-8";
+@import "tobe/function";
+
+.content{
+    padding-top: rem(88);
+    padding-bottom: rem(100);
+}
+.content {
+	.title{
+		i{
+			width: rem(40);
+			height: rem(20);
+			display: inline-block;
+			background: url("base64/previous.png") no-repeat center;
+		}
+	}
+	.fback{
+    	@include i-fback();
+    }
+	.otop{
+		margin: rem(30) auto;
+	}
+	.otop:active {
+		@include addclickcolor();
+	}
+
+}
+
+.right-box{
+	@include flex(1);
+	@include display(flex);
+	@include align-items(center);
+	@include justify-content(space-between);
+	.right-l{
+		@include flex(1);
+		padding-right: rem(20);
+		color: #B2B2B2;
+		input{
+			width: 100%;
+			border: none;
+			outline: none;
+		}
+	}
+	.right-r{
+		@include flex(1);
+		padding-right: rem(20);
+		color: #B2B2B2;
+		text-align: right;
+	}
+	.arrow-back{
+		color: #C7C7CC!important;
+		line-height: 1;
+	}
+}

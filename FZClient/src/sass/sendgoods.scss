@@ -1,0 +1,276 @@
+@charset "utf-8";
+@import "tobe/function";
+
+.content{
+    padding-top: rem(88);
+    padding-bottom: rem(60);
+
+	.fback{
+    @include i-fback();
+		//font-style: normal;
+		//position: absolute;
+		//left: rem(52);
+		//top: rem(26);
+		//font-size: rem(30);
+
+	}
+	.mint-popup{
+		background: #efeff4;
+		.title{
+			height: rem(96);
+			background: #fff;
+			text-align: center;
+			font-size: rem(36);
+			color: #222;
+			line-height: rem(96);
+			margin-bottom: rem(12);
+			font-weight: 400;
+			padding: 0 rem(30);
+			border-bottom: 1px solid #E9E9E9;
+		}
+		.cancel{
+			font-size: rem(32);
+			float: right;
+		}
+		.groom{
+			padding: rem(15) rem(30);
+			font-size: rem(24);
+			margin-top: rem(10);
+		}
+		.bl-button{
+			color: #222;
+			font-size: rem(36);
+			height: rem(100);
+		}
+		.bl-button.primary:after{
+			background: #fff;
+		}
+		.box-tag{
+			background: #fff;
+			padding: rem(30) rem(30) 0 rem(30);
+			font-size: rem(28);
+			overflow: hidden;
+			.line{
+				border-bottom: 1px solid #d9d9d9;
+			}
+			.tags{
+				max-height: rem(200);
+				overflow-y: auto;
+				width: 110%;
+				padding-bottom: rem(10);
+			}
+			span{
+				min-width: rem(156);
+				color: #999;
+				text-align: center;
+				border: 1px solid #B2B2B2;
+				border-radius: rem(8);
+				padding: rem(10) rem(10);
+				display: inline-block;
+				margin: 0 rem(14) rem(20) 0;
+			}
+			.on{
+				color: #00A699;
+				border: 2px solid #00A699;
+			}
+			.default{
+				color: #999;
+				background: #E7E7E7;
+				border:1px solid #ccc;
+			}
+			.ontime{
+				border:1px solid #B2B2B2;
+				background: #fff;
+			}
+			.day{
+				min-width: rem(216);
+			}
+		}
+		.left-box{
+			width:rem(180);
+			color: #000;
+		}
+		.right-box{
+			@include flex(1);
+			@include display(flex);
+			@include align-items(center);
+			@include justify-content(space-between);
+			.right-l{
+				@include flex(1);
+				padding: 0;
+				input{
+					width: 100%;
+					border: none;
+					outline: none;
+				}
+			}
+			.scan{
+				width: rem(46);
+			}
+			.arrow-back{
+				color: #C7C7CC!important;
+				line-height: 1;
+			}
+		}
+	}
+	.box-content{
+		max-height: rem(800);
+		overflow-y:auto;
+		background: #fff;
+		padding: rem(30);
+	}
+	.pop-weight{
+		p{
+			color: #666;
+			font-size: rem(32);
+			padding: rem(10) 0;
+		}
+		.box-content{
+			color: #999;
+			font-size: rem(32);
+		}
+	}
+
+}
+
+.sendgood{
+	.send,.take{
+		padding: rem(30);
+		border-bottom: 1px solid #d9d9d9;
+		background: #fff;
+		dl{
+			padding: 0 0 0 rem(50);
+		}
+		dt{
+			font-size: rem(28);
+			color: #000;
+			padding-bottom: rem(6);
+		}
+		dd{
+			font-size: rem(24);
+			color: #666;
+		}
+		i{
+			width: rem(32);
+			height: rem(32);
+			float: left;
+			margin: rem(4) 0 0 0;
+		}
+		.tel{
+			padding-left: rem(20);
+		}
+	}
+	.send i{
+		background: url('base64/send.png') no-repeat;
+		background-size: 100%;
+	}
+	.take i{
+		background:url('base64/take.png') no-repeat;
+		background-size: 100%;
+	}
+	.sendbox-middle, .sendbox{
+		margin: rem(30) 0;
+		overflow: hidden;
+		div{
+			width: 50%;
+			float: left;
+			background: #fff;
+			padding: rem(21) rem(30);
+			color: #666;
+			font-size: rem(28);
+			border-bottom: 1px solid #d9d9d9;
+			height: rem(128);
+			overflow: hidden;
+		}
+		div:nth-child(odd){
+			border-right: 1px solid #d9d9d9;
+		}
+		span{
+			display: block;
+		}
+		b{
+			color: #000;
+			font-weight: 600;
+		}
+		.none{
+			color: #999;
+		}
+	}
+	.sendbox-date{
+		margin: 0;
+		font-size: rem(28);
+		padding: rem(30);
+		background: #fff;
+		color: #666;
+		em{
+			font-style: normal;
+			color: #000;
+			font-weight: 600;
+		}
+		.mr{
+			float: right;
+		}
+	}
+
+	.goodedit{
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		height: rem(132);
+		background: #fff;
+		width: 100%;
+		button{
+			width: rem(220);
+			height: rem(132);
+			border:0;
+			font-size: rem(36);
+			float: right;
+			background: #4B4B64;
+			color: #fff;
+		}
+		& :disabled{
+			background: #ddd;
+			color: #999;
+			float: right;
+		}
+		.checkbox{
+			float: left;
+			padding: rem(16) rem(30) rem(30) rem(30);
+			font-size: rem(32);
+			color: #000;
+			p{
+				padding: 0 0 rem(10) rem(52);
+			}
+		}
+		.red{
+			color: #d4172e;
+			padding: 0 rem(20);
+		}
+		.checkradio{
+			font-size: rem(26);
+			a{
+				color: #5c9be5;
+			}
+			i{
+				width:rem(40);
+				height:rem(40);
+				border:1px solid #aaa;
+				border-radius:50%;
+				float:left;
+				margin:- rem(4) rem(10) 0 0;
+			}
+		}
+		.check{
+			i{
+				border:1px solid #aaa;
+				background: url("base64/check.png") no-repeat center;
+				background-size: 120%;
+			}
+
+		}
+
+	}
+
+}
+
+

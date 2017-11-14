@@ -1,0 +1,286 @@
+@charset "utf-8";
+@import "tobe/function";
+
+.content{
+    padding-top: rem(88);
+    padding-bottom: rem(60);
+
+	.fback{
+    @include i-fback();
+		//font-style: normal;
+		//position: absolute;
+		//left: rem(52);
+		//top: rem(26);
+		//font-size: rem(30);
+
+	}
+
+}
+
+.service{
+	dfn{
+		padding:rem(30);
+		font-style: normal;
+		color: #888;
+		font-size: rem(28);
+		display: block;
+	}
+	.number{
+		margin: 0 0;
+		.right-box .right-r{
+			color: #333;
+		}
+	}
+	.service-top{
+		margin: rem(40) 0 0;
+	}
+	.look{
+		color: #586C94;
+		font-size: 14px;
+	}
+	.item{
+		background:#fff;
+		padding: 0 0 0 rem(30);
+		overflow: hidden;
+		dl{
+			margin: rem(40) 0 0;
+			width: 100%;
+			overflow: hidden;
+			@include hair(bottom, #d9d9d9);
+		}
+		.left-box{
+			width: rem(160);
+			height: rem(160);
+			margin: 0 rem(20) rem(40) 0;
+			overflow: hidden;
+			text-align: center;
+			float: left;
+			img{
+				height: auto;
+			}
+		}
+		.name{
+			width: rem(510);
+			height: rem(80);
+			color: #000;
+			font-size: rem(28);
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: -webkit-box;
+			-webkit-line-clamp: 2;
+			-webkit-box-orient: vertical;
+		}
+		.info{
+			font-size: rem(24);
+			color: #999;
+			margin-top: rem(40);
+			span{
+				padding: 0 rem(10) 0 0;
+			}
+			i{
+				font-style: normal;
+				padding: 0 rem(10) 0 0;
+			}
+		}
+	}
+	.add{
+		width: rem(120);
+		height: rem(60);
+		border:1px solid #aaa;
+		color: #4B4B64;
+		font-size: rem(26);
+		float: right;
+		background-color: #fff;
+	}
+
+	.service-note{
+		background:#fff;
+		padding: 0 0 0 rem(30);
+		overflow: hidden;
+		dl{
+			margin: rem(30) 0 0;
+			padding-right: rem(30);
+			overflow: hidden;
+			@include hair(bottom, #d9d9d9);
+			dt{
+				color: #333;
+				font-size: rem(28);
+			}
+			dd{
+				font-size: rem(26);
+				color: #999;
+				padding: rem(30) 0;
+			}
+		}
+		.time{float: right;}
+	}
+	.right-box{
+		@include flex(1);
+		@include display(flex);
+		@include align-items(center);
+		@include justify-content(space-between);
+		.right-l,.right-r{
+			@include flex(1);
+			input{
+				width: 100%;
+				border: none;
+				outline: none;
+			}
+		}
+		.scan{
+			width: rem(46);
+		}
+		.arrow-back{
+			color: #C7C7CC!important;
+			line-height: 1;
+		}
+		position: relative;
+
+		.right-r{
+			@include flex(1);
+			color: #B2B2B2;
+			text-align: right;
+			padding-right: rem(10);
+		}
+		.ellipsis{
+			width: rem(400);
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			float: right;
+		}
+		.del{
+			width: rem(28);
+			height: rem(28);
+			background: url("base64/delete3.png") no-repeat center;
+			background-size: 100%;
+		}
+	}
+	.actcontent{
+		position: relative;
+		.init{
+			width: 100%;
+			background: #fff;
+			padding: rem(20) rem(30);
+			color: #999;
+			font-size: rem(24);
+			text-align: right;
+		}
+		.red{
+			color: #F76260;
+		}
+	}
+	.textarea{
+		width: 100%;
+		height: rem(500);
+		resize:none;
+		padding: rem(30);
+		border:0;
+		font-size: rem(34);
+	}
+	.service-init .right-r .init{
+		float: right;
+		font-size: rem(36);
+		margin: rem(30) 0;
+		i{
+			width: rem(60);
+			height: rem(60);
+			float: left;
+			text-align: center;
+			border: 1px solid #ccc;
+			line-height: rem(60);
+			color: #d8d8d8;
+		}
+		input{
+			width: rem(140);
+			height: rem(60);
+			float: left;
+			text-align: center;
+			border: 1px solid #ccc;
+			border-width: 1px 0;
+			font-size: rem(36);
+		}
+	}
+}
+.comments{
+	width: 100%;
+	padding-left: rem(30);
+	textarea{
+		width: 100%;
+		height: rem(180);
+		margin: rem(30) 0;
+		@include hair(bottom, #d9d9d9);
+		font-size: rem(36);
+	}
+}
+
+.bootedit{
+	padding: rem(40);
+	.bl-button{
+		margin: 0 0 rem(30) 0;
+	}
+}
+.btn-box{
+	@include display(flex);
+	@include align-items(center);
+}
+.self-btn{
+	border: none;
+	font-size: rem(26);
+	height: rem(60);
+	padding: 0 rem(20);
+	min-width: rem(120);
+	display: block;
+	margin-left: rem(20);
+	border-radius: rem(4);
+	color: #ffffff;
+	background: $btn-normal;
+}
+.comit-btn{
+	padding:0 rem(40);
+	margin-bottom: rem(80);
+}
+.pic-box{
+	background: #ffffff;
+}
+.watch-pic{
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background: #000000;
+	z-index: 1000;
+	padding-top: rem(230);
+	visibility: hidden;
+}
+.set-main{
+	margin: rem(80) auto 0;
+	width: rem(360);
+	height: rem(70);
+	line-height: rem(70);
+	background: #ffffff;
+	text-align: center;
+	border-radius: rem(4);
+	font-size: rem(32);
+}
+.modal-bg{
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.6);
+  z-index: 10;
+  .qimg{
+  	width: 100%;
+  	position: absolute;
+  	left: 0;
+  	top: 35%;
+  	img{
+  		width: 100%;
+  		height: 100%;
+  	}
+  }
+}
+

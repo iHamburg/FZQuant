@@ -1,0 +1,254 @@
+@charset "utf-8";
+@import "tobe/function";
+
+.write{
+	background: #fff;
+}
+.user-content{
+    padding-top: rem(88);
+	.close{
+		color: #ccc;
+	}
+	.hrad-right{
+		font-size: rem(30);
+		color: #999;
+		margin-right: rem(30);
+		cursor: pointer;
+	}
+	.button{
+		padding: 0 rem(30);
+	}
+	.arrow-back{
+		color: #ccc;
+	}
+	.setarrow-back{
+		color: #fff;
+	}
+	.fback{
+		color: #999;
+	    @include i-fback();
+	}
+	.titlecolor{
+	   color: #000;
+	}
+	.setps{
+		color: #fff;
+	}
+	.fclose{
+		position: absolute;
+		left: rem(150);
+		top: rem(22);
+		color: #999;
+		font-style: normal;
+		font-size: rem(30);
+	}
+	.bar-dark-write{
+		background: none;
+		.fback{
+			left: rem(68);
+		}
+	}
+	.defaultBackColor{
+		background: #4B4B64;
+	}
+	.bar-dark-linear{
+		.fback{
+			color: #fff;
+		    @include i-fback();
+		    left: rem(66);
+		}
+		.arrow-back{
+			color: #fff;
+		}
+	}
+
+	.user{
+		margin: 0 auto;
+		padding: 0 rem(100);
+		.user-head{
+			width: rem(150);
+			height: rem(150);
+			background: url(base64/user.png) no-repeat;
+			border-radius: rem(75);
+			margin: rem(120) auto rem(92) auto;
+			background-size: 100%;
+		}
+		.unline{
+			width: 100%;
+			height: rem(88);
+			line-height: rem(88);
+			color: #B2B2B2;
+			font-size: rem(28);
+			border-bottom: 1px solid #d9d9d9;
+			margin: 0 auto rem(40) auto;
+			overflow: hidden;
+			position: relative;
+			input{
+				width: rem(450);
+				height: rem(80);
+				line-height: rem(80);
+				border:0;
+				font-size: rem(28);
+			}
+			.sms{
+				width: rem(300);
+			}
+			.sendsms{
+				width: rem(208);
+				height: rem(56);
+           		padding: 0;
+				float: right;
+				background: #F7F7F7;
+				border:0;
+				color: #585858;
+				font-size: rem(24);
+				margin: rem(14) 0 0;
+			}
+			i{
+				width: rem(60);
+				height: rem(60);
+				position: absolute;
+				right: 0;
+				top: rem(15);
+			}
+			.clears{
+				background: url(base64/delete3.png) no-repeat center right;
+				background-size: 60%;
+			}
+			.code{
+				right: rem(240);
+			}
+			.pass{
+				right: rem(60);
+			}
+			.eye{
+				background: url(base64/eye1.png) no-repeat center right;
+				background-size: 70%;
+			}
+			.open{
+				background: url(base64/eye2.png) no-repeat center right;
+				background-size: 70%;
+			}
+		}
+		.loginbtn{
+			margin: rem(80) auto 0 auto;
+		}
+		@keyframes indexload{
+			100%{transform:rotate(360deg);
+			-webkit-transform:rotate(360deg)
+		}
+		}
+		@-webkit-keyframes indexload{100%{transform:rotate(360deg);-webkit-transform:rotate(360deg)}}
+		.bl-button.loading:after{
+			background: #66667B url(base64/loading.gif) no-repeat rem(400) center;
+			background-size: .5rem;
+		}
+		.loading{
+			width: rem(30);
+			margin: 0 rem(20) 0 0;
+			animation: indexload 1s infinite linear;
+    		-webkit-animation: indexload 1s infinite linear;
+    		position: absolute;
+    		left: rem(190);
+    		top: rem(29);
+		}
+		p{
+			clear: both;
+			color: #888;
+			font-size: rem(24);
+			padding: rem(20) 0;
+			overflow: hidden;
+			.phone{
+				float: left;
+				background: url(base64/phone.png) no-repeat center left;
+				padding: 0 0 0 rem(24);
+				background-position: 0 rem(5);
+			}
+			.forget{
+				float: right;
+				text-decoration: underline;
+			}
+		}
+		.ftop{
+			margin-top: rem(120);
+		}
+		.reg{
+			padding: 0;
+		}
+		.checkbox{
+			width: rem(32);
+			height: rem(32);
+			background: url(base64/ok_1.png) no-repeat;
+			float: left;
+			margin: 0 rem(20) 0 0;
+			background-size: 100%;
+		}
+		.sure{
+			background: url(base64/ok_2.png) no-repeat;
+			background-size: 100%;
+		}
+		.blue{
+			color: #118fea;
+		}
+	}
+
+	.logininfo{
+		padding: rem(30) 0;
+		.top{
+			margin: rem(40) auto 0 auto;
+		}
+		.right-box{
+			position: relative;
+			@include flex(1);
+			@include display(flex);
+			@include align-items(center);
+			@include justify-content(space-between);
+			.right-l,.right-r{
+			  @include flex(1);
+			  input{
+			    width: 80%;
+			    border: none;
+			    outline: none;
+			  }
+			}
+			.arrow-back{
+			  color: #C7C7CC!important;
+			  line-height: 1;
+			}
+
+			.right-r{
+			  @include flex(1);
+			  color: #B2B2B2;
+			  text-align: right;
+			  padding-right: rem(10);
+			}
+		}
+
+		.submit{
+			margin: rem(60) rem(40);
+		}
+
+		.notices{
+			width: rem(186);
+			height: rem(186);
+			display: block;
+			margin: rem(100) auto rem(50) auto;
+			background: url(base64/padking-icon-1.png) no-repeat;
+			background-size: 100%;
+		}
+		h1{
+			font-size: rem(60);
+			text-align: center;
+			padding: 0 rem(30);
+			font-weight: 400;
+			margin-bottom: rem(40);
+		}
+		p{
+			font-size: rem(28);
+			color: #888;
+			text-align: center;
+			padding: 0 rem(40);
+		}
+	}
+}
+

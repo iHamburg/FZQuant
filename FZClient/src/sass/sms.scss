@@ -1,0 +1,33 @@
+@charset "utf-8";
+@import "tobe/function";
+
+.content{
+    padding-top: rem(88);
+    padding-bottom: rem(60);
+
+	.title{
+		i{
+			width: rem(40);
+			height: rem(20);
+			display: inline-block;
+			background: url("base64/previous.png") no-repeat center;
+		}
+
+	}
+	.fback{
+    @include i-fback();
+		//font-style: normal;
+		//position: absolute;
+		//left: rem(52);
+		//top: rem(26);
+		//font-size: rem(30);
+	}
+	.nodata{
+		padding-top: rem(250);
+		padding-left: rem(180);
+		vertical-align: middle;
+		width: 72%;
+		border: 0;
+	}
+}
+

@@ -1,0 +1,77 @@
+/* creat by mlh */
+
+@charset "utf-8";
+@import "tobe/function";
+.content {
+    padding-top: rem(88);
+    padding-bottom: rem(60);
+    background-color: #efeff4;
+    .title {
+        i {
+            width: rem(40);
+            height: rem(20);
+            display: inline-block;
+        }
+    }
+    .fback {
+        @include i-fback();
+        //font-style: normal;
+        //position: absolute;
+        //left: rem(52);
+        //top: rem(26);
+        //font-size: rem(30);
+    }
+}
+.bar-dark-linear {
+    .arrow-back {
+        margin-top: rem(-2);
+    }
+}
+.marketing {
+    .module{
+    	.marketing-title{
+    		padding-left: rem(30);
+    		height: rem(72);
+    		line-height: rem(72);
+    		margin-top: rem(2);
+    		font-size: rem(28);
+    		color: #888888;
+    	}
+    	ul {
+    		padding-left: rem(30);
+    		background-color: #ffffff;
+    	    li {
+    	        height: rem(88);
+    	        line-height: rem(88);
+    	        @include hair(bottom, #ececec);
+    	        .left-fonts {
+    	            min-width: rem(280);
+    	            float: left;
+    	            font-size: rem(34);
+    	            color: #000000;
+    	        }
+    	        .arrow {
+    	            float: right;
+    	            padding-right: rem(30);
+                    font-size: rem(34);
+                    color: #232323;
+    	            .arrow-back {
+    	                color: #C7C7CC;
+    	                -webkit-transform: rotate(180deg);
+    	                -ms-transform: rotate(180deg);
+    	                transform: rotate(180deg);
+    	                font-size: rem(28);
+    	                margin-left: rem(10);
+    	                line-height: rem(88);
+    	            }
+    	        }
+                .no{
+                    padding-right: rem(20);
+                }
+    	    }
+    	}
+        ul:active{
+            @include addclickcolor();
+        }
+    }
+}

@@ -1,0 +1,22 @@
+<!--自动切换:
+在正确的HTML结构前提下，给 .weui-tabbar__item 或者 .weui-navbar__item 加上 href="#id" 指向一个 .weui-tab__bd-item，
+即可实现点击的时候自动切换。初识状态显示的标签，需要自行添加 .weui-bar__item--on 和 .weui-tab__bd-item--active.
+基本结构如下所示：-->
+<div class="weui-tab">
+    <div class="weui-navbar">
+        <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
+            选项一
+        </a>
+        <a class="weui-navbar__item" href="#tab2">
+            选项二
+        </a>
+    </div>
+    <div class="weui-tab__bd">
+        <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+            <h1>页面一</h1>
+        </div>
+        <div id="tab2" class="weui-tab__bd-item">
+            <h1>页面二</h1>
+        </div>
+    </div>
+</div>

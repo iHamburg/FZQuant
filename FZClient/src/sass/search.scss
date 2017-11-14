@@ -1,0 +1,154 @@
+@charset "utf-8";
+@import "tobe/function";
+
+.content-search{
+  .fback{
+    font-style: normal;
+    position: absolute;
+    left: rem(52);
+    top: rem(26);
+    font-size: rem(30);
+  }
+  .searchr{
+    background: #F8F8FA;
+    padding: 0 0 0 rem(30);
+    overflow: hidden;
+    dt, dd{
+      width: 100%;
+      height: rem(88);
+      border-bottom: 1px solid #d9d9d9;
+      line-height: rem(88);
+    }
+    dt{
+      color: #333;
+      font-size: rem(32);
+    }
+    dd{
+      font-size: rem(28);
+      color: #666;
+      padding-left: rem(40);
+    }
+
+  }
+
+  .searchfriends{
+    img{
+      width: rem(56);
+      height: rem(56);
+    }
+    dt{
+      padding: rem(20) 0 rem(20) rem(30);
+      font-size: rem(28);
+      color: #999;
+    }
+    dd{
+      padding: 0 0 0 rem(30);
+      height: rem(88);
+      background: #fff;
+      overflow: hidden;
+    }
+    .line{
+      height: rem(88);
+      padding: rem(16) 0;
+      margin: 0 rem(30);
+      border-bottom: 1px solid #E7E7E7;
+
+      em{
+        border:1px solid #F8DC00;
+        width: rem(56);
+        height: rem(56);
+        overflow: hidden;
+        float: left;
+        border-radius: rem(3);
+      }
+      span{
+        float: left;
+        line-height: rem(56);
+        color: #121C2D;
+        font-size: rem(28);
+        margin: 0 rem(30);
+      }
+    }
+  }
+
+  .searchbtn{
+    width: rem(240);
+    height: rem(72);
+    border: 1px solid #aaa;
+    color: #4B4B64;
+    font-size: rem(30);
+    background: #fff;
+    margin: rem(200) auto;
+    display: block;
+  }
+
+
+  .bl-tab-container{
+    background: #fff;
+    .salescard{
+      padding: 0 0 0 rem(30);
+      /* border-bottom: 1px solid #d9d9d9; */
+      a{
+        color: #66667b;
+        font-size: 14px;
+        height: rem(28);
+        line-height: rem(28);
+        display: inline-block;
+        width: 32.3%;
+        text-align: center;
+      }
+      .dcolor{
+        color: #ccc;
+      }
+      .rline{
+        border-right:1px solid #ccc;
+      }
+      .salepad{
+        padding: rem(30) 0;
+      }
+    }
+    .salescard-line{
+      padding: 0 0 0 rem(30);
+    }
+  }
+
+  .tab-line{
+    border-left: 1px solid #d9d9d9;
+  }
+  .tab-item-text{
+    position: relative;
+    i{
+      position: absolute;
+      width: rem(30);
+      height: rem(30);
+      top:rem(36);
+      right:rem(14);
+    }
+    .screen{
+      background: url("base64/sx.png") no-repeat left center;
+      background-size: 100%;
+      right: - rem(22);
+    }
+    .pcreen{
+      background: url("base64/sort.png") no-repeat left center;
+      background-size: 100%;
+
+    }
+    .dcreen{
+      background: url("base64/sortd.png") no-repeat left center;
+      background-size: 100%;
+    }
+    .defaultp{
+      background: url("base64/dsort.png") no-repeat left center;
+      background-size: 100%;
+    }
+  }
+  .menulist{
+    width:100%;
+    bottom: 0;
+    right: 0;
+    height: 100%;
+    background: none;
+  }
+
+}
