@@ -25,6 +25,7 @@
     "lodash.clonedeep": "^4.5.0",
     "lrz": "^4.9.40",
     "mint-ui": "^2.2.3",
+    "node-sass": "^4.6.1",
     "underscore": "^1.8.3",
     "v-money": "^0.8.0",
     "v-qrcode": "^1.0.3",
