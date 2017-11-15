@@ -23,7 +23,7 @@ router.post('/test', function (req, res, next) {
   //restart service
 
   var exec = require('child_process').exec;
-  var cmdStr = 'npm run forever';
+  var cmdStr = 'git pull && npm run forever';
   // var cmdStr = 'ls';
   exec(cmdStr, function(err, stdout, stderr) {
     if (err) {
