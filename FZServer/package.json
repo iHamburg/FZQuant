@@ -7,15 +7,12 @@
     "forever": "forever stopall & forever start -o forever_out.log -e forever_err.log -a bin/www",
     "supervisor": "supervisor ./bin/www",
     "supervisor-dev": "cross-env NODE_ENV=dev supervisor ./bin/www",
-    "sit": "cross-env NODE_ENV=sit node ./bin/www",
-    "pre": "cross-env NODE_ENV=pre node ./bin/www",
     "prd": "cross-env NODE_ENV=prd node ./bin/www",
-    "forever-sit": "forever stopall & cross-env NODE_ENV=sit forever start -o forever_out.log -e forever_err.log -a bin/www",
-    "forever-pre": "forever stopall & cross-env NODE_ENV=pre forever start -o forever_out.log -e forever_err.log -a bin/www",
     "forever-prd": "forever stopall & cross-env NODE_ENV=prd forever start -o forever_out.log -e forever_err.log -a bin/www"
   },
   "dependencies": {
     "axios": "^0.15.3",
+    "babel-eslint": "^8.0.2",
     "body-parser": "~1.16.0",
     "chai": "^3.5.0",
     "compression": "^1.6.2",
@@ -32,6 +29,13 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
+    "eslint": "^3.14.1",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-friendly-formatter": "^2.0.7",
+    "eslint-loader": "^1.6.1",
+    "eslint-plugin-html": "^2.0.0",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-standard": "^2.0.1",
     "cross-env": "^5.0.0"
   }
 }

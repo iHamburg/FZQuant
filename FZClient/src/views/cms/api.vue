@@ -88,7 +88,7 @@
 //            console.log('obj.key ', obj.key, 'data ', data);
             if (obj.key == 'DEV') {
               this.statusDevList.push({api, status: data.resCode, obj: data.obj});
-            } else if (obj.key == 'SIT') {
+            } else if (obj.key == 'SIT'){
               this.statusSitList.push({api, status: data.resCode, obj: data.obj});
             } else if (obj.key == 'PRE') {
               this.statusPreList.push({api, status: data.resCode, obj: data.obj});
@@ -96,7 +96,7 @@
               this.statusPrdList.push({api, status: data.resCode, obj: data.obj});
             }
           }).catch(() => {
-            if (obj.key == 'DEV') {
+            if (obj.key == 'DEV'){
               this.statusDevList.push({api, status: '404网络错误'});
             } else if (obj.key == 'SIT') {
               this.statusSitList.push({api, status: '404网络错误'});
