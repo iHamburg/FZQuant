@@ -40,7 +40,7 @@ router.post('/test', function (req, res, next) {
 router.get('/', function (req, res, next) {
     // var id = req.params.id;
 
-  return res.send('Test 1223 234234');
+  return res.send('Test 1223 234234 555');
 });
 
 module.exports = router;
