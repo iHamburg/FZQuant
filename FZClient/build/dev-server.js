@@ -56,23 +56,6 @@ Object.keys(proxyTable).forEach(function (context) {
   app.use(proxyMiddleware(options.filter || context, options))
 })
 
-/* S Mock服务 */
-app.use(mockPost);
-var mockDir = path.resolve(__dirname, '../mock');
-(function setMock(mockDir) {
-  fs.readdirSync(mockDir).forEach(function (file) {
-    var filePath = path.resolve(mockDir, file);
-    var mock;
-    if (fs.statSync(filePath).isDirectory()) {
-      setMock(filePath);
-    }
-    else {
-      mock = require(filePath);
-      app.use(mock.api, argv.proxy ? proxyMiddleware({target: 'http://' + argv.proxy}) : mock.response);
-    }
-  });
-})(mockDir);
-/* E */
 
 // handle fallback for HTML5 history API
 app.use(require('connect-history-api-fallback')())
