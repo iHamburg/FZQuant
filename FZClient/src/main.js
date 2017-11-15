@@ -85,41 +85,14 @@ Vue.$utillib = Vue.prototype.$utillib = utillib
 import merchantlib from 'libs/merchantlib'
 Vue.$merchantlib = Vue.prototype.$merchantlib = merchantlib
 
-import orderlib from 'libs/orderlib'
-Vue.$orderlib = Vue.prototype.$orderlib = orderlib
-
-import couponlib from 'libs/couponlib'
-Vue.$couponlib = Vue.prototype.$couponlib = couponlib
-
-import goodslib from 'libs/goodslib'
-Vue.$goodslib = Vue.prototype.$goodslib = goodslib
-
-import newslib from 'libs/newslib'
-Vue.$newslib = Vue.prototype.$newslib = newslib
-
 import imagelib from 'libs/imagelib'
 Vue.$imagelib = Vue.prototype.$imagelib = imagelib
-
-import activitylib from 'libs/activitylib'
-Vue.$activitylib = Vue.prototype.$activitylib = activitylib
-
-import aftersaleslib from 'libs/aftersaleslib'
-Vue.$aftersaleslib = Vue.prototype.$aftersaleslib = aftersaleslib
 
 import servicelib from 'libs/servicelib'
 Vue.$servicelib = Vue.prototype.$servicelib = servicelib
 
 import accesslib from 'libs/accesslib'
 Vue.$accesslib = Vue.prototype.$accesslib = accesslib
-
-import scheduallib from 'libs/scheduallib'
-Vue.$scheduallib = Vue.prototype.$scheduallib = scheduallib
-
-import promotionlib from 'libs/promotionlib'
-Vue.$promotionlib = Vue.prototype.$promotionlib = promotionlib
-
-import marketinglib from 'libs/marketinglib'
-Vue.$marketinglib = Vue.prototype.$marketinglib = marketinglib
 
 /**
  * jsbridge
