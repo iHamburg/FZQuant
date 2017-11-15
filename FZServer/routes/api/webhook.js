@@ -18,16 +18,29 @@ router.all('*', function (req, res, next) {
 
 router.post('/test', function (req, res, next) {
   // var id = req.params.id;
-  console.log('begin post test');
+  console.log('=============begin post test');
   console.log(req.body);
-  return res.send('Test 2 hello');
+  //restart service
+
+  var exec = require('child_process').exec;
+  var cmdStr = 'npm run forever';
+  // var cmdStr = 'ls';
+  exec(cmdStr, function(err, stdout, stderr) {
+    if (err) {
+      console.log(cmdStr + ' error:' + stderr);
+      return res.send('npm run forever error:' + stderr);
+    } else {
+      console.log(cmdStr + 'success ' + stdout + stderr);
+      return res.send(cmdStr + 'success ' + stdout + stderr);
+    }
+  });
+  // return res.send('Test 2 hello');
 });
 
 router.get('/', function (req, res, next) {
     // var id = req.params.id;
 
-  return res.send('Test 2');
+  return res.send('Test 1223 234234');
 });
-
 
 module.exports = router;
