@@ -34,7 +34,6 @@ router.post('/test', function (req, res, next) {
       return res.send(cmdStr + 'success ' + stdout + stderr);
     }
   });
-  // return res.send('Test 2 hello');
 });
 
 router.get('/', function (req, res, next) {
