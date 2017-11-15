@@ -4,7 +4,7 @@
 
 import Vue from 'vue'
 import Router from 'vue-router'
-import { uiRouter } from './uiRouter'
+// import { uiRouter } from './uiRouter'
 import { prdRouter } from './prdRouter'
 import { tutorialRouter } from './tutorialRouter'
 import merchantlib from '../libs/merchantlib'
@@ -22,7 +22,7 @@ Router.prototype.goHome = function () {
   this.push({name: '2'})
 };
 
-let routerConfig = tutorialRouter.concat(uiRouter).concat(prdRouter)
+let routerConfig = tutorialRouter.concat(prdRouter)
 
 let router = new Router({
   mode: 'history',
