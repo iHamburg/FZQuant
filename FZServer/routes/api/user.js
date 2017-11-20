@@ -6,14 +6,10 @@
 
 var express = require('express');
 var router = express.Router();
-// var axios = require('axios');
 var utils = require('../../lib/utils');
-var networklib = require('../../lib/networklib')
+var model = require('../../models/user')
 
-const host_goods = networklib.host_goods;
-const host_cloud = networklib.host_cloud;
-
-var _ = require('underscore');
+// var _ = require('underscore');
 
 //设置请求头
 router.all('*', function (req, res, next) {
@@ -24,8 +20,18 @@ router.all('*', function (req, res, next) {
 });
 
 router.get('/login', function (req, res, next) {
-  return res.send('hello world');
-});
+  let username = req.query.username;
+  let password = req.query.password;
+
+  model.login(username, password).then(obj => {
+    return utils.send(res);
+    // return res.send('login successful');
+  }).catch(err => {
+    return utils.send(res, null, err);
+  })
+},
+utils.processAPIErrorMiddleware //处理
+);
 
 //
 // router.get('/', function (req, res, next) {

@@ -14,7 +14,7 @@ Vue.http.options.xhr = { withCredentials: true }
 Vue.http.options.emulateJSON = true
 
 // 如果是build就生产, dev是development, build是 production
-console.log('---------- NODE_ENV', process.env.NODE_ENV);
+// console.log('---------- NODE_ENV', process.env.NODE_ENV);
 
 let baseUrl = 'api'; // 发版后的host是相对路径
 
