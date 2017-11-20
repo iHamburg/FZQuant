@@ -68,10 +68,10 @@
             </div>
         </bl-comli>
         <!-- 单图上传 -->
-        <div>
-          <upload ref="uploadSingle" :maxpic='1' @confirm='onGetSingleImage' :ratio=1 :interfaceType="false">
-          </upload>
-        </div>
+        <!--<div>-->
+          <!--<upload ref="uploadSingle" :maxpic='1' @confirm='onGetSingleImage' :ratio=1 :interfaceType="false">-->
+          <!--</upload>-->
+        <!--</div>-->
         <!-- <picture-cutting ref="PictureCut" :PictureData="getData" :PictureRatio=1></picture-cutting> -->
         <div class="divstyle">商户基础信息</div>
         <bl-comli class="moreli">
@@ -234,7 +234,7 @@
   import uiMixin from 'src/mixins/uiMixin';
   import Qrcode from 'v-qrcode';
   import BlCustPicker from 'components/cloud-merchant/merchant-modal';
-  import upload from 'components/bl-cloudstore-merchant/bl-cloudStore-image-uploader';
+//  import upload from 'components/bl-cloudstore-merchant/bl-cloudStore-image-uploader';
   export default {
     name: 'keepmerchantSet',
 
@@ -243,7 +243,7 @@
     components: {
       Qrcode,
       BlCustPicker,
-      upload,
+//      upload,
     },
 
     activated () {

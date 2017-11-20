@@ -4,13 +4,10 @@
  */
 console.log('======= Bootstrap初始化 ==========');
 
-import accesslib from './accesslib'
+// import accesslib from './accesslib'
 import jsbridgelib from './jsbridgelib'
 import imagelib from './imagelib'
 import utillib from './utillib'
-
-// 初始化时拉去权限表
-accesslib.updateAccessList()
 
 /**
  启动添加处理
@@ -18,9 +15,6 @@ accesslib.updateAccessList()
 window.addEventListener("AppBecomeActiveEvent", function(e) {
   console.log('=== main AppBecomeActiveEvent', e);
   //更新用户权限表
-  accesslib.updateAccessList((err, obj) => {
-    console.log('main.js active 后 更新权限表 callback', err, obj);
-  });
 }, false);
 
 // 初始化jsbridgelib

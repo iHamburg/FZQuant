@@ -47,10 +47,10 @@
           </span>
         </div>
         <!-- 单图上传 -->
-        <div >
-          <upload ref="uploadSingle" :maxpic='1' @confirm='onGetSingleImage' :ratio=1 :interfaceType="false">
-          </upload>
-        </div>
+        <!--<div >-->
+          <!--<upload ref="uploadSingle" :maxpic='1' @confirm='onGetSingleImage' :ratio=1 :interfaceType="false">-->
+          <!--</upload>-->
+        <!--</div>-->
 
         <!-- 隐藏-->
         <!--<mt-popup v-model="loginVisible" position="bottom" style="width: 100%;">-->
@@ -74,19 +74,16 @@
   import counter from 'components/choose-coupons/counter'
   import BLCloudStoreGrid from 'components/bl-cloudstore-merchant/bl-cloudstore-grid'
   import uiMixin from 'src/mixins/uiMixin';
-  import BLMultiInput from 'components/cloud-merchant/multi-input'
   import { Popup } from 'mint-ui';
-  import Qrcode from 'v-qrcode';
-  import upload from 'components/bl-cloudstore-merchant/bl-cloudStore-image-uploader';
+
+//  import upload from 'components/bl-cloudstore-merchant/bl-cloudStore-image-uploader';
 
   export default {
     name: 'keepCloudStoreIndex',
     components: {
       counter,
       BLCloudStoreGrid,
-      BLMultiInput,
-      Qrcode,
-      upload
+//      upload
     },
     data () {
       return {
@@ -158,11 +155,6 @@
       }
     },
     mixins: [uiMixin],
-    /*beforeCreate() {
-      console.log('首页 beforeCreate')
-      // 首页更新权限表
-      this.$accesslib.updateAccessList();
-    },*/
     created() {
       console.log('app开始进入首页');
       var self = this;
