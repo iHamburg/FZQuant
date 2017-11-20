@@ -1,7 +1,7 @@
 export const prdRouter = [
   {
     path: '/',
-    redirect: '/cloudStoreIndex'
+    redirect: '/index'
   },
   { path: '/home',
     component: resolve => require(['../views/merchant/2_home'], resolve),

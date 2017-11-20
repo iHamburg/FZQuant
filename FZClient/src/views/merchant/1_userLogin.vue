@@ -2,9 +2,7 @@
   <template>
       <div class="user-content write">
         <bl-bar barStyle="bar-dark-write">
-            <!-- <div class="button" slot="left-button" @click="$router.go(-1)">
-              <div class="iconfont close"></div>
-            </div> -->
+
             <div slot="right-button" class="hrad-right" @click="onRegister">快速注册</div>
         </bl-bar>
 
@@ -201,66 +199,54 @@ export default {
       }
       this.loading = true
       // this.startLoading()
-      this.getDeviceId((err, obj) => {
+
+      let password = this.password
+
+      this.$merchantlib.login(this.mobile, password, '', (err, obj) => {
+        this.loading = false;
         if (err) {
-
+          return this.$toast(err)
         }
-
-        if (obj) {
-          this.deviceId = obj
-//          console.log('设备号：', this.deviceId)
-          let mobile = this.loginName;
-          let password = md5(this.pwd); // md5加密
-          let deviceNumber = this.deviceId;
-
-          // 帐号密码登陆
-          this.$merchantlib.login(mobile, password, deviceNumber, (err, obj) => {
-            this.loading = false;
-            if (err) {
-              return this.$toast(err)
-            }
-            // 记住帐号 2017/6/30
-            this.$utillib.storageSet('loginName', this.loginName)
-            /**
-             * 校验权限
-             * 0：待审核 ，1审核通过，2审核不通过，-1未填信息
-             */
-            let auditingFlag = obj.auditingFlag;
-            if (auditingFlag == 0 || auditingFlag == 2) {
-              console.log('去审核结果页')
-              return this.$router.push(
-                { name: '1.2.2',
-                  query: {
-                    avatar: obj.avatar,
-                    memberId: obj.memberId,
-                    roleName: obj.roleName,
-                    auditingFlag: obj.auditingFlag,
-                    denyReason: obj.denyReason
-                  }
-                }
-              );
-            } else if (auditingFlag == -1) {
-              console.log('to 完善注册信息')
-              return this.$router.push({name: '1.2.1', params: {memberId: obj.memberId}});
-            }
-
-            //登录 IM
-            this.$jsbridgelib.bridgeIMLogin((err) => {
-              if (err) {
-                return console.log('登录 IM 失败', err);
+        // 记住帐号 2017/6/30
+        this.$utillib.storageSet('loginName', this.loginName)
+        /**
+         * 校验权限
+         * 0：待审核 ，1审核通过，2审核不通过，-1未填信息
+         */
+        let auditingFlag = obj.auditingFlag;
+        if (auditingFlag == 0 || auditingFlag == 2) {
+          console.log('去审核结果页')
+          return this.$router.push(
+            { name: '1.2.2',
+              query: {
+                avatar: obj.avatar,
+                memberId: obj.memberId,
+                roleName: obj.roleName,
+                auditingFlag: obj.auditingFlag,
+                denyReason: obj.denyReason
               }
-              window.dispatchEvent(new Event("IMLoginFinish"));
-            });
-
-            // 登陆成功 跳转到首页 查询权限表
-            this.$accesslib.updateAccessList((err, obj) => {
-              if (err) { console.log('失败的回调', err) }
-              if (obj) { console.log('成功的回调', obj) }
-              this.$router.push({name: '2'});
-            });
-          });
+            }
+          );
+        } else if (auditingFlag == -1) {
+          console.log('to 完善注册信息')
+          return this.$router.push({name: '1.2.1', params: {memberId: obj.memberId}});
         }
-      })
+
+        //登录 IM
+        this.$jsbridgelib.bridgeIMLogin((err) => {
+          if (err) {
+            return console.log('登录 IM 失败', err);
+          }
+          window.dispatchEvent(new Event("IMLoginFinish"));
+        });
+
+        // 登陆成功 跳转到首页 查询权限表
+        this.$accesslib.updateAccessList((err, obj) => {
+          if (err) { console.log('失败的回调', err) }
+          if (obj) { console.log('成功的回调', obj) }
+          this.$router.push({name: '2'});
+        });
+      });
     },
 
     // 获取设备号
@@ -300,16 +286,6 @@ export default {
       return this.loginName == null || this.loginName < 0 || this.pwd.length < 8;
     },
 
-    mobileClearFlag() {
-      if (this.loginName > 0) {
-        return true
-      }
-      return false
-    },
-
-    passwordClearFlag() {
-      return this.pwd.length > 0;
-    },
   },
 }
 </script>
