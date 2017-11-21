@@ -7,8 +7,8 @@ git commit -a -m "update client"
 
 
 cd FZQuantClient
-#npm install
-#npm run build
+npm install
+npm run build
 
 cp -r dist/* ../FZServer/public
 

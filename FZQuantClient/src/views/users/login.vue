@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <h2>用户登录</h2>
     <b-form @submit="onSubmit">
       <b-form-group id="exampleInputGroup1"
                     label="用户名:" label-for="exampleInput1"
