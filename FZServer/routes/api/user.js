@@ -24,8 +24,8 @@ router.get('/login', function (req, res, next) {
   let password = req.query.password;
 
   model.login(username, password).then(obj => {
-    return utils.send(res);
-    // return res.send('login successful');
+
+    return utils.send(res, obj);
   }).catch(err => {
     return utils.send(res, null, err);
   })

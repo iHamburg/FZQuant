@@ -6,10 +6,10 @@
 // MySQL数据库联接配置
 module.exports = {
   mysql: {
-    host: '115.29.148.47',
-    username: 'Forest',
-    password: 'Forest',
-    database: 'fzquant', // 前面建的user表位于这个数据库中
+    host: '121.42.26.144', //不能用localhost
+    username: 'root',
+    password: 'root',
+    database: 'fzquant',
         // port: 3306
   }
 };

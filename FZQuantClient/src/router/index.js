@@ -3,19 +3,21 @@
  */
 import Vue from 'vue'
 import Router from 'vue-router'
+import userlib from '../libs/userlib'
 
 Vue.use(Router)
 
 let routes = [
   {
     path: '/',
-    redirect: '/admin/products'
+    redirect: '/index'
   },
   /* 商品上线index */
   {
     path: '/index',
     meta: {
-      title: '商品上线index',
+      title: '首页',
+      requiresAuth: true
     },
     component: r => require.ensure([], () => r(require('../views/index')), 'index')
   },
@@ -28,84 +30,32 @@ let routes = [
     component: r => require.ensure([], () => r(require('../views/users/1_1.vue')), '1')
   },
   {
-    path: '/admin/users/:id',
+    path: '/login',
     meta: {
-      title: '编辑用户',
+      title: '用户登录',
     },
-    name: '1.2',
-    component: r => require.ensure([], () => r(require('../views/users/1_2.vue')), '1')
-  },
-  {
-    path: '/admin/products',
-    meta: {
-      title: '商品列表',
-    },
-    name: '2.1',
-    component: r => require.ensure([], () => r(require('../views/products/2_1.vue')), '2')
-  },
-  {
-    path: '/admin/products/:id',
-    meta: {
-      title: '商品详情',
-    },
-    name: '2.2',
-    component: r => require.ensure([], () => r(require('../views/products/2_2.vue')), '2')
-  },
-  {
-    path: '/admin/productgroups',
-    meta: {
-      title: '商品组列表',
-    },
-    name: '3.1',
-    component: r => require.ensure([], () => r(require('../views/productgroups/3_1.vue')), '3')
-  },
-  {
-    path: '/admin/productgroups/create',
-    meta: {
-      title: '新建商品组',
-    },
-    name: '3.2',
-    component: r => require.ensure([], () => r(require('../views/productgroups/3_2.vue')), '3')
-  },
-  {
-    path: '/admin/productgroups/:id',
-    meta: {
-      title: '商品组详情',
-    },
-    name: '3.3',
-    component: r => require.ensure([], () => r(require('../views/productgroups/3_2.vue')), '3')
-  },
-  {
-    path: '/admin/orders',
-    meta: {
-      title: '订单列表',
-    },
-    name: '4.1',
-    component: r => require.ensure([], () => r(require('../views/orders/4_1.vue')), '4.1')
-  },
-  {
-    path: '/admin/orders/:id',
-    meta: {
-      title: '订单',
-    },
-    name: '4.2',
-    component: r => require.ensure([], () => r(require('../views/orders/4_2.vue')), '4.2')
+    name: '用户登录',
+    component: r => require.ensure([], () => r(require('../views/users/login.vue')), '1')
   },
 
 ];
 
-
-// let router = new Router({
-//   // mode: 'history',
-//   routes,
-// })
-//
-// export default {
-//   router
-// }
-
-
-export default new Router({
+let router = new Router({
   // mode: 'history',
   routes,
 })
+
+router.beforeEach((to, from, next) => {
+  // console.log('router.before each IN Router.index', to.name, from);
+
+  document.title = to.meta.title
+
+  // 页面权限判断
+  if (to.meta.requiresAuth && !userlib.isLogin()) {
+    next({path: '/login'})
+  } else {
+    next()
+  }
+})
+
+export default router

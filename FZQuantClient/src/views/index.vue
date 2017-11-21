@@ -1,6 +1,6 @@
 <template>
-  <div id="index">
-  	<h2>商品上线vue 页面索引</h2>
+  <div class="container">
+  	<h2>首页</h2>
 
 
   </div>
@@ -19,8 +19,6 @@ export default {
     };
   },
   mounted:function(){
-    console.log('index2.mounted');
-
 
   },
 };

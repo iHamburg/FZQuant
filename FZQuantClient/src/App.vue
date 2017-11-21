@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <adminnav></adminnav>
-
     <keep-alive :include="/keep/">
       <router-view></router-view>
     </keep-alive>

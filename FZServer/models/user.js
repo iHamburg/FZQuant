@@ -87,6 +87,9 @@ Model.login = (username, password) => {
     where: {
       username: username,
       password: password,
+    },
+    attributes: {
+      exclude: ['password','updatedAt','createdAt','deletedAt']
     }
   };
 
