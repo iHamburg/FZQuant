@@ -1,6 +1,7 @@
 
 const localStorage = window.localStorage;
 
+
 export default {
   /**
    * 根据name取出LocalStorage里的value

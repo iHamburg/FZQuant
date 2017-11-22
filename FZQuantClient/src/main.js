@@ -32,6 +32,9 @@ Vue.use(BootstrapVue);
 // import productlib from './libs/productlib'
 // Vue.$productlib = Vue.prototype.$productlib = productlib
 
+import utillib from './libs/utillib'
+Vue.$utillib = Vue.prototype.$utillib = utillib
+
 import userlib from './libs/userlib'
 Vue.$userlib = Vue.prototype.$userlib = userlib
 
