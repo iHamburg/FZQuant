@@ -11,6 +11,9 @@ Vue.config.errorHandler = function (err, vm) {
   console.log(vm.title, 'Global error Handler', err, vm);
 }
 
+import VueSocketio from 'vue-socket.io';
+Vue.use(VueSocketio, 'http://localhost:3020');
+
 /**
  * FastClick 调用
  */

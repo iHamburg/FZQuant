@@ -30,7 +30,7 @@
 
 <script>
 
-
+//  import pinyin from 'pinyin'
 
   export default {
     name: 'productgroups',
@@ -54,7 +54,7 @@
     },
 
     created(){
-
+//      console.log(pinyin('中华人民共和国'));
     },
     methods: {
       onSubmit() {

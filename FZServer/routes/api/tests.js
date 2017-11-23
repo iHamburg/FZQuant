@@ -104,7 +104,7 @@ router.post('/fenxiu', function (req, res, next) {
   var response = {
     resCode: '00100000',
     obj: {abc: 'def'},
-  };≤
+  };
 
   return res.send(response);
 });

@@ -26,6 +26,7 @@
     "mysql2": "^1.5.1",
     "sequelize": "^4.22.8",
     "serve-favicon": "~2.3.2",
+    "socket.io": "^1.7.4",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
