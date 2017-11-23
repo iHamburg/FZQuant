@@ -4,24 +4,23 @@
  * /lib/logger.js
  */
 
-
 var log4js = require('log4js');
 
 var appenders = {
-  type:'console'
+  type: 'console'
 }
 
 // 如果是sit，pre或prd环境，部署在linux上，log file
 if (process.env.NODE_ENV) {
-  appenders =  { type: 'file', filename: '/opt/logs/node/out.log' }
+  appenders = { type: 'file', filename: '/opt/logs/node/out.log' }
 }
 
 log4js.configure({
-    appenders: [
+  appenders: [
         { type: 'console' },
         // { type: 'file', filename: 'out.log' },
-     appenders,
-    ]
+    appenders,
+  ]
 });
 
 var logger = log4js.getLogger('CM');

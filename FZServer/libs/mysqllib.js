@@ -3,7 +3,7 @@
  */
 
 var mysql = require('mysql');
-var config = require('../config/db').mysql;
+var config = require('../config/mysql')
 
 module.exports = {
 

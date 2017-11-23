@@ -1,7 +1,7 @@
 
 const localStorage = window.localStorage;
 
-
+console.log('======== utillib', process.env.NODE_ENV);
 export default {
   /**
    * 根据name取出LocalStorage里的value

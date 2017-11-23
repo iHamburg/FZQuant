@@ -6,7 +6,7 @@
  */
 
 var axios = require('axios');
-var utils = require('../lib/utils');
+var utils = require('.//utils');
 
 if (utils.isSIT()) {
   var networkConfig = require('../config/network_sit');

@@ -7,10 +7,10 @@
 var express = require('express');
 var router = express.Router();
 var axios = require('axios');
-var utils = require('../../lib/utils');
-var networklib = require('../../lib/networklib')
+var utils = require('../../libs/utils');
+var networklib = require('../../libs/networklib')
 var _ = require('underscore');
-var logger = require('../../lib/logger')
+var logger = require('../../libs/logger')
 
 var share_url = networklib.share_url; // 云店中台
 

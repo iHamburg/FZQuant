@@ -15,7 +15,6 @@ var http = require('http');
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-
 /**
  * Create HTTP server.
  */
@@ -41,7 +40,6 @@ function normalizePort(val) {
     // named pipe
     return val;
   }
-
   if (port >= 0) {
     // port number
     return port;
@@ -89,3 +87,19 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+/**
+ * ========== Socket.IO
+ * */
+
+var socketServer = require('http').createServer(app);
+var io = require('socket.io')(socketServer);
+var socketiolib = require('../libs/socketiolib')
+
+io.on('connection', socketiolib.onConnection)
+
+socketServer.listen(3020);
+
+/**
+ * ========== END OF Socket.IO
+ * */

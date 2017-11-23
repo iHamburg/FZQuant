@@ -7,9 +7,9 @@
 var express = require('express');
 var router = express.Router();
 var axios = require('axios');
-var utils = require('../../lib/utils');
+var utils = require('../../libs/utils');
 var _ = require('underscore');
-var networklib = require('../../lib/networklib')
+var networklib = require('../../libs/networklib')
 
 var orderHost = networklib.host_order; // 订单中台
 var merchantHost = networklib.host_merchant; // 商户中台

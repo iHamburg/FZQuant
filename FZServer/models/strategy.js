@@ -5,8 +5,8 @@
  */
 
 var Sequelize = require('sequelize');
-var sequelize = require('../lib/sequelizelib').create();
-var errorlib = require('../lib/errorlib')
+var sequelize = require('../libs/sequelizelib').create();
+var errorlib = require('../libs/errorlib')
 
 /**
  * 返回的是 new Model

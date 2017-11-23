@@ -4,8 +4,8 @@
  */
 
 var Sequelize = require('sequelize');
-var mysql = require('../config/db').mysql;
-
+// var mysql = require('../config/db').mysql;
+var mysql = require('../config/mysql');
 module.exports = {
 
   sequelize: new Sequelize(mysql.database, mysql.username, mysql.password, {

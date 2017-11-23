@@ -7,8 +7,8 @@
 var express = require('express');
 var router = express.Router();
 var axios = require('axios');
-var utils = require('../../lib/utils');
-var networklib = require('../../lib/networklib')
+var utils = require('../../libs/utils');
+var networklib = require('../../libs/networklib')
 
 const host_goods = networklib.host_goods;
 const host_cloud = networklib.host_cloud;

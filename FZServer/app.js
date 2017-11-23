@@ -7,34 +7,6 @@ var bodyParser = require('body-parser');
 
 var app = express();
 
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
-io.on('connection',function(client){
-  console.log('onConnect');
-  client.on('event', function(data){
-    console.log(' client get event' + data);
-    // client.emit('')
-  });
-  client.on('aaa', function (data, callback) {
-    console.log('client send aaa' + data);
-    client.emit('aaa_response','helloworld')
-    callback('callback from server :abcded')
-  });
-  client.on('bbb', function (data, callback) {
-    console.log('vue send bbb' + data);
-    client.emit('aaa_response', 'helloworld')
-  });
-  client.on('dataFromPython', function (data) {
-    console.log('get data from python ' + data);
-    // client.emit('dataFromPython', data)
-    client.emit('aaa_response', 'helloworld')
-  })
-  client.on('disconnect', function(){
-    console.log('client disconnet ' );
-  });
-});
-server.listen(3020);
-
 /**
  * Vue-Router History 模式
  */
@@ -91,9 +63,5 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-//
-//
-//
-// console.log('------------------ Node_env ', process.env.NODE_ENV);
 
 module.exports = app;

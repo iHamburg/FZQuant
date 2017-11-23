@@ -6,7 +6,7 @@
 
 var express = require('express');
 var router = express.Router();
-var utils = require('../../lib/utils');
+var utils = require('../../libs/utils');
 var model = require('../../models/user')
 
 // var _ = require('underscore');

@@ -4,7 +4,7 @@ from logbook import Logger, StreamHandler, FileHandler
 import sys
 # import os
 # StreamHandler(sys.stdout).push_application()
-FileHandler('./pyquant/logs/app.log').push_application()  # 会覆盖上一个Handler
+# FileHandler('./pyquant/logs/app.log').push_application()  # 会覆盖上一个Handler
 
 # logger = Logger('fzquant')
 # log.info('Hello, World!')
