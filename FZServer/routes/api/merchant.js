@@ -15,25 +15,20 @@ const host_cloud = networklib.host_cloud;
 
 var _ = require('underscore');
 
-
-
 //设置请求头
-router.all('*',function (req,res,next) {
+router.all('*', function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
   next();
 });
 
-router.get('/',function (req,res,next) {
-
+router.get('/', function (req, res, next) {
     // var id = req.params.id;
 
   console.log('request merchant');
-   return res.send('merchant');
-
+  return res.send('merchant');
 });
-
 
 /**
  * 1001-商品图片上传接口
@@ -41,20 +36,18 @@ router.get('/',function (req,res,next) {
  *
  *
  */
-router.post('/1001',function (req,res,next) {
-
+router.post('/1001', function (req, res, next) {
     // console.log('body',req.body);
-    var url=host_goods + '/goods/fileUpload/upload.htm';
-    var data=req.body;
+  var url = host_goods + '/goods/fileUpload/upload.htm';
+  var data = req.body;
     //进行透传
-    axios.post(url,data).then(function(response){
-        console.log('图片上传\n',response.data);
-        return res.type('json').send(response.data);
-    }).catch(function(error){
-        return utils.send(res,null,error);
-    })
+  axios.post(url, data).then(function(response) {
+    console.log('图片上传\n', response.data);
+    return res.type('json').send(response.data);
+  }).catch(function(error) {
+    return utils.send(res, null, error);
+  })
 });
-
 
 /**
  * 1022-修改商户设置
@@ -64,20 +57,17 @@ router.post('/1001',function (req,res,next) {
  * @param
  * @return
  */
-router.post('/1022',function (req,res,next) {
-
+router.post('/1022', function (req, res, next) {
     //TODO
-    var url=host_cloud + '/cloud/merchantInfoController/updateMerchantInfoBrand.htm';
-    var data=req.body;
+  var url = host_cloud + '/cloud/merchantInfoController/updateMerchantInfoBrand.htm';
+  var data = req.body;
     //进行透传
-    axios.post(url,data).then(function(response){
-
-        return res.type('json').send(response.data);
-    }).catch(function(error){
-        return utils.send(res,null,error);
-    })
+  axios.post(url, data).then(function(response) {
+    return res.type('json').send(response.data);
+  }).catch(function(error) {
+    return utils.send(res, null, error);
+  })
 });
-
 
 /**
  * 1023 查询商户设置
@@ -87,19 +77,19 @@ router.post('/1022',function (req,res,next) {
  * @param
  * @return
  */
-router.post('/1023',function (req,res,next) {
-    console.log('请求参数：',req.body)
+router.post('/1023', function (req, res, next) {
+  console.log('请求参数：', req.body)
 
     //TODO
-    var url=host_cloud + '/cloud/merchantInfoController/queryMerchantInfoSite.htm';
-    var data=req.body;
+  var url = host_cloud + '/cloud/merchantInfoController/queryMerchantInfoSite.htm';
+  var data = req.body;
     //进行透传
-    axios.post(url,data).then(function(response){
-        console.log('响应参数：',res.data)
-        return res.type('json').send(response.data);
-    }).catch(function(error){
-        return utils.send(res,null,error);
-    })
+  axios.post(url, data).then(function(response) {
+    console.log('响应参数：', res.data)
+    return res.type('json').send(response.data);
+  }).catch(function(error) {
+    return utils.send(res, null, error);
+  })
 });
 
 /**
@@ -109,16 +99,15 @@ router.post('/1023',function (req,res,next) {
  *
  *
  */
-router.post('/1024',function (req,res,next) {
-
-    var url = host_goods + '/goods/goodsBrand/selectBrand.htm';
-    var data=req.body;
+router.post('/1024', function (req, res, next) {
+  var url = host_goods + '/goods/goodsBrand/selectBrand.htm';
+  var data = req.body;
     //进行透传
-    axios.post(url,data).then(function(response){
-        return res.type('json').send(response.data);
-    }).catch(function(error){
-        return utils.send(res,null,error);
-    })
+  axios.post(url, data).then(function(response) {
+    return res.type('json').send(response.data);
+  }).catch(function(error) {
+    return utils.send(res, null, error);
+  })
 });
 
 /**
@@ -128,23 +117,22 @@ router.post('/1024',function (req,res,next) {
  * @郭秋思
  */
 router.post('/1021', function(req, res, next) {
-    console.log('body ',req.body);
-    var url = host_cloud + '/cloud/merchantInfoController/merchantLogin.htm';
-    var params=req.body;
-    console.log('登陆入参',params);
-    axios.post(url,params).then(function(response){
-        console.log('登陆返参',response.data)
-        if(response.data.resCode=="00100000"){
-            console.log(response.data);
-            return res.type('json').send(response.data);
-        }else{
-            console.log(response.data);
-            return res.type('json').send(response.data);
-
-        }
-    }).catch(function(error){
-        return utils.send(res,null,error);
-    });
+  console.log('body ', req.body);
+  var url = host_cloud + '/cloud/merchantInfoController/merchantLogin.htm';
+  var params = req.body;
+  console.log('登陆入参', params);
+  axios.post(url, params).then(function(response) {
+    console.log('登陆返参', response.data)
+    if (response.data.resCode == "00100000") {
+      console.log(response.data);
+      return res.type('json').send(response.data);
+    } else {
+      console.log(response.data);
+      return res.type('json').send(response.data);
+    }
+  }).catch(function(error) {
+    return utils.send(res, null, error);
+  });
 });
 
 /**
@@ -152,35 +140,30 @@ router.post('/1021', function(req, res, next) {
  *
  * @郭秋思
  */
-router.post('/1032',function (req,res,next) {
-
-    var url = host_cloud + '/cloud/merchantInfoController/updateMerchantInfoAvatar.htm';
-    var data=req.body;
+router.post('/1032', function (req, res, next) {
+  var url = host_cloud + '/cloud/merchantInfoController/updateMerchantInfoAvatar.htm';
+  var data = req.body;
     //进行透传
-    axios.post(url,data).then(function(response){
-        return res.type('json').send(response.data);
-    }).catch(function(error){
-        return utils.send(res,null,error);
-    })
+  axios.post(url, data).then(function(response) {
+    return res.type('json').send(response.data);
+  }).catch(function(error) {
+    return utils.send(res, null, error);
+  })
 });
-
-
 
 /**
  * 1034- 查询用户权限表
  *
  */
-router.post('/1034',function (req,res,next) {
-
+router.post('/1034', function (req, res, next) {
   var url = host_cloud + '/cloud/merchantInfoController/queryMercPermission.htm';
-  var data=req.body;
+  var data = req.body;
   //进行透传
-  axios.post(url,data).then(function(response){
+  axios.post(url, data).then(function(response) {
     return res.type('json').send(response.data);
-  }).catch(function(error){
-    return utils.send(res,null,error);
+  }).catch(function(error) {
+    return utils.send(res, null, error);
   })
 });
-
 
 module.exports = router;

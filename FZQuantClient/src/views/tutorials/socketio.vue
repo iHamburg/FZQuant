@@ -28,13 +28,8 @@
         console.log('listen aaa_rsponse', val);
         this.items.push(val)
       },
-//      dataFromPython: function (data) {
-//        console.log('on data from python', data);
-//
-//        this.items.push(data)
-//      },
       tickDataNotification: function(data) {
-        console.log('get tickDataNotification from server', data);
+        console.log('get 333 tickDataNotification from server', data);
 
         this.items.push(data)
       },
@@ -52,7 +47,7 @@
         ]
       };
     },
-    mounted:function(){
+    mounted: function(){
 
     },
   };

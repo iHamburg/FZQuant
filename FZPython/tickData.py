@@ -13,8 +13,8 @@ socketIO = SocketIO('localhost', 3020, LoggingNamespace)
 # TODO: 从哪里获得stockList？
 stockList = ['600196','601933','600703']
 
-def run(stockList):
-    df = ts.get_realtime_quotes(stockList)
+def run(stocklist):
+    df = ts.get_realtime_quotes(stocklist)
     data = df['time'][0] + '  ' + df['volume'][0]
     print(data)
     socketIO.emit('tickDataNotification', data)

@@ -36,6 +36,30 @@ router.post('/test', function (req, res, next) {
   });
 });
 
+
+router.post('/run', function (req, res, next) {
+  // var id = req.params.id;
+  console.log('=============begin post run');
+  // console.log(req.body);
+
+  var exec = require('child_process').exec;
+
+  //当前pwd ： FZServer
+  var cmdStr = 'scripts/webhook.sh'
+  // var cmdStr = 'ls';
+  exec(cmdStr, function(err, stdout, stderr) {
+    if (err) {
+      console.log(cmdStr + ' \n error:' + stderr);
+      return res.send('npm run forever error:' + stderr);
+    } else {
+      console.log(cmdStr + '\n  sssuccess ' + stdout + stderr);
+      return res.send(cmdStr + '\nsuccess ' + stdout + stderr);
+    }
+  });
+});
+
+
+
 router.get('/', function (req, res, next) {
     // var id = req.params.id;
 

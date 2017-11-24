@@ -35,12 +35,34 @@ export const routerConfig = [
   {
     path: '/socketio',
     meta: {
-      title: 'socketio',
+      title: 'socketio测试',
     },
     name: 'socketio',
-    component: r => require.ensure([], () => r(require('../views/socketio.vue')), '1')
+    component: r => require.ensure([], () => r(require('../views/tutorials/socketio.vue')), '1')
   },
-
+  {
+    path: '/tutorials/',
+    meta: {
+      title: 'tutorials',
+    },
+    name: 'tests',
+    component: r => require.ensure([], () => r(require('../views/tutorials/index.vue')), '1')
+  },
+  {
+    path: '/tutorials/socketio',
+    meta: {
+      title: 'tutorials',
+    },
+    name: 'tests',
+    component: r => require.ensure([], () => r(require('../views/tutorials/socketio.vue')), '1')
+  },
+  {
+    path: '/tutorials/tickdata',
+    meta: {
+      title: 'tutorials',
+    },
+    name: 'tests',
+    component: r => require.ensure([], () => r(require('../views/tutorials/tickdata.vue')), '1')
+  },
 ];
-
 
