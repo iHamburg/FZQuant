@@ -9,14 +9,14 @@ var axios = require('axios');
 var utils = require('.//utils');
 
 if (utils.isSIT()) {
-  var networkConfig = require('../config/network_sit');
+  var networkConfig = require('../configs/network_sit');
 } else if (utils.isPRE()) {
-  var networkConfig = require('../config/network_pre');
+  var networkConfig = require('../configs/network_pre');
 } else if (utils.isPRD()){
-  var networkConfig = require('../config/network_prd');
+  var networkConfig = require('../configs/network_prd');
 }
 else { // 默认是sit
-  var networkConfig = require('../config/network_sit');
+  var networkConfig = require('../configs/network_sit');
 }
 
 var networklib = {

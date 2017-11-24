@@ -10,5 +10,4 @@ module.exports = {
   password: 'root',
   database: 'fzquant',
         // port: 3306
-
 };

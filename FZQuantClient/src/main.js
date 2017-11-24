@@ -11,14 +11,17 @@ Vue.config.errorHandler = function (err, vm) {
   console.log(vm.title, 'Global error Handler', err, vm);
 }
 
+/**
+ * Socket.IO
+ */
 import VueSocketio from 'vue-socket.io';
-Vue.use(VueSocketio, 'http://localhost:3020');
+import socketConfig from './configs/socket'
+Vue.use(VueSocketio, socketConfig.host + ':' + socketConfig.port);
 
 /**
  * FastClick 调用
  */
 import FastClick from 'fastclick'
-
 FastClick.attach(document.body)
 
 /**
@@ -32,8 +35,6 @@ Vue.use(BootstrapVue);
 /**
  * librray
  */
-// import productlib from './libs/productlib'
-// Vue.$productlib = Vue.prototype.$productlib = productlib
 
 import utillib from './libs/utillib'
 Vue.$utillib = Vue.prototype.$utillib = utillib

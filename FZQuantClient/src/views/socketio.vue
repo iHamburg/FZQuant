@@ -10,14 +10,16 @@
 
 <script>
 
+//  import socketClient from '../libs/socketiolib'
+
   export default {
 
-    name: 'index',
+    name: 'socketiovue',
     sockets: {
       connect: function(){
         this.id = this.$socket.id,
         console.log('sockets connect');
-        this.$socket.emit('bbb', 'asss');
+//        this.$socket.emit('bbb', 'asss');
       },
       aaa: function (val) {
         console.log('aaa', val)
@@ -26,10 +28,20 @@
         console.log('listen aaa_rsponse', val);
         this.items.push(val)
       },
-      dataFromPython: function (data) {
-        console.log('on data from python', data);
+//      dataFromPython: function (data) {
+//        console.log('on data from python', data);
+//
+//        this.items.push(data)
+//      },
+      tickDataNotification: function(data) {
+        console.log('get tickDataNotification from server', data);
+
         this.items.push(data)
-      }
+      },
+//      disconnect: () => {
+//        console.log('sockets disconnect');
+//      }
+
     },
     data () {
       return {

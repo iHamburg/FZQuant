@@ -31,11 +31,8 @@ socketIO.emit('dataFromPython', 'abc')
 # socketIO.wait_for_callbacks(seconds=5)
 
 
-
 socketIO.wait(seconds=1)
 
-class SocketClientLib(object):
-    def __init__(self):
 
 
 if __name__ == '__main__':
