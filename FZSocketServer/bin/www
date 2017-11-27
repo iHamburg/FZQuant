@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+
+/**
+ * Module dependencies.
+ */
+
+var app = require('../app');
+var http = require('http');
+
+var socketServer = http.createServer(app);
+var io = require('socket.io')(socketServer);
+
+require('../libs/socketiolib').init(io);
+
+socketServer.listen(3020);

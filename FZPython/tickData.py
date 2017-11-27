@@ -15,6 +15,8 @@ stockList = ['600196','601933','600703']
 
 def run(stocklist):
     df = ts.get_realtime_quotes(stocklist)
+
+    # TOOD: 可以先缓存到本地文件。定时一起处理存到mongodb里
     data = df['time'][0] + '  ' + df['volume'][0]
     print(data)
     socketIO.emit('tickDataNotification', data)
