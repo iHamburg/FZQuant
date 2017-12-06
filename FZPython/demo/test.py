@@ -1,8 +1,4 @@
 # -*- coding: utf-8 -*-
 
-from pyquant import *
+import backtrader as bt
 
-print(int2time(21223223))
-
-print(project_dir)
-print(source_dir)
