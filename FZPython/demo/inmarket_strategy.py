@@ -13,6 +13,9 @@ df = pd.read_csv(datapath, parse_dates=True,index_col=0)
 data = bt.feeds.PandasData(dataname=df,
                             fromdate=datetime.datetime(2017,1,1),
                             nocase=True,)
+
+#测试
+
 cerebro = bt.Cerebro()
 cerebro.adddata(data)
 cerebro.addstrategy(mystrategy.TestStrategy)
