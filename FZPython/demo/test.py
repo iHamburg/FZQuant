@@ -6,7 +6,7 @@ import pandas as pd
 import pyquant.strategies.mystrategy as mystrategy
 import datetime
 
-datapath = '../datas/000001-1997-2017.csv'
+datapath = '../datas/000001.csv'
 
 df = pd.read_csv(datapath, parse_dates=True,index_col=0)
 
