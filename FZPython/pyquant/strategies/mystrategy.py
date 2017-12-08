@@ -35,7 +35,7 @@ class TestStrategy(bt.Strategy):
 
     def next(self):
 
-        # self.log('Close, %.2f' % self.dataclose[0])
+        self.log('Close, %.2f' % (self.dataclose[0]))
 
 
         # Check if an order is pending ... if yes, we cannot send a 2nd one

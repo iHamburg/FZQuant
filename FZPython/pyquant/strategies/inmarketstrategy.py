@@ -1,4 +1,5 @@
-# coding: utf8
+#!/usr/bin/env python
+
 import backtrader as bt
 import os.path  # To manage paths
 import sys  # To find out the script name (in argv[0])
