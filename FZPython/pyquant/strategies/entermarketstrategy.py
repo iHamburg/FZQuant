@@ -4,6 +4,7 @@ import backtrader as bt
 import os.path  # To manage paths
 import sys  # To find out the script name (in argv[0])
 import datetime
+from backtrader.indicators import MovingAverageSimple
 import backtrader.indicators as btind
 import backtrader.feeds as btfeeds
 import math
@@ -24,11 +25,8 @@ class TestStrategy(bt.Strategy):
         self.buyprice = None
         self.buycomm = None
 
-        # self.sma = bt.indicators.MovingAverageSimple(period = self.p.maperiod)
+        self.sma = btind.SMA(period = self.p.maperiod)
 
-        # self.movav = btind.MovingAverageSimple(self.data, period=self.p.maperiod)
-
-        self.sma = bt.talib.SMA(self.data, timeperiod=self.p.maperiod)
 
     def start(self):
         # print('==Strategy start')
@@ -47,18 +45,19 @@ class TestStrategy(bt.Strategy):
         if not self.position:
 
             # Not yet ... we Might buy if ...
-            if self.dataclose[0] > self.sma[0]:
-                self.log('BUY CREATE, %.2f' % self.dataclose[0])
+            if self.dataclose > self.sma:
+                # self.log('BUY CREATE, %.2f' % self.dataclose[0])
                 self.order = self.buy()
 
         else:
             # Already in the market ... we might sell
-            if self.dataclose[0] < self.sma[0]:
+            if self.dataclose < self.sma:
                 # SELL, SELL, SELL!!! (with all possible default parameters)
-                self.log('SELL CREATE, %.2f' % self.dataclose[0])
+                # self.log('SELL CREATE, %.2f' % self.dataclose[0])
 
                 # Keep track of the created order to avoid a 2nd order
-                self.order = self.sell()
+                self.order = self.close()
+
 
 
     def notify_order(self,order):
@@ -68,18 +67,18 @@ class TestStrategy(bt.Strategy):
 
         if order.status in [order.Completed]:
             if order.isbuy():
-                self.log(
-                    'BUY EXECUTED, Price: %.2f, Cost: %.2f, Comm %.2f' %
-                    (order.executed.price,
-                     order.executed.value,
-                     order.executed.comm))
+                # self.log(
+                #     'BUY EXECUTED, Price: %.2f, Cost: %.2f, Comm %.2f' %
+                #     (order.executed.price,
+                #      order.executed.value,
+                #      order.executed.comm))
                 self.buyprice = order.executed.price
                 self.buycomm = order.executed.comm
-            elif order.issell():
-                self.log('SELL EXECUTED, Price: %.2f, Cost: %.2f, Comm %.2f' %
-                         (order.executed.price,
-                          order.executed.value,
-                          order.executed.comm))
+            elif order.issell():pass
+                # self.log('SELL EXECUTED, Price: %.2f, Cost: %.2f, Comm %.2f' %
+                #          (order.executed.price,
+                #           order.executed.value,
+                #           order.executed.comm))
 
             # self.bar_executed = len(self)
         elif order.status in [order.Canceled, order.Margin, order.Rejected]:
@@ -92,8 +91,8 @@ class TestStrategy(bt.Strategy):
         if not trade.isclosed:
             return
 
-        self.log('OPERATION PROFIT, GROSS %.2f, NET %.2f' %
-                 (trade.pnl, trade.pnlcomm))
+        # self.log('OPERATION PROFIT, GROSS %.2f, NET %.2f' %
+        #          (trade.pnl, trade.pnlcomm))
 
     def stop(self):
         self.log('(MA Period %2d) Ending Value %.2f' %
@@ -132,5 +131,5 @@ if __name__ == '__main__':
     print('Final Portfolio Value: %.2f' % cerebro.broker.getvalue())
 
 
-    # cerebro.plot()
+    cerebro.plot()
 
