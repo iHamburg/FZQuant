@@ -3,7 +3,7 @@
 
 import backtrader as bt
 import pandas as pd
-import pyquant.strategies.mystrategy as mystrategy
+import pyquant.strategies.fzstrategy as mystrategy
 import datetime
 
 datapath = '../datas/000001.csv'

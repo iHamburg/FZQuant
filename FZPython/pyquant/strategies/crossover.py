@@ -36,10 +36,9 @@ class CrossOver(bt.Strategy):
         ('_movav', btind.MovAv.SMA)
     )
 
-    def log(self, txt, dt=None, printout=True):
-        if printout:
-            dt = dt or self.data.datetime[0]
-            dt = bt.num2date(dt)
+    def log(self, txt, dt=None, isprint=False):
+        if isprint:
+            dt = dt or  self.data.datetime.date(0)
             print('%s, %s' % (dt.isoformat(), txt))
 
     def __init__(self):
@@ -50,6 +49,10 @@ class CrossOver(bt.Strategy):
         self.buysig = btind.CrossOver(sma_fast, sma_slow)
         # btind.AverageDirectionalMovementIndex()
 
+    def start(self):
+        # print('==Strategy start')
+        self.log('=====Strategy start', isprint=True)
+
     def next(self):
         if self.position.size:
             if self.buysig < 0:
@@ -59,3 +62,46 @@ class CrossOver(bt.Strategy):
             self.log('adx[0]: %.2f ,adx[-1]: %.2f' %(self.adx.adx[0],self.adx.adx[-1]))
             if self.adx.adx[0] > self.adx.adx[-1] :
                 self.buy()
+
+    def notify_order(self, order):
+        if order.status in [order.Submitted, order.Accepted]:
+            # Buy/Sell order submitted/accepted to/by broker - Nothing to do
+            return
+
+        if order.status in [order.Completed]:
+            if order.isbuy():
+                self.log(
+                    'BUY EXECUTED, Price: %.2f, Cost: %.2f, Comm %.2f' %
+                    (order.executed.price,
+                     order.executed.value,
+                     order.executed.comm), isprint=True)
+                self.buyprice = order.executed.price
+                self.buycomm = order.executed.comm
+            elif order.issell():
+                self.log('SELL EXECUTED, Price: %.2f, Cost: %.2f, Comm %.2f' %
+                         (order.executed.price,
+                          order.executed.value,
+                          order.executed.comm), isprint=True)
+
+                # self.bar_executed = len(self)
+        elif order.status in [order.Canceled, order.Margin, order.Rejected]:
+            self.log('Order Canceled/Margin/Rejected')
+
+            # Write down: no pending order
+        self.order = None
+
+    def notify_trade(self, trade):
+        if not trade.isclosed:
+            return
+
+        self.log('OPERATION PROFIT, GROSS %.2f, NET %.2f' %
+                 (trade.pnl, trade.pnlcomm), isprint=True)
+
+    def stop(self):
+        self.log(' Ending Value %.2f' %
+                 (self.broker.getvalue()), isprint=True)
+
+
+class CrossOver2(CrossOver):
+    def stop(self):
+        super(CrossOver2,self).stop()
