@@ -44,14 +44,14 @@ class FZStrategy(bt.Strategy):
                     'BUY EXECUTED, Price: %.2f, Cost: %.2f, Comm %.2f' %
                     (order.executed.price,
                      order.executed.value,
-                     order.executed.comm), isprint=False)
+                     order.executed.comm), isprint=True)
                 self.buyprice = order.executed.price
                 self.buycomm = order.executed.comm
             elif order.issell():
                 self.log('SELL EXECUTED, Price: %.2f, Cost: %.2f, Comm %.2f' %
                          (order.executed.price,
                           order.executed.value,
-                          order.executed.comm), isprint=False)
+                          order.executed.comm), isprint=True)
 
             # self.bar_executed = len(self)
         elif order.status in [order.Canceled, order.Margin, order.Rejected]:
@@ -65,7 +65,7 @@ class FZStrategy(bt.Strategy):
             return
 
         self.log('OPERATION PROFIT, GROSS %.2f, NET %.2f' %
-                 (trade.pnl, trade.pnlcomm), isprint=False)
+                 (trade.pnl, trade.pnlcomm), isprint=True)
 
     def stop(self):
         self.log('======Ending Value %.2f' %

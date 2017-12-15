@@ -1,14 +1,8 @@
-# -*- coding: utf-8 -*-
-
-
-from  pyquant.strategies.crossover import (CrossOver, CrossOver2)
-from pyquant.strategies.fzstrategy import (CrossOver3)
-
-
-# 可以读取tushare的pandas的数据
+#!/usr/bin/env python
+# coding: utf8
 
 import backtrader as bt
-import datetime
+
 import argparse
 from backtrader.analyzers import (SQN, AnnualReturn, TimeReturn, SharpeRatio,
                                   TradeAnalyzer)
@@ -26,14 +20,11 @@ def runstrat():
 
     data = utils.getdata(args)
     cerebro.adddata(data)
-    cerebro.optstrategy(CrossOver3,
-                        fast=range(5,10),
-                        # slow=range(10,12)
+
+    cerebro.addstrategy(bt.strategies.MA_CrossOver,
+
                         )
 
-
-    if args.printWriter:
-        cerebro.addwriter(bt.WriterFile)
 
     # stratruns =cerebro.run()
     cerebro.addanalyzer(bt.analyzers.SharpeRatio, _name='sharpratio')
@@ -47,16 +38,10 @@ def runstrat():
     if args.printAnalysers:
         utils.printAnalysers(thestrats)
 
+    # -p=style='bar'
+
     if args.plot:
-        #plot 参数
-        plotargs = dict()
-        if args.numfigs:
-            plotargs['numfigs'] = args.numfigs
-
-        if args.plotstyle:
-            plotargs['style'] = args.plotstyle
-
-        cerebro.plot(**plotargs)
+        cerebro.plot(**(eval('dict(' + args.plot + ')')))
 
 
 
@@ -75,9 +60,6 @@ def parse_args():
     parser.add_argument('--todate', '-t', required=False, default=None,
                         help='Ending date in YYYY-MM-DD format')
 
-    parser.add_argument('--plot', '-p', action='store_true', required=False,
-                        help='Plot the read data')
-
     parser.add_argument('--plotstyle', '-ps', required=False, default='bar',
                         choices=['bar', 'line', 'candle'],
                         help='Plot the read data')
@@ -94,9 +76,14 @@ def parse_args():
     parser.add_argument('--printAnalysers', '-pa',action='store_true', required=False, default=True,
                         help='print analysers')
 
+    parser.add_argument('--plot', '-p', nargs='?', required=False,
+                        metavar='kwargs', const='{}',
+                        help='Plot (with additional args if passed')
+
 
     return parser.parse_args()
 
 
 if __name__ == '__main__':
     runstrat()
+
