@@ -7,9 +7,10 @@ import datetime
 from backtrader.indicators import MovingAverageSimple
 import backtrader.indicators as btind
 import backtrader.feeds as btfeeds
-import math
+from pyquant.strategies.fzstrategy import FZStrategy
 
-class TestStrategy(bt.Strategy):
+
+class TestStrategy(FZStrategy):
 
 
     params = dict(maperiod=20)

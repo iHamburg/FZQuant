@@ -14,25 +14,7 @@ import argparse
 import pandas as pd
 from backtrader.analyzers import (SQN, AnnualReturn, TimeReturn, SharpeRatio,
                                   TradeAnalyzer)
-
-
-
-def getdata(args):
-
-    dfkwargs = dict()
-
-    if args.fromdate:
-        fromdate = datetime.datetime.strptime(args.fromdate, '%Y-%m-%d')
-        dfkwargs['fromdate'] = fromdate
-
-    if args.todate:
-        todate = datetime.datetime.strptime(args.todate, '%Y-%m-%d')
-        dfkwargs['todate'] = todate
-
-
-    df = pd.read_csv(args.data, parse_dates=True, index_col=0)
-
-    return bt.feeds.PandasData(dataname=df, **dfkwargs )
+import pyquant.utils.utils as utils
 
 
 def runstrat():
@@ -44,7 +26,7 @@ def runstrat():
     cerebro.broker.setcommission(commission=0.0015) # 真实佣金： 0.15%
     cerebro.addsizer(bt.sizers.PercentSizer, percents=10)  #每次投入10%资金
 
-    data = getdata(args)
+    data = utils.getdata(args)
     cerebro.adddata(data)
 
     cerebro.addstrategy(
@@ -63,12 +45,8 @@ def runstrat():
 
     # cerebro.run()
     thestrats = cerebro.run()
-    for strat in thestrats:
-        print('--------------------------------------------------')
-        print(strat.p._getkwargs())
-        for item in strat.analyzers:
-            print(item.get_analysis())
-        print('==================================================')
+    utils.printAnalysers(thestrats)
+
 
 
 

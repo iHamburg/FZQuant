@@ -7,6 +7,11 @@ import pandas as pd
 from backtrader.analyzers import (SQN, AnnualReturn, TimeReturn, SharpeRatio,
                                   TradeAnalyzer)
 
+
+import pyquant.utils.utils as utils
+import backtrader.analyzers as btanal
+
+
 class FZStrategy(bt.Strategy):
 
     def log(self, txt, dt=None, isprint=False):
@@ -105,29 +110,7 @@ class CrossOver3(FZStrategy):
 
 # =========== 处理运行 ==============
 
-def getdata(args):
-
-    dfkwargs = dict()
-
-    if args.fromdate:
-        fromdate = datetime.datetime.strptime(args.fromdate, '%Y-%m-%d')
-        dfkwargs['fromdate'] = fromdate
-
-    if args.todate:
-        todate = datetime.datetime.strptime(args.todate, '%Y-%m-%d')
-        dfkwargs['todate'] = todate
-
-
-    df = pd.read_csv(args.data, parse_dates=True, index_col=0)
-
-    return bt.feeds.PandasData(dataname=df, **dfkwargs )
-
-
-
-
 def runstrat():
-
-
     args = parse_args()
 
     cerebro = bt.Cerebro()
@@ -136,22 +119,30 @@ def runstrat():
     cerebro.broker.setcommission(commission=0.0015) # 真实佣金： 0.15%
     cerebro.addsizer(bt.sizers.PercentSizer, percents=10)  #每次投入10%资金
 
-    data = getdata(args)
+    data = utils.getdata(args)
     cerebro.adddata(data)
 
     cerebro.addstrategy(
-        CrossOver3
+        CrossOver3,
+        fast=10,
+        slow=18
     )
 
-    # cerebro.addanalyzer(SQN)
-    # cerebro.addanalyzer(AnnualReturn)
-    # cerebro.addanalyzer(SharpeRatio)
 
-    cerebro.addanalyzer(TradeAnalyzer)
+    # cerebro.addanalyzer(btanal.AnnualReturn)
+    cerebro.addanalyzer(btanal.DrawDown)
+
+    cerebro.addanalyzer(btanal.VWR)
+    # cerebro.addanalyzer(TradeAnalyzer)
+    cerebro.addanalyzer(bt.analyzers.SharpeRatio, _name='sharpratio')
+    cerebro.addanalyzer(SQN, _name='sqn')
     if args.writer:
         cerebro.addwriter(bt.WriterFile)
 
-    cerebro.run()
+    # cerebro.run()
+    thestrats = cerebro.run()
+    utils.printAnalysers(thestrats)
+
 
     if args.plot:
         #plot 参数
@@ -172,6 +163,7 @@ def parse_args():
 
     parser.add_argument('--data', '-i', required=False,
                         default='../../datas/index/000001.csv',
+                        # default='../datas/stock/600398.csv',
                         help='File to be read in')
 
     parser.add_argument('--fromdate', '-f', required=False, default=None,
