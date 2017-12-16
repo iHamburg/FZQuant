@@ -63,25 +63,27 @@ def runstrat():
 
 
 
+
+
 def parse_args():
     parser = argparse.ArgumentParser(
         description='Showcase for Order Execution Types')
 
     parser.add_argument('--data', '-i', required=False,
-                        default='../datas/index/000001.csv',
-                        # default='../datas/stock/600398.csv',
+                        # default='../datas/index/000001.csv',
+                        default='../datas/stock/601933.csv',
                         help='File to be read in')
 
-    parser.add_argument('--fromdate', '-f', required=False, default=None,
+    parser.add_argument('--fromdate', '-f', required=False, default='2017-01-01',
                         help='Ending date in YYYY-MM-DD format')
 
     parser.add_argument('--todate', '-t', required=False, default=None,
                         help='Ending date in YYYY-MM-DD format')
 
-    parser.add_argument('--plot', '-p', action='store_true', required=False,
+    parser.add_argument('--plot', '-p', action='store_true', required=False, default=True,
                         help='Plot the read data')
 
-    parser.add_argument('--plotstyle', '-ps', required=False, default='bar',
+    parser.add_argument('--plotstyle', '-ps', required=False, default='candle',
                         choices=['bar', 'line', 'candle'],
                         help='Plot the read data')
 

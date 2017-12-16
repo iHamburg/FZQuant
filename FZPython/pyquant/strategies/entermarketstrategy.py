@@ -7,13 +7,13 @@ import backtrader.indicators as btind
 from pyquant.strategies.fzstrategy import FZStrategy
 
 
-class EnterStrategy(FZStrategy):
+class SingleSMAStrategy(FZStrategy):
 
-    params = dict(maperiod=20)
+    params = dict(period=20)
 
     def __init__(self):
-        super(EnterStrategy, self).__init__()
-        self.sma = btind.SMA(period = self.p.maperiod)
+        super(SingleSMAStrategy, self).__init__()
+        self.sma = btind.SMA(period = self.p.period)
 
 
     def next(self):
@@ -34,21 +34,19 @@ class EnterStrategy(FZStrategy):
                 # SELL, SELL, SELL!!! (with all possible default parameters)
                 # self.log('SELL CREATE, %.2f' % self.dataclose[0])
 
-                # Keep track of the created order to avoid a 2nd order
                 self.order = self.close()
 
 
-#=========== End Of EnterStrategy
+#=========== End Of SingleSMAStrategy
 
 
-class EnterStrategy2(EnterStrategy):
+class EnterStrategy2(SingleSMAStrategy):
 
     params = dict(leaveDays=10)
 
     def __init__(self):
         super(EnterStrategy2, self).__init__()
         self.lastTradeLen = None
-
 
 
     def next(self):
@@ -68,13 +66,7 @@ class EnterStrategy2(EnterStrategy):
 
         else:
             # Already in the market ... we might sell
-            # if self.dataclose < self.sma:
-            #     # SELL, SELL, SELL!!! (with all possible default parameters)
-            #     # self.log('SELL CREATE, %.2f' % self.dataclose[0])
-            #
-            #     # Keep track of the created order to avoid a 2nd order
-            #     self.order = self.close()
-            #     print('plen:',self.order.plen,' lentgh: ', len(self.data))
+
             self.log('lastTradelen %d, this.len %d' %(self.lastTradeLen, len(self.data)), isprint=True)
             if self.lastTradeLen + 10 < len(self.data):
                 self.order = self.close()
@@ -123,7 +115,8 @@ def parse_args():
         description='Showcase for Order Execution Types')
 
     parser.add_argument('--data', '-i', required=False,
-                        default='../../datas/stock/600398.csv',
+                        # default='../../datas/stock/600398.csv',
+                        default='../../datas/index/000001.csv',
                         help='File to be read in')
 
     parser.add_argument('--fromdate', '-f', required=False, default=None,

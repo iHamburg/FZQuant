@@ -22,7 +22,11 @@ def printAnalysers(strats):
 
 
 def getdata(args):
-
+    """
+    需要去查找数据，如果没有的话就要从远程拉取
+    :param args:
+    :return:
+    """
     dfkwargs = dict()
 
     if args.fromdate:
@@ -36,4 +40,26 @@ def getdata(args):
 
     df = pd.read_csv(args.data, parse_dates=True, index_col=0)
 
+    print(df)
     return bt.feeds.PandasData(dataname=df, **dfkwargs)
+
+def getIndex(code, **args):
+    """
+    需要去查找数据，如果没有的话就要从远程拉取
+    :param args:
+    :param code:
+    :return:
+    """
+    print('code ', code, 'args', args)
+
+    # 根据code去datas中找数据
+    filePath = '../datas/index/'+code+'.csv'
+    print('filepath', filePath)
+
+    df = pd.read_csv(filePath, parse_dates=True, index_col=0)
+
+    return bt.feeds.PandasData(dataname=df, **args)
+    # df = ts.get_k_data('601933', index=False, start='1990-01-01')
+
+if __name__ == '__main__':
+    print("Begin")

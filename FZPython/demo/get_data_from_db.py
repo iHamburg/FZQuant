@@ -1,14 +1,39 @@
 # -*- coding: utf-8 -*-
 
+import tushare as ts
+from pymongo import MongoClient
+import json
+import time
+import  pandas as pd
 
-from pyquant.strategies.crossover import (CrossOver, CrossOver2)
-from pyquant.strategies.fzstrategy import (CrossOver3)
-import pyquant.strategies.entermarketstrategy as enterstra
+table='s601933'
 
-# 可以读取tushare的pandas的数据
+
+conn = MongoClient('localhost', 27017)
+db = conn.fzquant
+table = db[table]
+cursor = table.find()
+df = pd.DataFrame(list(cursor))
+conn.close()
+
+del df['_id']
+del df['code']
+
+print(df.dtypes)
+df['date'] = df['date'].astype('datetime64')
+print(df.dtypes)
+# ['open','high','close','low','volume']
+
+df = df.set_index('date')
+# print(df)
+cols = ['open','high','close','low','volume']
+df = df.ix[:, cols]
+print(df.index)
+print(df)
+
 
 import backtrader as bt
-import datetime
+
 import argparse
 from backtrader.analyzers import (SQN, AnnualReturn, TimeReturn, SharpeRatio,
                                   TradeAnalyzer)
@@ -24,16 +49,13 @@ def runstrat():
     cerebro.broker.setcommission(commission=0.0015) # 真实佣金： 0.15%
     cerebro.addsizer(bt.sizers.PercentSizer, percents=10)  #每次投入10%资金
 
-    data = utils.getdata(args)
+    data = bt.feeds.PandasData(dataname=df,
+                    )
     cerebro.adddata(data)
-    cerebro.optstrategy(CrossOver3,
-                        fast=range(5,10),
-                        # slow=range(10,12)
-                        )
 
+    cerebro.addstrategy(bt.strategies.MA_CrossOver,
+                       )
 
-    if args.printWriter:
-        cerebro.addwriter(bt.WriterFile)
 
     # stratruns =cerebro.run()
     cerebro.addanalyzer(bt.analyzers.SharpeRatio, _name='sharpratio')
@@ -47,16 +69,10 @@ def runstrat():
     if args.printAnalysers:
         utils.printAnalysers(thestrats)
 
+    # -p=style='bar'
+
     if args.plot:
-        #plot 参数
-        plotargs = dict()
-        if args.numfigs:
-            plotargs['numfigs'] = args.numfigs
-
-        if args.plotstyle:
-            plotargs['style'] = args.plotstyle
-
-        cerebro.plot(**plotargs)
+        cerebro.plot(**(eval('dict(' + args.plot + ')')))
 
 
 
@@ -75,9 +91,6 @@ def parse_args():
     parser.add_argument('--todate', '-t', required=False, default=None,
                         help='Ending date in YYYY-MM-DD format')
 
-    parser.add_argument('--plot', '-p', action='store_true', required=False,
-                        help='Plot the read data')
-
     parser.add_argument('--plotstyle', '-ps', required=False, default='bar',
                         choices=['bar', 'line', 'candle'],
                         help='Plot the read data')
@@ -93,6 +106,10 @@ def parse_args():
 
     parser.add_argument('--printAnalysers', '-pa',action='store_true', required=False, default=True,
                         help='print analysers')
+
+    parser.add_argument('--plot', '-p', nargs='?', required=False,
+                        metavar='kwargs', const='{}',
+                        help='Plot (with additional args if passed')
 
 
     return parser.parse_args()

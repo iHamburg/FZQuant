@@ -22,8 +22,7 @@ def runstrat():
     cerebro.adddata(data)
 
     cerebro.addstrategy(bt.strategies.MA_CrossOver,
-
-                        )
+                       )
 
 
     # stratruns =cerebro.run()

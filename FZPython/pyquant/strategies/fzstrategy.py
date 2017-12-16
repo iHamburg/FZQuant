@@ -32,7 +32,6 @@ class FZStrategy(bt.Strategy):
     def next(self):
         self.log('Close, %.2f' % (self.dataclose[0]))
 
-
     def notify_order(self,order):
         if order.status in [order.Submitted, order.Accepted]:
             # Buy/Sell order submitted/accepted to/by broker - Nothing to do
@@ -88,7 +87,7 @@ class CrossOver3(FZStrategy):
         sma_fast = bt.indicators.MovAv.SMA(period=self.p.fast)
         sma_slow = bt.indicators.MovAv.SMA(period=self.p.slow)
         self.adx = btind.AverageDirectionalMovementIndex(period=self.p.slow)
-
+        btind.AverageDirectionalMovementIndex(period=9)
         self.buysig = btind.CrossOver(sma_fast, sma_slow)
 
     def next(self):
