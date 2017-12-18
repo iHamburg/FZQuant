@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import tushare as ts
 from pymongo import MongoClient
 import json
 import time
@@ -22,7 +21,6 @@ del df['code']
 print(df.dtypes)
 df['date'] = df['date'].astype('datetime64')
 print(df.dtypes)
-# ['open','high','close','low','volume']
 
 df = df.set_index('date')
 # print(df)
@@ -31,6 +29,8 @@ df = df.ix[:, cols]
 print(df.index)
 print(df)
 
+
+# ============= MAIN =============
 
 import backtrader as bt
 
