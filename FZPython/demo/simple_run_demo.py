@@ -8,7 +8,7 @@ from backtrader.analyzers import (SQN, AnnualReturn, TimeReturn, SharpeRatio,
                                   TradeAnalyzer)
 import pyquant.utils.utils as utils
 
-
+from pyquant.strategies.fzstrategy import (CrossOver3)
 
 
 cerebro = bt.Cerebro()
@@ -17,10 +17,10 @@ cerebro.broker.setcash(1000000)
 cerebro.broker.setcommission(commission=0.0015) # 真实佣金： 0.15%
 cerebro.addsizer(bt.sizers.PercentSizer, percents=10)  #每次投入10%资金
 
-data = utils.get_stock('600194', fromdate='2017-01-01', todate='2017-6-1')
+data = utils.get_stock('002119', fromdate='2017-01-01')
 cerebro.adddata(data)
 
-cerebro.addstrategy(bt.strategies.MA_CrossOver,
+cerebro.addstrategy(CrossOver3,
                    )
 
 
@@ -33,7 +33,7 @@ thestrats = cerebro.run()
 
 utils.printAnalysers(thestrats)
 
-cerebro.plot()
+cerebro.plot(style='candle')
 
 
 

@@ -127,10 +127,10 @@ def get_stock(code, **kwargs):
     # print(df)
 
     # fromdate 和 todate 转成datetime类型
-    if kwargs['fromdate']:
+    if 'fromdate' in kwargs.keys():
         kwargs['fromdate'] = datetime.datetime.strptime(kwargs['fromdate'], '%Y-%m-%d')
 
-    if kwargs['todate']:
+    if 'todate' in kwargs.keys():
         kwargs['todate'] = datetime.datetime.strptime(kwargs['todate'], '%Y-%m-%d')
 
     data = bt.feeds.PandasData(dataname=df,

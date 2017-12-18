@@ -21,7 +21,6 @@ def run(stocklist):
     # print(data)
     # 往socket服务器发送消息
     socketIO.emit('tickDataNotification', json.loads(df.to_json(orient='records')))
-    # socketIO.emit('tickDataNotification', df.to_json(orient='records'))
 
 
     # 往数据库里写数据
