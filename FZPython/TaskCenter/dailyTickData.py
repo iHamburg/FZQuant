@@ -4,6 +4,8 @@ import json
 import time
 
 stockList = ['600196','601933','600703']
+
+# 根据stock列表获得实时数据，
 df = ts.get_realtime_quotes(stockList) #Single stock symbol
 # print(df)
 
@@ -14,5 +16,5 @@ while True:
     # 每隔3秒执行一次数据
     time.sleep(3)
     df = ts.get_realtime_quotes(stockList) #Single stock symbol
-    print(df)
+    # print(df)
     conn.db.tickdata.insert(json.loads(df.to_json(orient='records')))

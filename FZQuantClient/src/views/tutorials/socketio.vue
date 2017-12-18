@@ -9,11 +9,7 @@
 </template>
 
 <script>
-
-//  import socketClient from '../libs/socketiolib'
-
   export default {
-
     name: 'socketiovue',
     sockets: {
       connect: function(){

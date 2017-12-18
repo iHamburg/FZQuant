@@ -17,13 +17,23 @@ def run(stocklist):
     df = ts.get_realtime_quotes(stocklist)
 
     # TOOD: 可以先缓存到本地文件。定时一起处理存到mongodb里
-    data = df['time'][0] + '  ' + df['volume'][0]
-    print(data)
-    socketIO.emit('tickDataNotification', data)
-    conn.db.tickdata.insert(json.loads(df.to_json(orient='records')))
+    # data = df['time'][0] + '  ' + df['volume'][0]
+    # print(data)
+    # 往socket服务器发送消息
+    socketIO.emit('tickDataNotification', json.loads(df.to_json(orient='records')))
+    # socketIO.emit('tickDataNotification', df.to_json(orient='records'))
+
+
+    # 往数据库里写数据
+    # conn.db.tickdata.insert(json.loads(df.to_json(orient='records')))
 
 
 if __name__ == '__main__':
+
+    # df = ts.get_realtime_quotes('600196')
+    #
+    # print('json.loads',json.loads(df.to_json(orient='records')))
+
 
     # run(stockList)
     while True:
