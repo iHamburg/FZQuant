@@ -87,7 +87,10 @@ class CrossOver3(FZStrategy):
         sma_fast = bt.indicators.MovAv.SMA(period=self.p.fast)
         sma_slow = bt.indicators.MovAv.SMA(period=self.p.slow)
         self.adx = btind.AverageDirectionalMovementIndex(period=self.p.slow)
-        btind.AverageDirectionalMovementIndex(period=9)
+        btind.MACD()
+        # btind.OBV()
+
+        # btind.AverageDirectionalMovementIndex(period=9)
         self.buysig = btind.CrossOver(sma_fast, sma_slow)
 
     def next(self):

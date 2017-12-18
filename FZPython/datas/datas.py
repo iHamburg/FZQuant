@@ -9,11 +9,11 @@ import pandas as pd
 
 codeList = []
 
-df = ts.get_k_data('601933',index=False,start='1990-01-01')
+df = ts.get_k_data('000002',index=False,start='1990-01-01')
 # df = ts.get_k_data('600435',index=True,start='2016-01-01')
 df = df.set_index('date')
 # df.to_csv('index/399006.csv', columns=['open','high','close','low','volume'])
-df.to_csv('stock/601933.csv', columns=['open','high','close','low','volume'])
+df.to_csv('stock/000002.csv', columns=['open','high','close','low','volume'])
 
 #
 # #直接保存

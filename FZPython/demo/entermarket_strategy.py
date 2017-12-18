@@ -71,7 +71,7 @@ def parse_args():
 
     parser.add_argument('--data', '-i', required=False,
                         # default='../datas/index/000001.csv',
-                        default='../datas/stock/601933.csv',
+                        default='../datas/stock/000002.csv',
                         help='File to be read in')
 
     parser.add_argument('--fromdate', '-f', required=False, default='2017-01-01',
@@ -83,7 +83,7 @@ def parse_args():
     parser.add_argument('--plot', '-p', action='store_true', required=False, default=True,
                         help='Plot the read data')
 
-    parser.add_argument('--plotstyle', '-ps', required=False, default='candle',
+    parser.add_argument('--plotstyle', '-ps', required=False, default='line',
                         choices=['bar', 'line', 'candle'],
                         help='Plot the read data')
 
