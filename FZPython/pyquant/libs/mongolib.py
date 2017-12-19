@@ -2,12 +2,11 @@
 # coding: utf8
 
 from pymongo import MongoClient
+from pyquant.configs.configs import mongodb as config
 import json
 
-
-conn = MongoClient('localhost', 27017)
+conn = MongoClient(config['host'], config['port'])
 db = conn.fzquant
-
 
 def _get_stock_collection_name(code):
     return 's'+code

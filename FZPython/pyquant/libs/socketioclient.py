@@ -1,6 +1,7 @@
 # coding: utf8
 
-from pyquant.configs.socketio import config
+# from pyquant.configs.socketio import config
+from pyquant.configs.configs import socketio as config
 import json
 from socketIO_client import SocketIO, LoggingNamespace
 
