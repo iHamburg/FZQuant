@@ -7,6 +7,8 @@ import backtrader as bt
 from pymongo import MongoClient
 import tushare as ts
 import  json
+import time
+import pyquant.libs.mongolib as mongolib
 
 def printAnalysers(strats):
     """
@@ -24,7 +26,7 @@ def printAnalysers(strats):
         print('==================================================')
 
 
-def getdata(args):
+def get_csv_data(args):
     """
     需要去查找数据，如果没有的话就要从远程拉取
     :param args:
@@ -46,6 +48,110 @@ def getdata(args):
     print(df)
     return bt.feeds.PandasData(dataname=df, **dfkwargs)
 
+
+def get_stock_df(code, **kwargs):
+    """
+    考虑到之后缓存的存在， 每次下载都全部下载，在生成datafeed的时候再处理
+
+    :param code:
+    fromdate: 2017-01-01
+    todate:
+    :return:
+    """
+
+    data = mongolib.get_stock(code)
+
+    # 生成 Dataframes
+    df = pd.DataFrame(data)
+
+    # 如果没有该股票，先去下载该股票，然后返回
+    if df.empty:
+        try:
+            _get_stock_from_tushare(code)
+            return get_stock(code)
+        except Exception as e:
+            # 为什么第一次会有
+            print('捕捉到异常', e)
+            return
+
+
+    del df['_id']
+    del df['code']
+
+    df['date'] = df['date'].astype('datetime64[ns]')
+
+    df = df.set_index('date')
+
+    cols = ['open', 'high', 'close', 'low', 'volume']
+    df = df.ix[:, cols]
+    # print(df)
+
+    return df
+
+
+def get_stock(code, **kwargs):
+    """
+    考虑到之后缓存的存在， 每次下载都全部下载，在生成datafeed的时候再处理
+
+    :param code:
+    fromdate: 2017-01-01
+    todate:
+    :return:
+    """
+
+    data = mongolib.get_stock(code)
+
+    # 生成 Dataframes
+    df = pd.DataFrame(data)
+
+    # 如果没有该股票，先去下载该股票，然后返回
+    if df.empty:
+        try:
+            _get_stock_from_tushare(code)
+            return get_stock(code)
+        except Exception as e:
+            # 为什么第一次会有
+            print('捕捉到异常', e)
+            return
+
+
+    del df['_id']
+    del df['code']
+
+    df['date'] = df['date'].astype('datetime64[ns]')
+
+    df = df.set_index('date')
+
+    cols = ['open', 'high', 'close', 'low', 'volume']
+    df = df.ix[:, cols]
+    # print(df)
+
+    if 'fromdate' in kwargs.keys():
+        kwargs['fromdate'] = datetime.datetime.strptime(kwargs['fromdate'], '%Y-%m-%d')
+
+    if 'todate' in kwargs.keys():
+        kwargs['todate'] = datetime.datetime.strptime(kwargs['todate'], '%Y-%m-%d')
+
+    data = bt.feeds.PandasData(dataname=df,
+                               **kwargs)
+
+    return data
+
+def looprun(interval=0,fcn=None, **kwargs):
+    """
+
+    :param interval: 时间间隔
+    :param fcn: 函数名
+    :param kwargs: 函数参数
+    :return:
+    """
+
+    if interval > 0:
+        while True:
+            time.sleep(interval)
+            fcn(**kwargs)
+    else :
+        fcn(**kwargs)
 
 def get_index(code, **args):
     """
@@ -87,63 +193,10 @@ def _get_stock_from_tushare(code):
     conn.close()
 
 
-def get_stock(code, **kwargs):
-    """
-    考虑到之后缓存的存在， 每次下载都全部下载，在生成datafeed的时候再处理
-
-    :param code:
-    fromdate: 2017-01-01
-    todate:
-    :return:
-    """
-    table = 's'+code
-    conn = MongoClient('localhost', 27017)
-    db = conn.fzquant
-    table = db[table]
-    cursor = table.find()
-    df = pd.DataFrame(list(cursor))
-    conn.close()
-
-    # 如果没有该股票，先去下载该股票，然后返回
-    if df.empty:
-        try:
-            _get_stock_from_tushare(code)
-            return get_stock(code)
-        except Exception as e:
-            # 为什么第一次会有
-            print('捕捉到异常', e)
-            return
-
-
-    del df['_id']
-    del df['code']
-
-    df['date'] = df['date'].astype('datetime64[ns]')
-
-    df = df.set_index('date')
-
-    cols = ['open', 'high', 'close', 'low', 'volume']
-    df = df.ix[:, cols]
-    # print(df)
-
-    # fromdate 和 todate 转成datetime类型
-    if 'fromdate' in kwargs.keys():
-        kwargs['fromdate'] = datetime.datetime.strptime(kwargs['fromdate'], '%Y-%m-%d')
-
-    if 'todate' in kwargs.keys():
-        kwargs['todate'] = datetime.datetime.strptime(kwargs['todate'], '%Y-%m-%d')
-
-    data = bt.feeds.PandasData(dataname=df,
-                               **kwargs)
-
-    return data
-
-
-
 if __name__ == '__main__':
     print("Begin")
     # print(get_stock('600191'))
-    print(get_stock('600191',fromdate='2017-01-01'))
+    print(get_stock_df('600191'))
 
 
     # get_stock_from_tushare('600192')

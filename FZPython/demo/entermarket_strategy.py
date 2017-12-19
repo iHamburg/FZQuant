@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 
+#=========== 实现脚本运行操作 ============
+import os
+import sys
+module_path = os.path.abspath(os.getcwd())
+if module_path not in sys.path:
+    sys.path.append(module_path)
+#=========== 实现脚本运行操作 ============
 
 from  pyquant.strategies.crossover import (CrossOver, CrossOver2)
 from pyquant.strategies.fzstrategy import (CrossOver3)

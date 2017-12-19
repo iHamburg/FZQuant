@@ -122,7 +122,7 @@ def runstrat():
     cerebro.broker.setcommission(commission=0.0015) # 真实佣金： 0.15%
     cerebro.addsizer(bt.sizers.PercentSizer, percents=10)  #每次投入10%资金
 
-    data = utils.getdata(args)
+    data = utils.get_csv_data(args)
     cerebro.adddata(data)
 
     cerebro.addstrategy(

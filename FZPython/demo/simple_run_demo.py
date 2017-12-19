@@ -1,13 +1,20 @@
 #!/usr/bin/env python
 # coding: utf8
 
+#=========== 实现脚本运行操作 ============
+import os
+import sys
+module_path = os.path.abspath(os.getcwd())
+if module_path not in sys.path:
+    sys.path.append(module_path)
+#=========== 实现脚本运行操作 ============
+
 import backtrader as bt
 
 import argparse
 from backtrader.analyzers import (SQN, AnnualReturn, TimeReturn, SharpeRatio,
                                   TradeAnalyzer)
 import pyquant.utils.utils as utils
-
 from pyquant.strategies.fzstrategy import (CrossOver3)
 
 
@@ -33,7 +40,7 @@ thestrats = cerebro.run()
 
 utils.printAnalysers(thestrats)
 
-cerebro.plot(style='candle')
+# cerebro.plot(style='candle')
 
 
 
