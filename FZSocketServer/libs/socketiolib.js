@@ -11,10 +11,10 @@ function onDisconnect () {
 function onTickDataNotification (data, callback) {
   console.log('get tick Notification ' + data);
   //往所有client发送相关feeds
-  console.log('data', typeof(data));
-  data.forEach((item) => {
-    console.log('item', item);
-  })
+  // console.log('data', typeof(data));
+  // data.forEach((item) => {
+  //   console.log('item', item);
+  // })
   io.emit('tickDataNotification', data)
 }
 
