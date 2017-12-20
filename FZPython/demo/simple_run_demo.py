@@ -41,7 +41,7 @@ thestrats = cerebro.run()
 
 utils.printAnalysers(thestrats)
 
-# cerebro.plot(style='candle')
+cerebro.plot(style='candle')
 
 
 
