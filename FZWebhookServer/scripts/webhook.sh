@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo ""
-echo "========= BEGIN webhook 2=========="
+echo "========= BEGIN webhook =========="
 
 
 git pull
