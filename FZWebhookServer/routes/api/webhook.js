@@ -6,7 +6,6 @@
 
 var express = require('express');
 var router = express.Router();
-var axios = require('axios');
 
 //设置请求头
 router.all('*', function (req, res, next) {
@@ -58,6 +57,26 @@ router.post('/run', function (req, res, next) {
   });
 });
 
+router.post('/run2', function (req, res, next) {
+  // var id = req.params.id;
+  console.log('=============begin post run');
+  // console.log(req.body);
+
+  var exec = require('child_process').exec;
+
+  //当前pwd ： FZWebhookServer
+  var cmdStr = 'scripts/webhook.sh'
+  // var cmdStr = 'ls';
+  exec(cmdStr, function(err, stdout, stderr) {
+    if (err) {
+      console.log(cmdStr + ' \n error:' + stderr);
+      return res.send('npm run forever error:' + stderr);
+    } else {
+      console.log(cmdStr + '\n  sssuccess ' + stdout + stderr);
+      return res.send(cmdStr + '\n hahasuccess ' + stdout + stderr);
+    }
+  });
+});
 
 
 router.get('/', function (req, res, next) {

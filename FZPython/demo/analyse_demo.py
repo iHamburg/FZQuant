@@ -31,7 +31,7 @@ def main():
 
     df = utils.get_stock_df(args.code)
 
-    print('get df',df.head())
+
     kwargs = dict()
     if args.fromdate:
         kwargs['fromdate'] = datetime.datetime.strptime(args.fromdate, '%Y-%m-%d')
