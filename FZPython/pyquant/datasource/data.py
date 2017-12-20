@@ -7,6 +7,7 @@ import pandas as pd
 import backtrader as bt
 import tushare as ts
 import pyquant.libs.mongolib as mongolib
+import pyquant.libs.tusharelib as tusharelib
 
 def get_csv_data(args):
     """
@@ -51,7 +52,8 @@ def get_df_data(code,index=False, **kwargs):
     # 如果mongodb没有拉到数据
     if df.empty:
         # 从tushare 下载 数据
-        df = get_data_df_from_tushare(code,index)
+
+        df = tusharelib.get_data_df(code,index)
 
         # 如果从tushare里没有拉回数据
         if df.empty:
@@ -90,15 +92,3 @@ def _get_df_from_mongo_for_bt(df):
 
     return df
 
-
-def get_data_df_from_tushare(code, index=False):
-    """
-    从 tushare 下载 股票 日数据
-    :param code:
-    :return:
-    """
-
-    print('从tushare下载',code,index)
-    df = ts.get_k_data(code, index=index, start="1990-1-1")
-
-    return df
