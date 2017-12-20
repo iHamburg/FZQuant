@@ -44,7 +44,6 @@ app.use(express.static(path.join(__dirname, 'public')));
  * */
 app.use('/api/tests', require('./routes/api/tests'));
 app.use('/api/users', require('./routes/api/user'))
-app.use('/api/webhook', require('./routes/api/webhook'));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
