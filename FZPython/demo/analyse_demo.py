@@ -12,6 +12,7 @@ if module_path not in sys.path:
 
 import backtrader as bt
 import pyquant.utils.utils as utils
+import pyquant.datasource.data as datalib
 from pyquant.strategies.fzstrategy import (CrossOver3)
 import datetime
 import argparse
@@ -29,25 +30,27 @@ def main():
     cerebro.broker.setcommission(commission=0.0015)  # 真实佣金： 0.15%
     cerebro.addsizer(bt.sizers.PercentSizer, percents=10)  # 每次投入10%资金
 
-    df = utils.get_stock_df(args.code)
+    df = datalib.get_df_data(args.code)
 
 
     kwargs = dict()
+    # 开始时间
     if args.fromdate:
         kwargs['fromdate'] = datetime.datetime.strptime(args.fromdate, '%Y-%m-%d')
 
+    # 结束时间
     if args.todate:
         kwargs['todate'] = datetime.datetime.strptime(args.todate, '%Y-%m-%d')
 
     data = bt.feeds.PandasData(dataname=df,
                                **kwargs)
 
+    # 时间周期
     tframes = dict(
         D=bt.TimeFrame.Days,
         W=bt.TimeFrame.Weeks,
         M=bt.TimeFrame.Months)
 
-    # 时间周期
     if args.ktype == 'D':
         cerebro.adddata(data)
     else:
@@ -89,6 +92,10 @@ def _parse_args():
     parser.add_argument('--ktype', '-k', required=False, default='D',
                         choices=['D','W','M'],
                         help='D=日k线 W=周 M=月 5=5分钟 15=15分钟 30=30分钟 60=60分钟')
+
+    parser.add_argument('--strategy', '-s', required=False, default='D',
+                        choices=['D', 'W', 'M'],
+                        help='策略参数')
 
     parser.add_argument('--plot', '-p', action='store_true',  required=False,default=True,
                         help='plot')

@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
+"""
+批量测试策略的参数
 
+"""
 
-from pyquant.strategies.crossover import (CrossOver, CrossOver2)
+# from pyquant.strategies.crossover import (CrossOver, CrossOver2)
 from pyquant.strategies.fzstrategy import (CrossOver3)
-import pyquant.strategies.entermarketstrategy as enterstra
+import pyquant.datasource.data as datalib
+
+# import pyquant.strategies.entermarketstrategy as enterstra
 
 # 可以读取tushare的pandas的数据
 
@@ -24,7 +29,7 @@ def runstrat():
     cerebro.broker.setcommission(commission=0.0015) # 真实佣金： 0.15%
     cerebro.addsizer(bt.sizers.PercentSizer, percents=10)  #每次投入10%资金
 
-    data = utils.get_csv_data(args)
+    data = datalib.get_csv_data(args)
     cerebro.adddata(data)
     cerebro.optstrategy(CrossOver3,
                         fast=range(5,10),

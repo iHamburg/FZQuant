@@ -17,6 +17,11 @@ import argparse
 
 
 def run(stocklist):
+    """
+    实时获取stocklist中的股票的盘口，发送到sio服务器并保存到mongodb中
+    :param stocklist:
+    :return:
+    """
     print('下载 stocklist', stocklist)
     df = ts.get_realtime_quotes(stocklist)
     # print(data)

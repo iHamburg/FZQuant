@@ -58,8 +58,6 @@ def runstrat():
     utils.printAnalysers(thestrats)
 
 
-
-
     if args.plot:
         #plot 参数
         plotargs = dict()

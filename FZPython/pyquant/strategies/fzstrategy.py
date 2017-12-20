@@ -106,9 +106,9 @@ class CrossOver3(FZStrategy):
             # if self.adx.adx[0] > self.adx.adx[-1] :
             self.buy()
 
-    def stop(self):
-        self.log('======Fase: %d, Slow: %d, Ending Value %.2f' %
-                 (self.p.fast, self.p.slow, self.broker.getvalue()), isprint=True)
+    # def stop(self):
+    #     self.log('======Fase: %d, Slow: %d, Ending Value %.2f' %
+    #              (self.p.fast, self.p.slow, self.broker.getvalue()), isprint=True)
 
 
 # =========== 处理运行 ==============

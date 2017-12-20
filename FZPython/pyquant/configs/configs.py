@@ -2,11 +2,12 @@
 # coding: utf8
 
 socketio = {
-'host' : 'localhost',
+'host' : '121.42.26.144',
 'port' : 3020
 }
 
 mongodb = dict(
-    host='121.42.26.144',
+    # host='121.42.26.144',
+    host='localhost',
     port=27017
 )

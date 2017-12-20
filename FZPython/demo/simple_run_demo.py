@@ -11,12 +11,14 @@ if module_path not in sys.path:
 
 import backtrader as bt
 
-import argparse
 from backtrader.analyzers import (SQN, AnnualReturn, TimeReturn, SharpeRatio,
                                   TradeAnalyzer)
 import pyquant.utils.utils as utils
 from pyquant.strategies.fzstrategy import (CrossOver3)
-
+import pyquant.datasource.data as datalib
+import datetime
+import matplotlib.pyplot as plt
+import backtrader.plot.plot as plot
 
 cerebro = bt.Cerebro()
 
@@ -24,8 +26,8 @@ cerebro.broker.setcash(1000000)
 cerebro.broker.setcommission(commission=0.0015) # 真实佣金： 0.15%
 cerebro.addsizer(bt.sizers.PercentSizer, percents=10)  #每次投入10%资金
 
-df = utils.get_stock_df('002119', fromdate='2017-01-01')
-data = bt.feeds.PandasData(dataname=df)
+df = datalib.get_df_data('000001',index=True, fromdate='2017-01-01')
+data = bt.feeds.PandasData(dataname=df, fromdate= datetime.datetime.strptime('2017-1-1', '%Y-%m-%d'))
 cerebro.adddata(data)
 
 cerebro.addstrategy(CrossOver3,
@@ -39,10 +41,15 @@ cerebro.addanalyzer(SQN, _name='sqn')
 # cerebro.run()
 thestrats = cerebro.run()
 
-utils.printAnalysers(thestrats)
+# utils.printAnalysers(thestrats)
 
-cerebro.plot(style='candle')
+cerebro.plot(savefile=True)
 
+# plotter = plot.Plot()
+# cerebro.plot(plotter=plotter)
+# print('fig ', plotter.mpyplot)
 
-
+# fig = plotter.mpyplot.figure()
+# print('fig',type(fig))
+# fig.savefig('plot.png')
 

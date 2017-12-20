@@ -8,10 +8,13 @@ import json
 conn = MongoClient(config['host'], config['port'])
 db = conn.fzquant
 
-def _get_stock_collection_name(code):
-    return 's'+code
+def _get_data_collection_name(code, index=False):
+    if index:
+        return 'i'+code
+    else:
+        return 's'+code
 
-def insertStock(code, df):
+def insert_data(code, df,index=False):
     """
     插入每日股票信息
 
@@ -22,21 +25,23 @@ def insertStock(code, df):
     :return:
     """
     # 获取collection
-    col = db[_get_stock_collection_name(code)]
+    col = db[_get_data_collection_name(code,index)]
     # 插入数据
 
     col.insert(json.loads(df.to_json(orient='records')))
 
-def get_stock(code):
+def get_data(code, index=False):
     """
 
     :param code:
+    :param index:
     :return: list
     """
-    table = 's'+code
-    col = db[table]
+
+    col = db[_get_data_collection_name(code,index)]
     cursor = col.find()
     return list(cursor)
+
 
 def insertTickData(df):
     """
@@ -50,7 +55,7 @@ def insertTickData(df):
 
 if __name__ == '__main__':
     print("Begin")
-    print(get_stock('600193'))
+    print(get_data('600193'))
 
 
     print('===== ENDE ====')

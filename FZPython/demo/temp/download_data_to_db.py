@@ -22,7 +22,7 @@ def simpleInsert():
 
 def mongolibInsert():
     df = ts.get_k_data('601933', index=False)
-    mongolib.insertStock('601933',df)
+    mongolib.insert_data('601933', df)
 
 if __name__ == '__main__':
     mongolibInsert()
