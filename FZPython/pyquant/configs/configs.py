@@ -7,6 +7,6 @@ socketio = {
 }
 
 mongodb = dict(
-    host='localhost',
+    host='121.42.26.144',
     port=27017
 )

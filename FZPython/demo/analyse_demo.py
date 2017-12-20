@@ -18,28 +18,7 @@ import argparse
 
 
 
-def _parse_args():
-    parser = argparse.ArgumentParser(
-        description='Showcase for Order Execution Types')
 
-    parser.add_argument('--code','-c',
-                        default='600196',
-                        help='stock code')
-
-    parser.add_argument('--fromdate', '-f', required=False, default=None,
-                        help='Ending date in YYYY-MM-DD format')
-
-    parser.add_argument('--todate', '-t', required=False, default=None,
-                        help='Ending date in YYYY-MM-DD format')
-
-    parser.add_argument('--ktype', '-k', required=False, default='D',
-                        choices=['D','W','M'],
-                        help='D=日k线 W=周 M=月 5=5分钟 15=15分钟 30=30分钟 60=60分钟')
-
-    parser.add_argument('--plot', '-p', action='store_true',  required=False,
-                        help='plot')
-
-    return parser.parse_args()
 
 def main():
 
@@ -52,6 +31,7 @@ def main():
 
     df = utils.get_stock_df(args.code)
 
+    print('get df',df.head())
     kwargs = dict()
     if args.fromdate:
         kwargs['fromdate'] = datetime.datetime.strptime(args.fromdate, '%Y-%m-%d')
@@ -91,6 +71,29 @@ def main():
 
     if args.plot:
         cerebro.plot()
+
+def _parse_args():
+    parser = argparse.ArgumentParser(
+        description='Showcase for Order Execution Types')
+
+    parser.add_argument('--code','-c',
+                        default='600756',
+                        help='stock code')
+
+    parser.add_argument('--fromdate', '-f', required=False, default=None,
+                        help='Ending date in YYYY-MM-DD format')
+
+    parser.add_argument('--todate', '-t', required=False, default=None,
+                        help='Ending date in YYYY-MM-DD format')
+
+    parser.add_argument('--ktype', '-k', required=False, default='D',
+                        choices=['D','W','M'],
+                        help='D=日k线 W=周 M=月 5=5分钟 15=15分钟 30=30分钟 60=60分钟')
+
+    parser.add_argument('--plot', '-p', action='store_true',  required=False,default=True,
+                        help='plot')
+
+    return parser.parse_args()
 
 if __name__ == '__main__':
     main()

@@ -45,7 +45,7 @@ def get_csv_data(args):
 
     df = pd.read_csv(args.data, parse_dates=True, index_col=0)
 
-    print(df)
+    # print(df)
     return bt.feeds.PandasData(dataname=df, **dfkwargs)
 
 
@@ -68,12 +68,12 @@ def get_stock_df(code, **kwargs):
     if df.empty:
         try:
             _get_stock_from_tushare(code)
-            return get_stock(code)
+            return get_stock_df(code)
+
         except Exception as e:
             # 为什么第一次会有
             print('捕捉到异常', e)
             return
-
 
     del df['_id']
     del df['code']
@@ -88,54 +88,6 @@ def get_stock_df(code, **kwargs):
 
     return df
 
-
-def get_stock(code, **kwargs):
-    """
-    考虑到之后缓存的存在， 每次下载都全部下载，在生成datafeed的时候再处理
-
-    :param code:
-    fromdate: 2017-01-01
-    todate:
-    :return:
-    """
-
-    data = mongolib.get_stock(code)
-
-    # 生成 Dataframes
-    df = pd.DataFrame(data)
-
-    # 如果没有该股票，先去下载该股票，然后返回
-    if df.empty:
-        try:
-            _get_stock_from_tushare(code)
-            return get_stock(code)
-        except Exception as e:
-            # 为什么第一次会有
-            print('捕捉到异常', e)
-            return
-
-
-    del df['_id']
-    del df['code']
-
-    df['date'] = df['date'].astype('datetime64[ns]')
-
-    df = df.set_index('date')
-
-    cols = ['open', 'high', 'close', 'low', 'volume']
-    df = df.ix[:, cols]
-    # print(df)
-
-    if 'fromdate' in kwargs.keys():
-        kwargs['fromdate'] = datetime.datetime.strptime(kwargs['fromdate'], '%Y-%m-%d')
-
-    if 'todate' in kwargs.keys():
-        kwargs['todate'] = datetime.datetime.strptime(kwargs['todate'], '%Y-%m-%d')
-
-    data = bt.feeds.PandasData(dataname=df,
-                               **kwargs)
-
-    return data
 
 def looprun(interval=0,fcn=None, **kwargs):
     """
@@ -176,7 +128,7 @@ def _get_stock_from_tushare(code):
     :param code:
     :return:
     """
-    table = 's'+code
+    # table = 's'+code
 
     df = ts.get_k_data(code, index=False)
     print('从tushare下载',code)
@@ -185,13 +137,13 @@ def _get_stock_from_tushare(code):
         raise Exception("Tushare下载数据异常")
 
 
-    conn = MongoClient('localhost', 27017)
-    db = conn.fzquant
-    table = db[table]
-
-    table.insert(json.loads(df.to_json(orient='records')))
-    conn.close()
-
+    # conn = MongoClient('localhost', 27017)
+    # db = conn.fzquant
+    # table = db[table]
+    #
+    # table.insert(json.loads(df.to_json(orient='records')))
+    # conn.close()
+    mongolib.insertStock(code, df)
 
 if __name__ == '__main__':
     print("Begin")
