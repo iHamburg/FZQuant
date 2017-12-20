@@ -24,7 +24,8 @@ cerebro.broker.setcash(1000000)
 cerebro.broker.setcommission(commission=0.0015) # 真实佣金： 0.15%
 cerebro.addsizer(bt.sizers.PercentSizer, percents=10)  #每次投入10%资金
 
-data = utils.get_stock('002119', fromdate='2017-01-01')
+df = utils.get_stock_df('002119', fromdate='2017-01-01')
+data = bt.feeds.PandasData(dataname=df)
 cerebro.adddata(data)
 
 cerebro.addstrategy(CrossOver3,

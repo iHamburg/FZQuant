@@ -1,5 +1,14 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+#=========== 实现脚本运行操作 ============
+import os
+import sys
+module_path = os.path.abspath(os.getcwd())
+print('module_path',module_path)
+if module_path not in sys.path:
+    sys.path.append(module_path)
+#=========== 实现脚本运行操作 ============
 
 import backtrader as bt
 import pandas as pd
