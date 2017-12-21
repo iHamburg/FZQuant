@@ -8,8 +8,6 @@
 
 import networklib from './networklib'
 import utillib from './utillib'
-// let localStorage = window.localStorage;
-// let userInfo = localStorage.getItem('userInfo') || {}
 
 let userInfo = utillib.storageGet('userInfo')
 

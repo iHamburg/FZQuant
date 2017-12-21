@@ -4,7 +4,6 @@
  */
 
 var Sequelize = require('sequelize');
-// var mysql = require('../config/db').mysql;
 var mysql = require('../configs/mysql');
 module.exports = {
 

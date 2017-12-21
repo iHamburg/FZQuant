@@ -13,7 +13,9 @@ if module_path not in sys.path:
 import backtrader as bt
 import pyquant.utils.utils as utils
 import pyquant.datasource.data as datalib
-from pyquant.strategies.fzstrategy import (CrossOver3)
+# from pyquant.strategies.fzstrategy import (CrossOver3)
+import pyquant.strategies.fzstrategy as strat
+
 import datetime
 import argparse
 
@@ -24,6 +26,20 @@ import argparse
 def main():
 
     args = _parse_args()
+
+    # 选择策略
+    strats = dict(
+        c2=strat.CrossOver2,
+        c3=strat.CrossOver3,
+    )
+
+    # 时间周奇
+    tframes = dict(
+        D=bt.TimeFrame.Days,
+        W=bt.TimeFrame.Weeks,
+        M=bt.TimeFrame.Months)
+
+
     cerebro = bt.Cerebro()
 
     cerebro.broker.setcash(1000000)
@@ -31,7 +47,6 @@ def main():
     cerebro.addsizer(bt.sizers.PercentSizer, percents=10)  # 每次投入10%资金
 
     df = datalib.get_df_data(args.code)
-
 
     kwargs = dict()
     # 开始时间
@@ -42,28 +57,20 @@ def main():
     if args.todate:
         kwargs['todate'] = datetime.datetime.strptime(args.todate, '%Y-%m-%d')
 
-    data = bt.feeds.PandasData(dataname=df,
-                               **kwargs)
+    data = bt.feeds.PandasData(dataname=df,**kwargs)
 
     # 时间周期
-    tframes = dict(
-        D=bt.TimeFrame.Days,
-        W=bt.TimeFrame.Weeks,
-        M=bt.TimeFrame.Months)
-
     if args.ktype == 'D':
         cerebro.adddata(data)
     else:
         # Resample the data
-        cerebro.resampledata(
-            data,
-            timeframe=tframes[args.ktype])
+        cerebro.resampledata(data,timeframe=tframes[args.ktype])
 
 
-    cerebro.addstrategy(CrossOver3,
+    cerebro.addstrategy(strats[args.strategy],
                         )
 
-    # stratruns =cerebro.run()
+
     # cerebro.addanalyzer(bt.analyzers.SharpeRatio, _name='sharpratio')
     # cerebro.addanalyzer(SQN, _name='sqn')
 
@@ -83,7 +90,7 @@ def _parse_args():
                         default='600756',
                         help='stock code')
 
-    parser.add_argument('--fromdate', '-f', required=False, default=None,
+    parser.add_argument('--fromdate', '-f', required=False, default='2017-1-1',
                         help='Ending date in YYYY-MM-DD format')
 
     parser.add_argument('--todate', '-t', required=False, default=None,
@@ -93,11 +100,11 @@ def _parse_args():
                         choices=['D','W','M'],
                         help='D=日k线 W=周 M=月 5=5分钟 15=15分钟 30=30分钟 60=60分钟')
 
-    parser.add_argument('--strategy', '-s', required=False, default='D',
-                        choices=['D', 'W', 'M'],
+    parser.add_argument('--strategy', '-s', required=False, default='c2',
+                        choices=['c2', 'c3'],
                         help='策略参数')
 
-    parser.add_argument('--plot', '-p', action='store_true',  required=False,default=True,
+    parser.add_argument('--plot', '-p', action='store_true',  required=False, default=False,
                         help='plot')
 
     return parser.parse_args()

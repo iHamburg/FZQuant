@@ -43,14 +43,14 @@ class FZStrategy(bt.Strategy):
                     'BUY EXECUTED, Price: %.2f, Cost: %.2f, Comm %.2f' %
                     (order.executed.price,
                      order.executed.value,
-                     order.executed.comm), isprint=True)
+                     order.executed.comm), isprint=False)
                 self.buyprice = order.executed.price
                 self.buycomm = order.executed.comm
             elif order.issell():
                 self.log('SELL EXECUTED, Price: %.2f, Cost: %.2f, Comm %.2f' %
                          (order.executed.price,
                           order.executed.value,
-                          order.executed.comm), isprint=True)
+                          order.executed.comm), isprint=False)
 
             # self.bar_executed = len(self)
         elif order.status in [order.Canceled, order.Margin, order.Rejected]:
@@ -71,6 +71,41 @@ class FZStrategy(bt.Strategy):
                  (self.broker.getvalue()), isprint=True)
 
 
+class CrossOver2(FZStrategy):
+    params = (
+        # period for the fast Moving Average
+        ('fast', 9),
+        # period for the slow moving average
+        ('slow', 18),
+        # moving average to use
+        # ('_movav', bt.indicators.MovAv.SMA)
+    )
+
+    def __init__(self):
+        super(CrossOver2, self).__init__()
+        self.log('======CrossOver2 init=======',isprint=True)
+        # self.log('======Crossover3 init=======', isprint=True)
+        sma_fast = bt.indicators.MovAv.SMA(period=self.p.fast)
+        sma_slow = bt.indicators.MovAv.SMA(period=self.p.slow)
+        self.adx = btind.AverageDirectionalMovementIndex(period=18)
+
+        # btind.BollingerBands()
+
+        # btind.AverageDirectionalMovementIndex(period=9)
+        self.buysig = btind.CrossOver(sma_fast, sma_slow)
+
+    def next(self):
+        super(CrossOver2 ,self).next()
+
+        if self.position.size:
+            if self.buysig < 0:
+                self.sell()
+
+        elif self.buysig :
+            self.log('adx[0]: %.2f ,adx[-1]: %.2f' %(self.adx.adx[0],self.adx.adx[-1]))
+            # if self.adx.adx[0] > self.adx.adx[-1] :
+            self.buy()
+
 class CrossOver3(FZStrategy):
     params = (
         # period for the fast Moving Average
@@ -83,7 +118,7 @@ class CrossOver3(FZStrategy):
 
     def __init__(self):
         super(CrossOver3,self).__init__()
-        # self.log('======Crossover3 init=======', isprint=True)
+        self.log('======Crossover3 init=======', isprint=True)
         sma_fast = bt.indicators.MovAv.SMA(period=self.p.fast)
         sma_slow = bt.indicators.MovAv.SMA(period=self.p.slow)
         self.adx = btind.AverageDirectionalMovementIndex(period=18)

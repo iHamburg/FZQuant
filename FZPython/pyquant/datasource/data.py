@@ -76,7 +76,7 @@ def _get_df_from_mongo_for_bt(df):
     :return:
     """
 
-    print('======== _process_df_from_mongo =========')
+    # print('======== _process_df_from_mongo =========')
     if '_id' in df:
         del df['_id']
 

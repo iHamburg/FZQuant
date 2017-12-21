@@ -64,6 +64,7 @@
           if (err) {
             alert(err)
           }
+          this.$router.push()
         })
       }
     }
