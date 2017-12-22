@@ -8,8 +8,7 @@ var express = require('express');
 var router = express.Router();
 var axios = require('axios');
 var utils = require('../../libs/utils');
-var networklib = require('../../libs/networklib')
-
+var mongolib = require('../../libs/mongolib')
 var _ = require('underscore');
 
 //设置请求头
@@ -26,5 +25,22 @@ router.get('/', function (req, res, next) {
   console.log('request merchant');
   return res.send('merchant');
 });
+
+router.get('/stock', function (req, res, next) {
+  // var id = req.params.id;
+
+  console.log('request merchant');
+
+  mongolib.queryCollection('s603808', (err, objs) => {
+    if (err) {
+      console.log('query Collection err', err);
+      return res.send('query Collection err' + err);
+    }
+    // objs = _.omit(objs,'_id')
+    // console.log('objs ', objs);
+    res.type('json').send(objs);
+  })
+});
+
 
 module.exports = router;
