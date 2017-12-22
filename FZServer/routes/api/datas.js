@@ -37,8 +37,8 @@ router.get('/stock', function (req, res, next) {
       return res.send('query Collection err' + err);
     }
     // objs = _.omit(objs,'_id')
-    // console.log('objs ', objs);
-    res.type('json').send(objs);
+    console.log('objs ', objs);
+    utils.send(res,{list: objs})
   })
 });
 
