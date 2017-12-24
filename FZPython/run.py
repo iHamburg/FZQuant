@@ -68,7 +68,6 @@ def ts():
     print('ts')
 
     df = tushare.get_k_data('000001', index=True, start="2017-1-1")
-    # response = {'resCode': this.SUCCESS_CODE, 'obj': obj};
     return response_headers(df.to_json(orient='records'))
 
 
@@ -86,4 +85,5 @@ def log():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    print('____main____')
+    app.run(debug=True,host='0.0.0.0')
