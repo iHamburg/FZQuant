@@ -24,6 +24,7 @@ Vue.http.options.emulateJSON = true
 // const baseUrl = 'http://localhost/api'
 
 const baseUrl = 'http://localhost:3000/api'
+// const baseUrl = 'http://localhost:5000/'
 /**
  * GET 请求
  * @param apiId

@@ -3,7 +3,9 @@
  */
 
 const MongoClient = require('mongodb').MongoClient;
+
 const config = require('../configs/configs').mongodb
+
 const url = 'mongodb://' + config.host + ':' + config.port;
 const dbName = config.db;
 

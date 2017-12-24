@@ -22,7 +22,7 @@ def printAnalysers(strats):
         for item in strat.analyzers:
             print(item.get_analysis())
         print('==================================================')
-
+cd
 
 
 def looprun(interval=0,fcn=None, **kwargs):

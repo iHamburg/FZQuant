@@ -38,11 +38,12 @@ var utils = {
      * @returns {*}
      */
   send: function(res, obj, err) {
+    let response;
     if (err) {
       // console.log(err);
-      var response = {'resCode': err.code, 'msg': err.message};
+      response = {'resCode': err.code, 'msg': err.message};
     } else {
-      var response = {'resCode': this.SUCCESS_CODE, 'obj': obj};
+      response = {'resCode': this.SUCCESS_CODE, 'obj': obj};
     }
         // console.log(JSON.stringify(response));
 

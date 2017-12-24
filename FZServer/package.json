@@ -8,7 +8,7 @@
     "supervisor": "supervisor ./bin/www",
     "supervisor-dev": "cross-env NODE_ENV=dev supervisor ./bin/www",
     "forever-prd": "forever stopall & cross-env NODE_ENV=prd forever start -o forever_out.log -e forever_err.log -a bin/www",
-    "pm2": "pm2 start --name=fzserver"
+    "pm2": "pm2 start ./bin/www --name=fzserver"
   },
   "dependencies": {
     "axios": "^0.15.3",
