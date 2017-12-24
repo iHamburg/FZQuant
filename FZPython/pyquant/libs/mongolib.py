@@ -40,6 +40,9 @@ def get_data(code, index=False):
 
     col = db[_get_data_collection_name(code,index)]
     cursor = col.find()
+
+    # 删除_id
+
     return list(cursor)
 
 

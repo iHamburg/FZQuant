@@ -1,27 +1,31 @@
 from flask import Flask, url_for, request,abort,Response
-from flask_restful import Resource, Api
+from flask_restful import Resource, Api,reqparse
 import tushare
 import json
+import pyquant.libs.mongolib as mongolib
 
 app = Flask(__name__)
 api = Api(app)
+parser = reqparse.RequestParser()
 
-todos = {'hello':'world'}
+class Data(Resource):
+    def get(self, code):
+        # 查询code 的数据
+        data = mongolib.get_data(code)
+        print('data', data)
+        response = {'resCode': '00100000', 'obj':data};
+        return response, 200,{'Access-Control-Allow-Origin': '*'}
 
 
-class TodoSimple(Resource):
+
+class Parser(Resource):
     def get(self, todo_id):
         # return {todo_id: todos[todo_id]}
         df = tushare.get_k_data('000001', index=True, start="2017-1-1")
         response = {'resCode': '00100000', 'obj': json.loads(df.to_json(orient='records'))};
-        # print(response)
+
         return response, 200,{'Access-Control-Allow-Origin': '*'}
 
-    def put(self, todo_id):
-        todos[todo_id] = request.form['data']
-        return {todo_id: todos[todo_id]}
-
-api.add_resource(TodoSimple, '/todos/<string:todo_id>')
 
 
 #接收一个字符串
@@ -35,9 +39,6 @@ def response_headers(content):
 def hello_world():
     return 'Hello, World!11123'
 
-@app.route('/hello/')
-def hello():
-    return 'hello again'
 
 
 @app.route('/user/<username>')
@@ -63,12 +64,6 @@ def login2():
     abort(401)
     # this_is_never_executed()
 
-@app.route('/ts')
-def ts():
-    print('ts')
-
-    df = tushare.get_k_data('000001', index=True, start="2017-1-1")
-    return response_headers(df.to_json(orient='records'))
 
 
 @app.errorhandler(404)
@@ -82,6 +77,8 @@ def log():
     app.logger.warning('A warning occurred (%d apples)', 42)
     app.logger.error('An error occurred')
     return 'log'
+
+api.add_resource(Data, '/datas/<code>')
 
 
 if __name__ == '__main__':

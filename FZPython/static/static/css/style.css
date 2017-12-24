@@ -1,0 +1,571 @@
+@CHARSET "UTF-8";
+
+
+body {
+
+     background-color:#F2F3F5;
+
+    font-family:"PingFang SC Light","Heiti SC","San Francisco","Helvetica"; /*mobile*/
+
+    /*font-size:1.2rem;*/
+    /*line-height: 150%;*/
+}
+
+a{
+    color:#333; /* 超链接颜色*/
+    text-decoration:none
+}
+
+
+
+a:hover {
+    text-decoration: none; /* 取消悬浮在a上的文字的下划线 */
+}
+
+
+/*h1, .h1, h2, .h2, h3, .h3,h4,.h4{ !* 原本是inherit *!*/
+	/*color:#333;*/
+/*}*/
+
+/*h4{*/
+    /*font-size: 1.8rem;*/
+    /*line-height:1.5;*/
+
+    /*!* color: #333; *!*/
+    /*padding:0;*/
+    /*margin:0; */
+/*}*/
+
+/*footer{*/
+	/*background-color:#f8f8f8;*/
+	/*padding:20px;*/
+	/*margin-top:15px;*/
+	/*font-size: 1.2rem;*/
+	/*color:#666;*/
+/*}*/
+
+/* Begin of Bootstrap class */
+small,
+.small{
+    /*font-size:80%;*/
+    font-size:12px;
+}
+
+.large{
+    font-size:120%;
+}
+
+.lead {
+    margin-bottom: 20px;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.4;
+}
+
+.img-responsive{
+    display: block;
+    max-width: 100%;
+    height:auto;
+}
+
+.text-center{
+    text-align: center;
+}
+
+.color-title{
+    color: #4A4A4A;
+}
+
+.color-gray{
+    color: #9B9B9B;
+}
+
+.color-brown{
+    color: #CEB49D;
+}
+
+.color-red{
+    color: #ce1714;
+}
+
+.text-left {
+    text-align: left;
+}
+.text-right {
+    text-align: right;
+}
+.text-center {
+    text-align: center;
+}
+.text-justify {
+    text-align: justify;
+}
+.text-nowrap {
+    white-space: nowrap;
+}
+.text-lowercase {
+    text-transform: lowercase;
+}
+.text-uppercase {
+    text-transform: uppercase;
+}
+.text-capitalize {
+    text-transform: capitalize;
+}
+.text-muted {
+    color: #777;
+}
+.text-primary {
+    color: #337ab7;
+}
+a.text-primary:hover {
+    color: #286090;
+}
+.text-success {
+    color: #3c763d;
+}
+a.text-success:hover {
+    color: #2b542c;
+}
+.text-info {
+    color: #31708f;
+}
+a.text-info:hover {
+    color: #245269;
+}
+.text-warning {
+    color: #8a6d3b;
+}
+a.text-warning:hover {
+    color: #66512c;
+}
+.text-danger {
+    color: #a94442;
+}
+a.text-danger:hover {
+    color: #843534;
+}
+
+.list-unstyled {
+    padding-left: 0;
+    list-style: none;
+}
+.list-inline {
+    padding-left: 0;
+    margin-left: -5px;
+    list-style: none;
+}
+.list-inline > li {
+    display: inline-block;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.font-s{
+    font-size:12px;
+}
+
+.font-m{
+    font-size:14px;
+}
+
+.font-l{
+    font-size:16px;
+}
+.font-xl{
+    font-size:18px;
+}
+/* End of Bootstrap class*/
+
+
+/********* weui 页面 *****************/
+
+/*
+    背景黑色
+*/
+.inner-elements span{
+    filter:alpha(opacity=50);
+    -moz-opacity:0.5;
+    opacity:0.5;
+    background:#000;
+    margin-top:50px;
+    height:50px;
+    position: absolute;
+    width: 80%;
+    margin-left:10%;
+}
+
+/**
+*/
+.inner-elements label{
+    margin-top:50px;
+
+    line-height:50px;
+    font-size:16px;
+    font-weight:bold;
+    text-align:center;
+    color:#ffffff;
+    position: absolute;
+    width: 80%;
+    margin-left:10%;
+    height:50px;
+}
+
+
+.weui-grid-2 {
+     position: relative;
+    float: left;
+    /*padding: 20px 10px;*/
+    /*padding: 5vw 2.5vw;*/
+    width:50%;
+    box-sizing: border-box;
+
+    /*:active {*/
+        /*background-color: #ff0000;*/
+    /*}*/
+}
+
+.product-grid{
+    margin:2vw 2vw;
+    background-color: #ffffff;
+    font-size:12px;
+}
+
+.product-grid p{
+    height:25px;
+}
+.product-grid-bottom{
+
+    padding:0 2vw;
+
+}
+/************ End of weui 页面*/
+
+
+/* 路径导航 */
+.breadcrumb{
+	margin-top:20px;
+	background-color:inherit; /*继承上级颜色，可以用*/
+}
+
+.vertical-middle{
+	display:table-cell; vertical-align: middle; height:inherit;
+}
+
+.logo-img{
+	/* margin-left:15px; */
+	padding-top:3px;
+	height:44px;
+}
+
+.page{
+	
+	color: #666;
+    font-size: 1.5rem;
+  
+} 
+
+
+.border{
+
+    border: 1px solid #eee;
+}
+
+.border-bottom{
+	border-bottom: 1px solid #ddd;
+}
+
+
+.article{
+    color:#666;
+ 
+  
+}
+
+
+.leftWrap{
+	max-width:800px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.article-list-left{
+
+	display: table;
+	overflow:hidden;
+/* 	background-color:#f00; */
+	height:140px; /* 高度要确定 */
+	
+}
+
+.article-list-left img{
+	
+
+	height:auto;
+	margin-left: auto;
+    margin-right: auto;
+    max-height:150px;/* 规定了图片最多的高度，在高图时，限制了高度*/
+    max-width:100%;
+    
+  
+}
+
+.subwrap{
+   display: table-cell;
+   vertical-align: middle;
+   max-width:60px; /* ？？？实际width会比60寛？这里一定要设max-width, 不能100%，也不能inherite, 可能和table-cell有关*/
+}
+
+.lrTop{
+	
+}
+
+
+.list{
+	/* background-color:#0f0; */
+	
+	margin-top:10px;
+	padding-bottom:10px;
+}
+
+
+.listRight{
+    
+    padding-left:0;
+    padding-right:8px;
+}
+
+.article-list-title{
+	max-height:7rem;
+	overflow:hidden;
+
+	margin-bottom:5px;
+}
+.lrInfo{
+	max-height:100px;
+    overflow:hidden;
+    color: #666;
+    margin-bottom:5px;
+}
+
+.article-left img{
+	height:auto;
+    margin-left: auto;
+    margin-right: auto;
+    max-height:250px;/* 规定了图片最多的高度，在高图时，限制了高度*/
+    max-width:100%;
+    margin-bottom:15px;
+}
+
+.article-grid-image{
+	/*height:100px;*/
+
+	margin-bottom:10px;
+	margin-top:10px;
+}
+
+.article-grid-image img{
+    height:auto;
+    margin-left: auto;
+    margin-right: auto;
+    max-height:100px;/* 规定了图片最多的高度，在高图时，限制了高度*/
+    max-width:100%;  
+   
+}
+
+.article{
+	margin-top:20px;
+}
+
+.article-content{
+	height:100px;
+    overflow:hidden;
+}
+
+.buy{
+	height:inherit;
+
+}
+
+.article-title{
+	font-size: 2rem;
+
+    font-weight: bold;  
+}
+
+.other-articles{
+	margin-bottom:20px;
+}
+
+
+/* 斜对角 */
+.side-corner-tag {
+    position: relative;
+    color: #fff;
+    display: inline-block;
+    padding: 5px;
+    overflow: hidden;
+    font-weight: 900;
+} 
+ 
+.side-corner-tag p {
+    display: inline;    
+}
+
+.side-corner-tag p span {
+    position: absolute;
+    display: inline-block;
+    right: -25px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.2), inset 0px 5px 30px rgba(255,255,255,0.2);
+    text-align: center;
+    text-transform: uppercase;
+    top: 22px;
+    background: #d93131;
+    width: 100px;
+    padding: 3px 10px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+}
+
+
+.box{
+    width:300px;
+    height:270px; 
+    
+    border:1px solid #dadada;
+    background-color:#fff;
+}
+
+
+/* Tip */
+
+.tip-grid{
+	margin-bottom:50px;
+}
+
+.tip-grid-top{
+	margin-bottom:10px;
+	height:150px;
+}
+
+
+.tip-grid-top img{
+	
+	height:auto;
+    margin-left: auto;
+    margin-right: auto;
+    max-height:150px;/* 规定了图片最多的高度，在高图时，限制了高度*/
+    max-width:100%;
+}
+
+.tip-grid-title{
+    height: 2.5rem; 
+	overflow:hidden;
+	font-size: 2rem;
+	font-weight:bold;
+	margin-top:10px;
+	margin-bottom:10px;
+	line-height:1.5;
+}
+
+.tip-grid-subtitle{
+    height: 4.8rem;
+    overflow:hidden;
+    font-size: 1.3rem;
+    margin-bottom:10px;
+    color: #999;
+
+}
+
+.tip-img-text{
+	position:absolute; top:50%; right:50%; z-index:999;
+	
+}
+
+.tip-content{
+	/* 不用设p */
+	max-width:600px;
+	margin-left: auto;
+    margin-right: auto;
+    color:#666;
+    font-size:1.5rem;
+  
+}
+
+
+
+.tip-content img{
+	
+	width:100%;
+	height:auto;
+	margin-left: auto;
+    margin-right: auto;
+
+}
+
+.tip-content a{
+	/* color:#d42f2f; */
+	color:#039;
+	text-decoration:underline;
+	font-weight:bold;
+}
+/*returnTop*/  
+#back-to-top{  
+    position:fixed;  
+    /* display:none;   */
+    bottom:5%;  
+    right:5%;  
+}  
+#back-to-top a{  
+    text-align:center;  
+    text-decoration:none;  
+    color:#d1d1d1;  
+    display:block;  
+    width:64px;  
+    /*使用CSS3中的transition属性给跳转链接中的文字添加渐变效果*/  
+    -moz-transition:color 1s;  
+    -webkit-transition:color 1s;  
+    -o-transition:color 1s;  
+}  
+
+/* 用户登录      */
+.login-form{
+	
+	 /* background-color:#fff; */
+	 /* filter:alpha(opacity=50);  
+     -moz-opacity:0.5;  
+     -khtml-opacity: 0.5;  
+     opacity: 0.5; */  
+	
+	width:320px;background-color:#eee;position:absolute; top:25%;right:5%;
+}
+
+/* wyswyg*/
+
+#editor {overflow:scroll;width:500px;max-height:500px;margin-left:auto;margin-right:auto;margin-bottom:20px;}
+
+.wyswyg-toolbar{
+	margin-left:auto;margin-right:auto;
+}
+
+/* 悬浮在底部的banner */
+.fix-bottom{
+	position:fixed;
+	bottom:0;
+	height:50px;
+	line-height:50px;
+	width:100%;
+	background-color:#f5f5f5;
+	/*  filter:alpha(opacity=50);  
+      -moz-opacity:0.5;  
+     -khtml-opacity: 0.5;  
+     opacity: 0.5;  */ 
+}
+
+
+#header{
+    margin-bottom: 40px;
+
+}
