@@ -12,6 +12,7 @@ class Data(Resource):
     def get(self, code):
         # 查询code 的数据
         data = mongolib.get_data(code)
+
         print('data', data)
         response = {'resCode': '00100000', 'obj':data};
         return response, 200,{'Access-Control-Allow-Origin': '*'}
