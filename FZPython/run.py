@@ -1,56 +1,47 @@
 from flask import Flask, url_for, request,abort,Response
 from flask_restful import Resource, Api,reqparse
-import tushare
-import json
-import pyquant.libs.mongolib as mongolib
+import pyquant.libs.datalib as datalib
 
 app = Flask(__name__)
 api = Api(app)
 parser = reqparse.RequestParser()
 
+parser.add_argument('fromdate')
+parser.add_argument('todate')
+
 class Data(Resource):
     def get(self, code):
+        """
+
+        :param code:
+        :param fromedate:
+        :return:
+        """
+
+        args = parser.parse_args()
+        print('fromdate',args['fromdate'])
+
         # 查询code 的数据
-        data = mongolib.get_data(code)
+        params = ['fromdate','todate']
+        kwargs = {}
+        for param in params:
+            if args[param]:
+                kwargs[param] = args[param]
 
-        print('data', data)
-        response = {'resCode': '00100000', 'obj':data};
+         # TODO: 或者清除args内的None，就可以直接传**args，不需要处理kwargs了
+        data = datalib.get_api_data(code, **kwargs)
+
+        # print('data', data)
+        response = {'resCode': '00100000', 'obj':{"list":data}};
         return response, 200,{'Access-Control-Allow-Origin': '*'}
 
 
 
-class Parser(Resource):
-    def get(self, todo_id):
-        # return {todo_id: todos[todo_id]}
-        df = tushare.get_k_data('000001', index=True, start="2017-1-1")
-        response = {'resCode': '00100000', 'obj': json.loads(df.to_json(orient='records'))};
-
-        return response, 200,{'Access-Control-Allow-Origin': '*'}
-
-
-
-#接收一个字符串
-def response_headers(content):
-    resp = Response(content)
-    #返回数据添加头部信息
-    resp.headers['Access-Control-Allow-Origin'] = '*'
-    return resp
 
 @app.route('/')
 def hello_world():
-    return 'Hello, World!11123'
+    return 'Hello, World!'
 
-
-
-@app.route('/user/<username>')
-def show_user_profile(username):
-    # show the user profile for that user
-    return 'User %s' % username
-
-@app.route('/post/<int:post_id>')
-def show_post(post_id):
-    # show the post with the given id, the id is an integer
-    return 'Post %d' % post_id
 
 # 同一个route可以接受不同的protocol
 @app.route('/login', methods=['GET', 'POST'])
@@ -60,26 +51,7 @@ def login():
     else:
         return 'GET request'
 
-@app.route('/login2')
-def login2():
-    abort(401)
-    # this_is_never_executed()
-
-
-
-@app.errorhandler(404)
-def page_not_found(error):
-    print('404')
-    return error
-
-@app.route('/log')
-def log():
-    app.logger.debug('A value for debugging')
-    app.logger.warning('A warning occurred (%d apples)', 42)
-    app.logger.error('An error occurred')
-    return 'log'
-
-api.add_resource(Data, '/datas/<code>')
+api.add_resource(Data, '/api/datas/<code>')
 
 
 if __name__ == '__main__':

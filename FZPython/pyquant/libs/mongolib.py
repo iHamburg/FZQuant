@@ -30,16 +30,29 @@ def insert_data(code, df,index=False):
 
     col.insert(json.loads(df.to_json(orient='records')))
 
-def get_data(code, index=False):
+def get_data(code, index=False, **kwargs):
     """
 
     :param code:
     :param index:
+    :param fromdate:
     :return: list
     """
 
+    query = {}
+    date_query = {}
+    if 'fromdate' in kwargs.keys():
+        date_query['$gte'] = kwargs['fromdate']
+
+    if 'todate' in kwargs.keys():
+        date_query['$lt'] = kwargs['todate']
+
+    if date_query:
+        query['date'] = date_query
+
+    print('query', query)
     col = db[_get_data_collection_name(code,index)]
-    cursor = col.find()
+    cursor = col.find(query)
 
     # 删除_id
 
