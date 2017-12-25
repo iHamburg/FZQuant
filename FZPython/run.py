@@ -21,10 +21,12 @@ class Data(Resource):
         :return:
         """
         args = parser.parse_args()
-
+        print('begin get api data', code)
         data = datalib.get_api_data(code, **args)
         # print('data', data)
         response = {'resCode': '00100000', 'obj':{"list":data}};
+        # response = {'resCode': '00100000', 'obj': {"list": 123}};
+        print('response', response)
         return response, 200,{'Access-Control-Allow-Origin': '*'}
 
     def post(self, code):
