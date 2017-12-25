@@ -41,10 +41,10 @@ def get_data(code, index=False, **kwargs):
 
     query = {}
     date_query = {}
-    if 'fromdate' in kwargs.keys():
+    if 'fromdate' in kwargs.keys() and kwargs['fromdate']:
         date_query['$gte'] = kwargs['fromdate']
 
-    if 'todate' in kwargs.keys():
+    if 'todate' in kwargs.keys() and kwargs['todate']:
         date_query['$lt'] = kwargs['todate']
 
     if date_query:

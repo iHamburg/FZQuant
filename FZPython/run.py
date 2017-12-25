@@ -4,11 +4,14 @@ import pyquant.libs.datalib as datalib
 
 app = Flask(__name__)
 api = Api(app)
+
 parser = reqparse.RequestParser()
 
+# parser.add_argument('fromdate', default=False)
+# parser.add_argument('todate', default=False)
 parser.add_argument('fromdate')
 parser.add_argument('todate')
-
+parser.add_argument('index', default=False)
 class Data(Resource):
     def get(self, code):
         """
@@ -17,26 +20,19 @@ class Data(Resource):
         :param fromedate:
         :return:
         """
-
         args = parser.parse_args()
-        print('fromdate',args['fromdate'])
 
-        # 查询code 的数据
-        params = ['fromdate','todate']
-        kwargs = {}
-        for param in params:
-            if args[param]:
-                kwargs[param] = args[param]
-
-         # TODO: 或者清除args内的None，就可以直接传**args，不需要处理kwargs了
-        data = datalib.get_api_data(code, **kwargs)
-
+        data = datalib.get_api_data(code, **args)
         # print('data', data)
         response = {'resCode': '00100000', 'obj':{"list":data}};
         return response, 200,{'Access-Control-Allow-Origin': '*'}
 
-
-
+    def post(self, code):
+        args = parser.parse_args()
+        # print('query code from tushare to mongo', code, args)
+        datalib.insert_data(code, args['index'])
+        response = {'resCode': '00100000'};
+        return response, 200, {'Access-Control-Allow-Origin': '*'}
 
 @app.route('/')
 def hello_world():
