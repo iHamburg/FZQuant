@@ -33,14 +33,6 @@ export const routerConfig = [
     component: r => require.ensure([], () => r(require('../views/users/login.vue')), '1')
   },
   {
-    path: '/socketio',
-    meta: {
-      title: 'socketio测试',
-    },
-    name: 'socketio',
-    component: r => require.ensure([], () => r(require('../views/tutorials/socketio.vue')), '1')
-  },
-  {
     path: '/tutorials/',
     meta: {
       title: 'tutorials',
@@ -53,7 +45,7 @@ export const routerConfig = [
     meta: {
       title: 'tutorials',
     },
-    name: 'tests',
+    name: 'socketio',
     component: r => require.ensure([], () => r(require('../views/tutorials/socketio.vue')), '1')
   },
   {
@@ -61,7 +53,7 @@ export const routerConfig = [
     meta: {
       title: 'tutorials',
     },
-    name: 'tests',
+    name: 'tickdata',
     component: r => require.ensure([], () => r(require('../views/tutorials/tickdata.vue')), '1')
   },
 ];

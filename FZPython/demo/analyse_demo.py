@@ -21,8 +21,6 @@ import argparse
 
 
 
-
-
 def main():
 
     args = _parse_args()

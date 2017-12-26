@@ -2,7 +2,6 @@ from flask import Flask, url_for, request,abort,Response
 from flask_restful import Resource, Api
 from routes.data import Data
 
-
 app = Flask(__name__)
 api = Api(app)
 

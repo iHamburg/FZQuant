@@ -1,3 +1,6 @@
+"""
+获取实时盘口数据
+"""
 import tushare as ts
 from pymongo import MongoClient
 import json
