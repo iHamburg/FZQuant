@@ -44,11 +44,4 @@ thestrats = cerebro.run()
 
 cerebro.plot(savefile=True)
 
-# plotter = plot.Plot()
-# cerebro.plot(plotter=plotter)
-# print('fig ', plotter.mpyplot)
-
-# fig = plotter.mpyplot.figure()
-# print('fig',type(fig))
-# fig.savefig('plot.png')
 

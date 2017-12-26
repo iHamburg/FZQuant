@@ -25,3 +25,4 @@ def insert_data(code,index=False, **kwargs):
     df = tusharelib.get_data_df(code,index)
     mongolib.insert_data(code,df,index)
     return
+

@@ -44,7 +44,7 @@ def main():
     cerebro.broker.setcommission(commission=0.0015)  # 真实佣金： 0.15%
     cerebro.addsizer(bt.sizers.PercentSizer, percents=10)  # 每次投入10%资金
 
-    df = datalib.get_df_data(args.code)
+    df = datalib.get_df_data(args.code, index=True)
 
     kwargs = dict()
     # 开始时间
@@ -78,20 +78,20 @@ def main():
     utils.printAnalysers(thestrats)
 
     if args.plot:
-        cerebro.plot()
+        cerebro.plot(style='candle')
 
 def _parse_args():
     parser = argparse.ArgumentParser(
         description='Showcase for Order Execution Types')
 
     parser.add_argument('--code','-c',
-                        default='600756',
+                        default='000001',
                         help='stock code')
 
-    parser.add_argument('--fromdate', '-f', required=False, default='2017-1-1',
+    parser.add_argument('--fromdate', '-f', required=False, default='2013-01-01',
                         help='Ending date in YYYY-MM-DD format')
 
-    parser.add_argument('--todate', '-t', required=False, default=None,
+    parser.add_argument('--todate', '-t', required=False, default='2013-12-31',
                         help='Ending date in YYYY-MM-DD format')
 
     parser.add_argument('--ktype', '-k', required=False, default='D',
@@ -102,7 +102,7 @@ def _parse_args():
                         choices=['c2', 'c3'],
                         help='策略参数')
 
-    parser.add_argument('--plot', '-p', action='store_true',  required=False, default=False,
+    parser.add_argument('--plot', '-p', action='store_true',  required=False, default=True,
                         help='plot')
 
     return parser.parse_args()

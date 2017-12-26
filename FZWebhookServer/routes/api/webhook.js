@@ -15,27 +15,6 @@ router.all('*', function (req, res, next) {
   next();
 });
 
-router.post('/test', function (req, res, next) {
-  // var id = req.params.id;
-  console.log('=============begin post test');
-  console.log(req.body);
-  //restart service
-
-  var exec = require('child_process').exec;
-  var cmdStr = 'git pull && npm run forever';
-  // var cmdStr = 'ls';
-  exec(cmdStr, function(err, stdout, stderr) {
-    if (err) {
-      console.log(cmdStr + ' error:' + stderr);
-      return res.send('npm run forever error:' + stderr);
-    } else {
-      console.log(cmdStr + 'success ' + stdout + stderr);
-      return res.send(cmdStr + 'success ' + stdout + stderr);
-    }
-  });
-});
-
-
 router.post('/run', function (req, res, next) {
   // var id = req.params.id;
   console.log('=============begin post run');
@@ -43,9 +22,8 @@ router.post('/run', function (req, res, next) {
 
   var exec = require('child_process').exec;
 
-  //当前pwd ： FZServer
+  //当前pwd ： FZWebhookServer
   var cmdStr = 'scripts/webhook.sh'
-  // var cmdStr = 'ls';
   exec(cmdStr, function(err, stdout, stderr) {
     if (err) {
       console.log(cmdStr + ' \n error:' + stderr);
@@ -56,7 +34,6 @@ router.post('/run', function (req, res, next) {
     }
   });
 });
-
 
 router.get('/', function (req, res, next) {
 
