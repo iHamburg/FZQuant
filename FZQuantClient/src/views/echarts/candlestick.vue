@@ -11,6 +11,7 @@
 
   import IEcharts from 'vue-echarts-v3/src/full.js';
   import datalib from '../../libs/datalib'
+  import talib from '../../libs/talib'
 
   export default {
     name: 'candlechart',
@@ -92,18 +93,18 @@
                 }
               }
             },
-            {
-              name: 'MA5',
-              type: 'line',
-              data: this.calculateMA5,
-              smooth: true,
-              showSymbol: false,
-              lineStyle: {
-                normal: {
-                  width: 1
-                }
-              }
-            },
+//            {
+//              name: 'MA5',
+//              type: 'line',
+//              data: this.calculateMA5,
+//              smooth: true,
+//              showSymbol: false,
+//              lineStyle: {
+//                normal: {
+//                  width: 1
+//                }
+//              }
+//            },
           ]
         }
       }
@@ -116,19 +117,42 @@
       queryData() {
         console.log('======== begin queryData ');
         let self = this
-        datalib.getStock('002415?fromdate=2017-01-01', function(err, obj)  {
+        datalib.getStock('002119?fromdate=2017-01-01', function(err, obj)  {
           if (err) {
             console.log('err ', err);
           }
-          console.log('======== get stock', obj);
+//          console.log('======== get stock', obj);
           self.rawData = obj
+
+          let data = obj.map(item => {
+//            console.log('item',item);
+            return item[1]
+          })
+          console.log('data', data);
+
+          let data2 = talib.sma(data,10)
+          console.log('sma', data2);
           self.updateData()
         })
       },
       updateData() {
         this.bar.series[0].data = this.candleValues
         this.bar.xAxis.data = this.dates
-        this.bar.series[1].data = this.calculateMA5
+        this.bar.series.push(
+          {
+            name: 'MA5',
+            type: 'line',
+            data: this.calculateMA5,
+            smooth: true,
+            showSymbol: false,
+            lineStyle: {
+              normal: {
+                width: 1
+              }
+            }
+          }
+        ),
+//        this.bar.series[1].data = this.calculateMA5
       },
       onReady(instance) {
         console.log('on ready');

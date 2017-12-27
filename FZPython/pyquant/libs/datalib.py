@@ -4,19 +4,30 @@
 
 import pyquant.libs.mongolib as mongolib
 import pyquant.libs.tusharelib as tusharelib
-import json
-from bson.json_util import dumps
+from pyquant.models.security import *
+
 
 
 def get_api_data(code, index=False, **kwargs):
-    """返回api 需要的data数据
-        date, OCLH,volume
+    """
+    返回api 需要的data数据
+    date, OCLH,volume
     """
     data = mongolib.get_data(code,index,**kwargs)
 
     data = [[ item['date'],item['open'], item['close'],item['low'],item['high'],item['volume']] for item in data]
-    #  要区分压根没有code和加上搜索参数后没有数据的区别！
-    # data = json.loads(dumps(data))
+
+    return data
+
+def get_security(security):
+    """
+    返回api 需要的data数据
+    date, OCLH,volume
+    """
+    data = mongolib.get_security(security)
+
+    data = [[ item['date'],item['open'], item['close'],item['low'],item['high'],item['volume']] for item in data]
+
     return data
 
 def insert_data(code,index=False, **kwargs):

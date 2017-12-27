@@ -49,12 +49,12 @@ export const routerConfig = [
     component: r => require.ensure([], () => r(require('../views/tutorials/socketio.vue')), '1')
   },
   {
-    path: '/tutorials/tickdata',
+    path: '/echarts/candlestick',
     meta: {
       title: 'tutorials',
     },
-    name: 'tickdata',
-    component: r => require.ensure([], () => r(require('../views/tutorials/tickdata.vue')), '1')
+    name: 'candlestick',
+    component: r => require.ensure([], () => r(require('../views/echarts/candlestick.vue')), '1')
   },
 ];
 

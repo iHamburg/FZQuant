@@ -18,6 +18,7 @@
     "jquery": "^3.2.1",
     "mint-ui": "^2.2.3",
     "pinyin": "^2.8.3",
+    "ta-lib.sma": "0.0.6",
     "underscore": "^1.8.3",
     "vue": "^2.4.2",
     "vue-echarts-v3": "^1.0.18",

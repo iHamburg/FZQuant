@@ -30,7 +30,7 @@ def insert_data(code, df,index=False):
 
     col.insert(json.loads(df.to_json(orient='records')))
 
-def get_data(code, index=False, **kwargs):
+def get_data(col_name, **kwargs):
     """
 
     :param code:
@@ -51,10 +51,37 @@ def get_data(code, index=False, **kwargs):
         query['date'] = date_query
 
     print('query', query)
-    col = db[_get_data_collection_name(code,index)]
+
+    col = db[col_name]
+
     cursor = col.find(query)
 
-    # 删除_id
+    return list(cursor)
+
+
+def get_security(security):
+    """
+    根据security生成query，然后查询mongodb
+
+    :param security: Security
+    :return: list
+    """
+
+    query = {}
+    date_query = {}
+
+    if security.fromdate:
+        date_query['$gte'] = security.fromdate
+
+    if security.todate:
+        date_query['$lt'] = security.todate
+
+    if date_query:
+        query['date'] = date_query
+
+    # print('query', query)
+    col = db[security.collection_name]
+    cursor = col.find(query)
 
     return list(cursor)
 
@@ -71,7 +98,6 @@ def insertTickData(df):
 
 if __name__ == '__main__':
     print("Begin")
-    print(get_data('600193'))
 
 
     print('===== ENDE ====')
