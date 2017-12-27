@@ -53,7 +53,7 @@ def get_df_data(code,index=False, **kwargs):
     if df.empty:
         # 从tushare 下载 数据
 
-        df = tusharelib.get_data_df(code,index)
+        df = tusharelib.get_df(code, index)
 
         # 如果从tushare里没有拉回数据
         if df.empty:

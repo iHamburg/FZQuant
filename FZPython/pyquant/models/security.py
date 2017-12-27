@@ -5,7 +5,6 @@ class Security(object):
 
     """
 
-
     def __init__(self, code, market, type,  **kwargs):
         self.code = code
         self.market = market
@@ -16,6 +15,6 @@ class Security(object):
 
 class Stock(Security):
 
-    def __init__(self,code,market, **kwargs):
+    def __init__(self,code,market="SH", **kwargs):
         super(Stock, self).__init__(code,market,'STOCK', **kwargs)
 

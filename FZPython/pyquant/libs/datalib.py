@@ -33,7 +33,7 @@ def get_security(security):
 def insert_data(code,index=False, **kwargs):
     """ 从tushare拉数据，存入mongodb"""
     print('insert index', index)
-    df = tusharelib.get_data_df(code,index)
+    df = tusharelib.get_df(code, index)
     mongolib.insert_data(code,df,index)
     return
 

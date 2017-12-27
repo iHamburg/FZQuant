@@ -2,6 +2,7 @@
 
 from flask_restful import Resource, Api,reqparse
 import pyquant.libs.datalib as datalib
+import json
 from pyquant.models.security import *
 from pyquant.models.data import *
 parser = reqparse.RequestParser()
@@ -22,17 +23,17 @@ class Data(Resource):
         """
         args = parser.parse_args()
 
-        # 构建Security
+        stock = Stock(code)
+        sd = SecurityData(stock, TushareSource, fromdate='2017-01-01')
+        df = sd.get_df()
+        print(df)
 
-        security = Security(code,args.market,'STOCK')
-        data = SecurityData(security, fromdate=args.fromdate)
-        data.get_values_from_mongo()
-        values = data.api_values
-        # print('values',values)
 
-        response = {'resCode': '00100000', 'obj':{"list":values}};
+        l = json.loads(df.to_json(orient='records'))
 
-        # print('response', response)
+        response = {'resCode': '00100000', 'obj':{"list":l}};
+
+        print('response', response)
         return response, 200,{'Access-Control-Allow-Origin': '*'}
 
     def post(self, code):
