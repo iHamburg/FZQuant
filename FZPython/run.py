@@ -19,7 +19,7 @@ def login():
     else:
         return 'GET request'
 
-# add Router
+# Add Router
 
 api.add_resource(Data, '/api/datas/<code>')
 

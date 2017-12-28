@@ -4,36 +4,20 @@
 import tushare as ts
 import json
 
-def get_df(code, index=False,  **kwargs):
-    """
-    从 tushare 下载 股票 日数据
-    :param code:
-    :return:
-    """
-    print('从tushare下载',code,index)
-
-    df = ts.get_k_data(code, index=index, start="1990-1-1")
-
-    return df
-
-def get_list(code, index=False,  **kwargs):
-    """
-    从 tushare 下载 股票 日数据
-    :param code:
-    :return:
-    """
-    print('从tushare下载',code,index)
-
-    df = ts.get_k_data(code, index=index, start="1990-1-1")
-
-    value_list = json.loads(df.to_json(orient='records'))
-
-    return value_list
 
 def get_data(code, index=False, output='df', **kwargs):
     """
     从 tushare 下载 股票 日数据
+
+    光从code不能判断是否是index，要用code+market
+
+    tusharelib 需要知道code， index
+
     :param code:
+    :param output:
+        df:
+        list
+        obj
     :return:
             list: OCLH
     """
@@ -48,6 +32,11 @@ def get_data(code, index=False, output='df', **kwargs):
     df = ts.get_k_data(code, index=index, start=start)
 
     if output == 'df':
+        del df['code']
+        df['date'] = df['date'].astype('datetime64')
+        df = df.set_index('date')
+        cols = ['open', 'high', 'close', 'low', 'volume']
+        df = df.ix[:, cols]
         return df
     elif output == 'obj':
         return json.loads(df.to_json(orient='records'))

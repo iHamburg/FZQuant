@@ -1,6 +1,7 @@
 
 import pyquant.libs.tusharelib as tusharelib
 import pyquant.libs.mongolib as mongolib
+
 class Datasource(object):
     """
 
@@ -9,12 +10,6 @@ class Datasource(object):
     def __init__(self, type,  **kwargs):
         self.type = type
 
-
-    def get_df(self, code, **kwargs):
-        pass
-
-    def get_list(self, code, **kwargs):
-        pass
 
     def get_data(self, code, output='df', **kwargs):
         raise NotImplementedError
@@ -27,16 +22,17 @@ class TushareSource(Datasource):
     def __init__(self, **kwargs):
         super(TushareSource, self).__init__('tushare', **kwargs)
 
-    def get_df(self, code, **kwargs):
-        df = tusharelib.get_df(code)
-        return  df
+    @classmethod
+    def is_code_index(cls,code):
+        if code == '000001':
+            return True
 
-    def get_list(self, code, **kwargs):
-        pass
+        return False
 
     def get_data(self, code, output='df', **kwargs):
 
-        return tusharelib.get_data(code,False, output, **kwargs)
+        is_index = TushareSource.is_code_index(code)
+        return tusharelib.get_data(code,is_index, output, **kwargs)
 
 
 class MongoSource(Datasource):
@@ -44,10 +40,22 @@ class MongoSource(Datasource):
     def __init__(self, **kwargs):
         super(MongoSource, self).__init__('mongodb', **kwargs)
 
-    def get_df(self, code, **kwargs):
-        df = mongolib.get_df('s'+code, **kwargs)
 
-        return  df
+    @classmethod
+    def get_col_name(cls, code):
+        return 's'+code
 
     def get_data(self, code, output='df', **kwargs):
-        return mongolib.get_data('s'+code,output,**kwargs)
+        col_name = MongoSource.get_col_name(code)
+        return mongolib.get_data(col_name,output,**kwargs)
+
+
+if __name__ == '__main__':
+    print("Begin")
+
+    # source = MongoSource()
+    source = TushareSource()
+    print(source.get_data('002119'))
+
+
+    print('===== ENDE ====')

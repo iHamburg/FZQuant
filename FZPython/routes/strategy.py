@@ -14,7 +14,7 @@ parser.add_argument('market')
 parser.add_argument('index', default=False)
 
 
-class Data(Resource):
+class Strategy(Resource):
     def get(self, code):
         """
 

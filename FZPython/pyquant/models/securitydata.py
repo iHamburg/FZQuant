@@ -4,11 +4,19 @@ from pyquant.models.security import *
 from pyquant.models.datasource import *
 
 class SecurityData(object):
+    """
+    包括
+    security
+    datasource
+    values
+    fromedate
+    todate
 
+    """
     fromdate = None
     todate = None
     time_type = 'D'
-    collection_name = None
+
     date = []
     values = []
     volume = []
@@ -35,19 +43,6 @@ class SecurityData(object):
         if 'time_type' in kwargs.keys():
             self.time_type = kwargs['time_type']
 
-    @property
-    def collection_name(self):
-        return 's' + self.security.code
-
-    @property
-    def api_values(self):
-        return [[item['date'], item['open'], item['close'],item['high'], item['low'], item['volume']] for item in self.values]
-
-
-    def get_df(self):
-        return self.datasource.get_df(self.security.code)
-
-    def get_list(self):pass
 
     def get_data(self, output='df'):
         return self.datasource.get_data(self.security.code, output, fromdate = self.fromdate,

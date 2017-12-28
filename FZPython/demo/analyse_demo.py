@@ -12,10 +12,10 @@ if module_path not in sys.path:
 
 import backtrader as bt
 import pyquant.utils.utils as utils
-import pyquant.datasource.data as datalib
+
 # from pyquant.strategies.fzstrategy import (CrossOver3)
 import pyquant.strategies.fzstrategy as strat
-
+from pyquant.models.securitydata import *
 import datetime
 import argparse
 
@@ -44,7 +44,12 @@ def main():
     cerebro.broker.setcommission(commission=0.0015)  # 真实佣金： 0.15%
     cerebro.addsizer(bt.sizers.PercentSizer, percents=10)  # 每次投入10%资金
 
-    df = datalib.get_df_data(args.code, index=True)
+    # df = datalib.get_df_data(args.code, index=True)
+    # df =
+
+    stock = Stock('002119')
+    sd = SecurityData(stock, TushareSource, fromdate=args.fromdate)
+    df = sd.get_data()
 
     kwargs = dict()
     # 开始时间

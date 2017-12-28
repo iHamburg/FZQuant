@@ -2,7 +2,7 @@
 # coding: utf8
 
 from pyquant.models.security import *
-from pyquant.models.data import *
+from pyquant.models.securitydata import *
 import pyquant.libs.datalib as datalib
 
 a = Security('1','sh','stock')
