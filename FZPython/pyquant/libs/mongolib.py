@@ -73,8 +73,8 @@ def get_df(col_name, **kwargs):
 
 def get_data(col_name, output='df', **kwargs):
     """
-    从 tushare 下载 股票 日数据
-    :param code:
+    从 mongodb 下载 股票 日数据
+    :param col_name:
     :return:
             list: OCLH
     """

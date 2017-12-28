@@ -37,9 +37,15 @@ def get_data(code, index=False, output='df', **kwargs):
     :return:
             list: OCLH
     """
-    print('从tushare下载',code,index)
+    print('从tushare下载',code,kwargs)
 
-    df = ts.get_k_data(code, index=index, start="1990-1-1")
+    if 'fromdate' in kwargs.keys():
+        start = kwargs['fromdate']
+    else:
+        start = '1990-1-1'
+
+
+    df = ts.get_k_data(code, index=index, start=start)
 
     if output == 'df':
         return df

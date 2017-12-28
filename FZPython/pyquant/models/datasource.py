@@ -16,9 +16,14 @@ class Datasource(object):
     def get_list(self, code, **kwargs):
         pass
 
+    def get_data(self, code, output='df', **kwargs):
+        raise NotImplementedError
+
 
 class TushareSource(Datasource):
-
+    """
+    Tushare 数据源
+    """
     def __init__(self, **kwargs):
         super(TushareSource, self).__init__('tushare', **kwargs)
 
@@ -28,6 +33,10 @@ class TushareSource(Datasource):
 
     def get_list(self, code, **kwargs):
         pass
+
+    def get_data(self, code, output='df', **kwargs):
+
+        return tusharelib.get_data(code,False, output, **kwargs)
 
 
 class MongoSource(Datasource):
@@ -39,3 +48,6 @@ class MongoSource(Datasource):
         df = mongolib.get_df('s'+code, **kwargs)
 
         return  df
+
+    def get_data(self, code, output='df', **kwargs):
+        return mongolib.get_data('s'+code,output,**kwargs)
