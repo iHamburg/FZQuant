@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 ##
 
-# import tushare as ts
-# import json
 
 import backtrader as bt
 import pyquant.utils.utils as utils

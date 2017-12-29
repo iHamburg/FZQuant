@@ -40,7 +40,7 @@ class Strategy(Resource):
 
     def post(self, code):
         args = parser.parse_args()
-        # print('query code from tushare to mongo', code, args)
+
 
         utillib.fill_data(code,False)
         response = {'resCode': '00100000'};
@@ -48,7 +48,18 @@ class Strategy(Resource):
 
 
 class Backtest(Resource):
-    def post(self):
+    def get(self):
         args = parser.parse_args()
+        print('进行回测')
 
+        # 构建 Strategy
+        # 需要有一套strategyId => strategy的方案
+
+        # 构建 df
+
+
+        # 运行
+
+        response = {'resCode': '00100000'};
+        return response, 200, {'Access-Control-Allow-Origin': '*'}
 
