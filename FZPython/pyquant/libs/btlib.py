@@ -33,12 +33,10 @@ def run_strategy(strategy, df, **kwargs):
     fromdate = '2017-01-01'
     # 开始时间
     if 'fromdate' in kwargs.keys():
-        fromdate = kwargs['fromdate']
         kwargs['fromdate'] = datetime.datetime.strptime(kwargs['fromdate'], '%Y-%m-%d')
 
     # 结束时间
     if 'todate' in kwargs.keys():
-        todate = kwargs['todate']
         kwargs['todate'] = datetime.datetime.strptime(kwargs['todate'], '%Y-%m-%d')
 
     data = bt.feeds.PandasData(dataname=df,**kwargs)
@@ -89,12 +87,10 @@ def opt_strategy(strategy, df, strargs, **kwargs):
     fromdate = '2017-01-01'
     # 开始时间
     if 'fromdate' in kwargs.keys():
-        fromdate = kwargs['fromdate']
         kwargs['fromdate'] = datetime.datetime.strptime(kwargs['fromdate'], '%Y-%m-%d')
 
     # 结束时间
     if 'todate' in kwargs.keys():
-        todate = kwargs['todate']
         kwargs['todate'] = datetime.datetime.strptime(kwargs['todate'], '%Y-%m-%d')
 
 

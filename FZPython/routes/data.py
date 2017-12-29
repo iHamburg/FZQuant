@@ -37,8 +37,15 @@ class Data(Resource):
 
     def post(self, code):
         args = parser.parse_args()
-        # print('query code from tushare to mongo', code, args)
 
         utillib.fill_data(code,False)
         response = {'resCode': '00100000'};
+        return response, 200, {'Access-Control-Allow-Origin': '*'}
+
+class DataBt(Resource):
+    def get(self,code):
+        print('code', code)
+        response = {'resCode': '00100000'};
+
+        # print('response', response)
         return response, 200, {'Access-Control-Allow-Origin': '*'}

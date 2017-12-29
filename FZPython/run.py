@@ -1,6 +1,6 @@
 from flask import Flask, url_for, request,abort,Response
 from flask_restful import Resource, Api
-from routes.data import Data
+from routes.data import (Data, DataBt)
 
 app = Flask(__name__)
 api = Api(app)
@@ -22,6 +22,7 @@ def login():
 # Add Router
 
 api.add_resource(Data, '/api/datas/<code>')
+api.add_resource(DataBt, '/api/datas/<code>/bt/<strategyId>')
 
 
 if __name__ == '__main__':
