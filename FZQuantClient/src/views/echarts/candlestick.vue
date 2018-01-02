@@ -152,7 +152,7 @@
             }
           }
         ),
-//        this.bar.series[1].data = this.calculateMA5
+        this.bar.series[1].data = this.calculateMA5
       },
       onReady(instance) {
         console.log('on ready');

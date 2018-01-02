@@ -12,6 +12,17 @@ class Datasource(object):
 
 
     def get_data(self, code, output='df', **kwargs):
+        """
+        查询daily_price数据
+
+        :param code:
+        :param output:
+        :param kwargs:
+        :return:
+        """
+        raise NotImplementedError
+
+    def insert_daily_price(self, code, df):
         raise NotImplementedError
 
 
@@ -49,6 +60,11 @@ class MongoSource(Datasource):
         col_name = MongoSource.get_col_name(code)
         return mongolib.get_data(col_name,output,**kwargs)
 
+
+class MySQLSource(Datasource):
+    """
+        从Mysql中操作数据
+    """
 
 if __name__ == '__main__':
     print("Begin")
