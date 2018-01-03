@@ -4,6 +4,7 @@ import pyquant.libs.mongolib as mongolib
 
 class Datasource(object):
     """
+    Datasource 是对外模块的Wrapper
 
     """
     type = None
@@ -22,8 +23,8 @@ class Datasource(object):
         """
         raise NotImplementedError
 
-    def insert_daily_price(self, code, df):
-        raise NotImplementedError
+    # def insert_daily_price(self, code, df):
+    #     raise NotImplementedError
 
 
 class TushareSource(Datasource):

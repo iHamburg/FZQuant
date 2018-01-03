@@ -1,90 +1,78 @@
 #!/usr/bin/env python
 # coding: utf8
+import pymysql.cursors
+from pyquant.configs.configs import mysql as config
 
-from pymongo import MongoClient
-from pyquant.configs.configs import mongodb as config
-import pandas as pd
-import json
-import pydash
+# Connection
+connection = pymysql.connect(host = config['host'],
+                             user = config['user'],
+                             password= config['password'],
+                             db= config['db'],
+                             charset='utf8',
+                             cursorclass=pymysql.cursors.DictCursor)
 
-conn = MongoClient(config['host'], config['port'])
-db = conn.fzquant
+
+#Insert
+
+def execute_sql(sql, param = None):
+    with connection.cursor() as cursor:
+        # Create a new record
+        cursor.execute(sql, param)
+
+        # connection is not autocommit by default. So you must commit to save
+        # your changes.
+        connection.commit()
+
+        return cursor
 
 
-def insert_data(col_name, df):
+
+def insert_daily_price(param):
+    sql = "INSERT INTO `daily_price` (`symbol_id`,  `price_date`, `open_price`, `high_price`, `low_price`, `close_price`, `volume`) VALUES " \
+          "(%s, %s, %s, %s, %s, %s, %s)"
+
+    return execute_sql(sql,param)
+
+def insert_symbol(param):
     """
-    插入数据
 
-    TODO: 需要去重
-
-    :param code: 股票代码
-    :param df: dataframe
+    :param param:
     :return:
     """
-    # 获取collection
-    col = db[col_name]
-    # 插入数据
-    print('开始向',col_name,'插入数据')
-    col.insert(json.loads(df.to_json(orient='records')))
+    sql = "INSERT INTO `symbol` (`exchange_id`, `ticker`, `instrument`,`name`) VALUES (%s, %s, %s, %s)"
 
-def get_data(col_name, output='df', **kwargs):
-    """
-    从 mongodb 下载 股票 日数据
-
-    mongolib需要知道column
-
-    :param col_name:
-    :return:
-            list: OCLH
-    """
-    query = {}
-    date_query = {}
-    if 'fromdate' in kwargs.keys() and kwargs['fromdate']:
-        date_query['$gte'] = kwargs['fromdate']
-
-    if 'todate' in kwargs.keys() and kwargs['todate']:
-        date_query['$lt'] = kwargs['todate']
-
-    if date_query:
-        query['date'] = date_query
-
-    # print('query', query)
-
-    col = db[col_name]
-
-    cursor = col.find(query)
-
-    if output == 'df':
-        df = pd.DataFrame(list(cursor))
-        del df['_id']
-        del df['code']
-        df['date'] = df['date'].astype('datetime64')
-        df = df.set_index('date')
-        cols = ['open', 'high', 'close', 'low', 'volume']
-        df = df.ix[:, cols]
-        return df
-    elif output == 'obj':
-        obj_list = list(cursor)
-
-        return [pydash.omit(item, '_id','code') for item in obj_list]
-
-    elif output == 'list':
-        obj_list = list(cursor)
-        return   [[ item['date'],item['open'], item['close'],item['low'],item['high'],item['volume']] for item in obj_list]
+    return execute_sql(sql,param)
 
 
 
-def insertTickData(df):
-    """
-    插入盘口数据
-    :param df:
-    :return:
-    """
+# Delete
+def delete():
+    with connection.cursor() as cursor:
+        # Create a new record
+        sql = "delete from `daily_price` where id=%s"
+        cursor.execute(sql, ('2'))
 
-    col = db.tickData
-    col.insert(json.loads(df.to_json(orient='records')))
+    # connection is not autocommit by default. So you must commit to save
+    # your changes.
+    connection.commit()
+
+
+def read_daily_price_by_symbol_id(symbol_id):
+    """"""
+
+    sql = "select * from `daily_price` where symbol_id=%s"
+    cursor = execute_sql(sql, (symbol_id))
+
+    return cursor.fetchall()
+
 
 if __name__ == '__main__':
-    print("Begin")
-    print(get_data('s002119', output='obj'))
-    print('===== ENDE ====')
+    """"""
+    # insert()
+    # update()
+    # delete()
+    # read()
+    # insert_daily_price(('1', '12.9','2017-01-01'))
+    # cursor = insert_symbol(('1','6001213','stock','我也不知道'))
+    # cursor = insert_daily_price(('2','2017-01-02','11','12','13','14','11111'))
+    print(read_daily_price_by_symbol_id(1))
