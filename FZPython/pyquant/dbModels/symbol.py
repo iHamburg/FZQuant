@@ -23,6 +23,7 @@ class Symbol(Base):
             self.id, self.exchange_id, self.ticker, self.instrument, self.name, self.sector)
 
 
+
 if __name__ == '__main__':
     """"""
     from sqlalchemy import create_engine

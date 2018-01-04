@@ -3,6 +3,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from pyquant.config import mysql as config
+from pyquant.dbModels.symbol import Symbol
 
 engine = create_engine("mysql+pymysql://%s:%s@%s/%s?charset=utf8" % (config['user'],config['password'],
                     config['host'],config['db']))
@@ -18,11 +19,14 @@ def query_to_obj(query):
 
     return arr
 
+def get_symbol_df(symbol):
+    query = session.query(Symbol)
+
 
 if __name__ == '__main__':
     """"""
 
-    print(session)
+
     # insert()
     # update()
     # delete()

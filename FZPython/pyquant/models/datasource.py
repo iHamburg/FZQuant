@@ -23,7 +23,8 @@ class Datasource(object):
         """
         raise NotImplementedError
 
-
+    def get_daily_price(self, ticker, index=False, output='df', fromdate = None, **kwargs):
+        raise NotImplementedError
 
 class TushareSource(Datasource):
     """
@@ -67,8 +68,8 @@ class MySQLSource(Datasource):
         从Mysql中操作数据
     """
     def get_data(self, code, output='df', **kwargs):
-        col_name = MongoSource.get_col_name(code)
-        return mongolib.get_data(col_name,output,**kwargs)
+        """"""
+
 
 
 if __name__ == '__main__':
