@@ -25,6 +25,30 @@ def insert_daily_price(symbol):
     print('begin insert', symbol)
     index = (True if symbol.instrument == 'index' else False)
     df = ts.get_k_data(symbol.ticker, index = index, start = '1918-01-01')
+    print('下载数据完备',symbol.ticker)
+    daily_prices = []
+    # print(df.dtypes)
+    for indexs in df.index:
+        arr = df.loc[indexs].values
+        # print(arr)
+
+        daily_prices.append(dict(symbol_id=symbol.id, price_date=arr[0], open_price=float(arr[1]), close_price=float(arr[2]),
+                  high_price=float(arr[3]), low_price=float(arr[4]), volume=int(arr[5])))
+
+
+    session.execute(
+        Daily_price.__table__.insert(),
+        daily_prices
+    )
+    session.commit()
+
+    print('after insert', symbol)
+
+
+def insert_daily_price2(symbol):
+    print('begin insert', symbol)
+    index = (True if symbol.instrument == 'index' else False)
+    df = ts.get_k_data(symbol.ticker, index = index, start = '1918-01-01')
     # print(df.dtypes)
     for indexs in df.index:
         arr = df.loc[indexs].values
@@ -46,6 +70,15 @@ def delete_symbol_id(symbol_id):
     session.commit()
 
 
+def insert():
+
+    for symbol in session.query(Symbol).filter(Symbol.id>130).limit(1000):
+        insert_daily_price(symbol)
+
+
+
+
+
 
 if __name__ == '__main__':
     """"""
@@ -54,14 +87,12 @@ if __name__ == '__main__':
     # insert_index_to_symbol()
     # insert_daily_price()
 
-    # symbol = session.query(Symbol).get()
+    # symbol = session.query(Symbol).get(20)
     # insert_daily_price(symbol)
 
     # print(get_latest_symbol())
     # daily_price = get_latest_symbol()
-    # delete_symbol_id(daily_price.symbol_id)
+    # delete_symbol_id
 
-    for symbol in session.query(Symbol).filter(Symbol.id>17).limit(10):
-        insert_daily_price(symbol)
-
+    insert()
 

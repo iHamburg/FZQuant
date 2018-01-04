@@ -21,6 +21,10 @@ class Daily_price(Base):
         return "<Daily_price( symbol_id='%s', price_date='%s', o='%s', h='%s', l='%s', c='%s', v=='%s')>" % (
             self.symbol_id, self.price_date, self.open_price, self.high_price, self.low_price, self.close_price, self.volume)
 
+    def as_dict(self):
+        obj = {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        obj['price_date'] = str(obj['price_date'])
+        return  obj
 
 if __name__ == '__main__':
     """"""
