@@ -16,3 +16,20 @@ def fill_data(code,index):
     mongolib.insert_data(col_name,df)
 
     return
+
+def query_to_json(query):
+    arr = []
+    for row in query:
+        arr.append(row.as_dict())
+
+    return arr
+
+if __name__ == '__main__':
+    """"""
+
+    from pyquant.dbModels.symbol import Symbol as m_symbol
+    from pyquant.libs.mysqllib import session, engine
+
+    query = session.query(m_symbol)
+
+    print(query_to_json(query.all()))
