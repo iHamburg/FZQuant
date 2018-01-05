@@ -8,6 +8,7 @@ import json
 import pydash
 
 conn = MongoClient(config['host'], config['port'])
+
 db = conn.fzquant
 
 

@@ -26,6 +26,8 @@ class Daily_price(Base):
         obj['price_date'] = str(obj['price_date'])
         return  obj
 
+
+
 if __name__ == '__main__':
     """"""
     from sqlalchemy import create_engine

@@ -3,7 +3,7 @@ import pyquant.libs.tusharelib as tusharelib
 from pyquant.models.security import *
 from pyquant.models.datasource import *
 
-class SecurityData(object):
+class SymbolData(object):
     """
     包括
     security
@@ -24,17 +24,16 @@ class SecurityData(object):
     values = []
     volume = []
     df = None
-    security = None
     datasource = None
 
-    def __init__(self, security, _datasource, **kwargs):
+    def __init__(self, symbol, _datasource, **kwargs):
         """
 
         :param security:
         :param _datasource: 类名
         :param kwargs:
         """
-        self.security = security
+        self.symbol = symbol
         self.datasource = _datasource()
 
         if 'fromdate' in kwargs.keys():
@@ -53,7 +52,9 @@ class SecurityData(object):
 
 
 
+
+
 if __name__ == '__main__':
     stock = Stock('002119')
-    sd = SecurityData(stock, TushareSource, fromdate='2017-01-01')
+    # sd = SecurityData(stock, TushareSource, fromdate='2017-01-01')
     print(sd.get_data())
