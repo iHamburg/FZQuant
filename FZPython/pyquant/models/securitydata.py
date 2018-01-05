@@ -51,7 +51,8 @@ class SecurityData(object):
         return self.datasource.get_data(self.security.code, output, fromdate = self.fromdate,
                                         todate = self.todate)
 
-
+    def get_daily_price(self, output = 'df'):
+        return self.datasource.get_daily_price()
 
 if __name__ == '__main__':
     stock = Stock('002119')

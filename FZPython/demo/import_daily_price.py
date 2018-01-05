@@ -35,7 +35,6 @@ def insert_daily_price(symbol):
         daily_prices.append(dict(symbol_id=symbol.id, price_date=arr[0], open_price=float(arr[1]), close_price=float(arr[2]),
                   high_price=float(arr[3]), low_price=float(arr[4]), volume=int(arr[5])))
 
-
     session.execute(
         Daily_price.__table__.insert(),
         daily_prices

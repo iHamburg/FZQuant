@@ -11,6 +11,7 @@ import datetime
 
 def run_strategy(strategy, df, **kwargs):
     """
+    运行策略
 
     :return:
     """
@@ -26,7 +27,6 @@ def run_strategy(strategy, df, **kwargs):
     cerebro.broker.setcash(1000000)
     cerebro.broker.setcommission(commission=0.0015)  # 真实佣金： 0.15%
     cerebro.addsizer(bt.sizers.PercentSizer, percents=10)  # 每次投入10%资金
-
 
     # 开始时间
     if 'fromdate' in kwargs.keys():
@@ -59,6 +59,9 @@ def run_strategy(strategy, df, **kwargs):
     return thestrats
 
     # utils.printAnalysers(thestrats)
+
+def run_strategy_by_symbol(strategy, symbol, **kwargs):
+    """"""
 
 
 
@@ -129,6 +132,7 @@ def test_run_strategy():
     # 运行策略
     run_strategy(strategy, df)
 
+
 def test_opt_strategy():
     strategy = strat.CrossOver2
     stock = Stock('002119')
@@ -137,6 +141,7 @@ def test_opt_strategy():
 
     # 调试策略
     strargs = dict(fast=range(5, 10))
+
     opt_strategy(strategy, df, strargs)
 
 if __name__ == '__main__':

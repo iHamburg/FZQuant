@@ -20,6 +20,7 @@ session = DBSession()
 
 
 def download_instutry_classfied():
+    """下载工业数据"""
     df = ts.get_industry_classified()
     df.to_excel('industry_classified.xlsx')
 
@@ -63,6 +64,7 @@ def update_tick():
     session.commit()
 
 def download_index():
+    """下载指数"""
     df = ts.get_index()
     df.to_excel('index.xlsx')
 

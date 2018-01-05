@@ -23,6 +23,7 @@ class Datasource(object):
         """
         raise NotImplementedError
 
+
     def get_daily_price(self, symbol_data):
         raise NotImplementedError
 
@@ -67,6 +68,7 @@ class MySQLSource(Datasource):
     """
         从Mysql中操作数据
     """
+
     def get_daily_price(self, symbol_data):
         """
         用symbol_data的symbol，从mysql中获得daily_price 数据
@@ -75,6 +77,7 @@ class MySQLSource(Datasource):
         """
         symbol = symbol_data.symbol
         # 根据symbol_id去查数据
+
 
 
 
