@@ -87,18 +87,18 @@ class Backtest(object):
             if type(strat) == list:
                 strat = strat[0]
 
-            # strat = strat[0]  # 在opt中strat是列表
-            # print('Parameter: ',type(strat.p._getkwargs()), strat.p._getkwargs())
             self.reporter.strategy_params = strat.p._getkwargs()
-            for item in strat.analyzers:
+            for analyzer in strat.analyzers:
                 # print(type(item),item)
-                print(item.__class__.__name__)
-                print(item.get_analysis())
-                print(item.get_analysis()['sharperatio'])
+
+                print(analyzer.get_analysis())
+                name = analyzer.__class__.__name__
+                if name == 'SharpeRatio':
+                    self.reporter.sharpe_ratio = analyzer.get_analysis()['sharperatio']
 
 
-            print('==================================================')
-
+        print('cash',cerebro.broker.get_cash())
+        print('value', cerebro.broker.get_value())
         print(self.reporter.__dict__)
 
         return thestrats
