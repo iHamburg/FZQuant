@@ -61,6 +61,9 @@ def run_strategy(strategy, df, **kwargs):
 
     # utils.printAnalysers(thestrats)
 
+def run_strategy_by_symbol(strategy, symbol, **kwargs):
+    """"""
+
 
 
 def opt_strategy(strategy, df, strargs, **kwargs):
