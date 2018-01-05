@@ -72,7 +72,7 @@ def delete_symbol_id(symbol_id):
 
 def insert():
 
-    for symbol in session.query(Symbol).filter(Symbol.id>130).limit(1000):
+    for symbol in session.query(Symbol).filter(Symbol.id>820).all():
         insert_daily_price(symbol)
 
 
