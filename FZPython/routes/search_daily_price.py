@@ -26,24 +26,7 @@ class SearchDailyPrice(Resource):
         """
         args = parser.parse_args()
 
-
-        where = []
-
-        if args.symbol_id:
-            symbol_id = args.symbol_id
-
-        if symbol_id:
-            where.append(Daily_price.symbol_id == symbol_id)
-
-        if args.fromdate:
-            where.append( Daily_price.price_date >= args.fromdate)
-
-        if args.todate:
-            where.append(Daily_price.price_date < args.todate)
-
-        print(where)
-
-        arr = query_to_obj(query.filter(*where).all())
+        arr = Daily_price.get_by_symbol_id(symbol_id,fromdate=args.fromdate, todate = args.todate)
 
         response = {'resCode': '00100000', 'obj':arr};
         # print('response', response)

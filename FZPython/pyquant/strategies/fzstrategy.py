@@ -14,6 +14,8 @@ import backtrader.analyzers as btanal
 
 class FZStrategy(bt.Strategy):
 
+    name = None
+
     def log(self, txt, dt=None, isprint=False):
         if isprint:
             dt = dt or  self.data.datetime.date(0)

@@ -1,6 +1,7 @@
 
 import pyquant.libs.tusharelib as tusharelib
 import pyquant.libs.mongolib as mongolib
+from pyquant.dbModels.daily_price import Daily_price
 
 class Datasource(object):
     """
@@ -8,7 +9,7 @@ class Datasource(object):
 
     """
     type = None
-    def __init__(self, type,  **kwargs):
+    def __init__(self, type = None,  **kwargs):
         self.type = type
 
 
@@ -77,9 +78,13 @@ class MySQLSource(Datasource):
         """
         symbol = symbol_data.symbol
         # 根据symbol_id去查数据
+        return Daily_price.get_by_symbol_id(symbol.id, output='df',fromdate = symbol_data.fromdate, todate = symbol_data.todate)
 
 
 
+def test_mysql_get_daily_price():
+    source = MySQLSource()
+    print(source.get_daily_price())
 
 if __name__ == '__main__':
     print("Begin")

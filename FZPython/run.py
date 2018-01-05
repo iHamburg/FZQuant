@@ -27,7 +27,7 @@ api.add_resource(Data, '/api/datas/<code>')
 api.add_resource(DataBt, '/api/datas/<code>/bt/<strategyId>')
 api.add_resource(Symbol, '/api/symbols/<id>')
 api.add_resource(Symbols, '/api/symbols/')
-api.add_resource(SearchDailyPrice, '/api/symbols/<symbol_id>/dailyprice/')
+api.add_resource(SearchDailyPrice, '/api/symbols/<symbol_id>/dailyprices/')
 
 if __name__ == '__main__':
     print('____main____')

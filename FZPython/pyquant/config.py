@@ -16,3 +16,8 @@ mysql = dict(
     password='root',
     db='fzquant'
 )
+
+cerebro = dict(
+    cash = 1000000,
+    commission = 0.0015
+)
