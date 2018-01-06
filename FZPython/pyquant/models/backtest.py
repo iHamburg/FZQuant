@@ -1,7 +1,7 @@
 
 import backtrader as bt
 import pyquant.utils.utils as utils
-from pyquant.dbModels.symbol import Symbol
+from pyquant.db_models import Symbol
 from pyquant.models.symboldata import SymbolData
 # from pyquant.strategies.fzstrategy import (CrossOver3)
 from pyquant.models.reporter import Reporter
@@ -68,12 +68,13 @@ class Backtest(object):
 
         cerebro.addstrategy(self.strategy)
         cerebro.addanalyzer(bt.analyzers.SharpeRatio)
+        cerebro.addanalyzer(bt.analyzers.TradeAnalyzer)
 
         thestrats = cerebro.run()
 
 
 
-
+        # 生成reporter
         self.reporter.start_cash = params['starting_cash']
         self.reporter.commission = params['commission']
         self.reporter.strategy_name = self.strategy.name
@@ -81,6 +82,9 @@ class Backtest(object):
         self.reporter.todate = todate
         self.reporter.symbol_name = self.symboldata.symbol.name
         self.reporter.symbol_ticker = self.symboldata.symbol.ticker
+        self.reporter.end_cash = cerebro.broker.get_cash()
+        self.reporter.total_value = cerebro.broker.get_value()
+
 
         for strat in thestrats:
             print('--------------------------------------------------')
@@ -91,14 +95,18 @@ class Backtest(object):
             for analyzer in strat.analyzers:
                 # print(type(item),item)
 
-                print(analyzer.get_analysis())
+                # print(analyzer.get_analysis())
+                # analyzer.pprint()
                 name = analyzer.__class__.__name__
+                print('name',name)
                 if name == 'SharpeRatio':
                     self.reporter.sharpe_ratio = analyzer.get_analysis()['sharperatio']
+                if name == 'TradeAnalyzer':
+                    obj = analyzer.get_analysis()
+                    print('total', obj['total']['total'])
 
 
-        print('cash',cerebro.broker.get_cash())
-        print('value', cerebro.broker.get_value())
+
         print(self.reporter.__dict__)
 
         return thestrats
@@ -107,9 +115,9 @@ class Backtest(object):
 
 
 
-def test():
+def main():
     strategy = strat.CrossOver3
-    strategy.name = 'hello kitty'
+
     symbol = Symbol.get(17)
     sd = SymbolData(symbol, MySQLSource, fromdate='2017-01-01')
 
@@ -118,12 +126,7 @@ def test():
     bt.run_strategy(fromdate='2017-01-01')
 
 
-    # bt.strategy = strat.CrossOver2
-    # bt.run_strategy()
-
-    # print(bt.reporter)
-
-def test2():
+def main2():
     bt = Backtest()
     print(bt.name)
     bt.name = 'newname'
@@ -135,20 +138,8 @@ if __name__ == '__main__':
     from pyquant.models.securitydata import *
     import pyquant.strategies.fzstrategy as strat
 
-    test()
+    main()
 
-    # strategy = strat.CrossOver2
-    #
-    # stock = Stock('002119')
-    # sd = SecurityData(stock, MongoSource, fromdate='2017-01-01')
-    # df = sd.get_data()
-    #
-    # backtest = Backtest(strategy,df)
-    # backtest.run()
-    # 运行策略
-    # run_strategy(strategy, df)
-
-    # 调试策略
 
 
     print('=====END=======')

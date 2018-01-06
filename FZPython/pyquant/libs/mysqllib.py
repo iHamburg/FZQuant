@@ -3,24 +3,23 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from pyquant.config import mysql as config
-# from pyquant.dbModels.symbol import Symbol
+from sqlalchemy.ext.declarative import declarative_base
 
-engine = create_engine("mysql+pymysql://%s:%s@%s/%s?charset=utf8" % (config['user'],config['password'],
-                    config['host'],config['db']))
+
+__all__ = [
+    'session',
+    'engine',
+    'Base',
+]
+
+engine = create_engine("mysql+pymysql://%s:%s@%s/%s?charset=utf8" %
+                       (config['user'], config['password'], config['host'], config['db']))
 # 创建DBSession类型:
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
+Base = declarative_base()
 
-def query_to_obj(query):
-    arr = []
-    for row in query:
-        arr.append(row.as_dict())
-
-    return arr
-
-# def get_symbol_df(symbol):
-#     query = session.query(Symbol)
 
 
 if __name__ == '__main__':

@@ -3,7 +3,7 @@
 
 import backtrader as bt
 import pyquant.utils.utils as utils
-from pyquant.dbModels.symbol import Symbol
+from pyquant.db_models import Symbol
 from pyquant.models.symboldata import SymbolData
 # from pyquant.strategies.fzstrategy import (CrossOver3)
 from pyquant.config import cerebro as config

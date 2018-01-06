@@ -42,6 +42,8 @@ def looprun(interval=0,fcn=None, **kwargs):
     else :
         fcn(**kwargs)
 
+def main():
+    print('main')
 
 if __name__ == '__main__':
     print("======= Begin")

@@ -20,14 +20,14 @@ def fill_data(code,index):
 def query_to_json(query):
     arr = []
     for row in query:
-        arr.append(row.as_dict())
+        arr.append(row.to_dict())
 
     return arr
 
 if __name__ == '__main__':
     """"""
 
-    from pyquant.dbModels.symbol import Symbol as m_symbol
+    from pyquant.db_models import Symbol as m_symbol
     from pyquant.libs.mysqllib import session, engine
 
     query = session.query(m_symbol)

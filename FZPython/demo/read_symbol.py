@@ -7,7 +7,7 @@ import pandas as pd
 
 from pyquant.libs.mysqllib import session
 
-from pyquant.dbModels.symbol import Symbol
+from pyquant.db_models import Symbol
 
 
 

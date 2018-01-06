@@ -28,6 +28,7 @@ class FZStrategy(bt.Strategy):
         self.buyprice = None
         self.buycomm = None
 
+    
     def start(self):
         self.log('=====Strategy start')
 

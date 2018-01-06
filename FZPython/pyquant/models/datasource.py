@@ -1,7 +1,7 @@
 
 import pyquant.libs.tusharelib as tusharelib
 import pyquant.libs.mongolib as mongolib
-from pyquant.dbModels.daily_price import Daily_price
+from pyquant.db_models import DailyPrice
 
 class Datasource(object):
     """
@@ -28,10 +28,12 @@ class Datasource(object):
     def get_daily_price(self, symbol_data):
         raise NotImplementedError
 
+
 class TushareSource(Datasource):
     """
     Tushare 数据源
     """
+
     def __init__(self, **kwargs):
         super(TushareSource, self).__init__('tushare', **kwargs)
 
@@ -63,8 +65,6 @@ class MongoSource(Datasource):
         return mongolib.get_data(col_name,output,**kwargs)
 
 
-
-
 class MySQLSource(Datasource):
     """
         从Mysql中操作数据
@@ -78,13 +78,13 @@ class MySQLSource(Datasource):
         """
         symbol = symbol_data.symbol
         # 根据symbol_id去查数据
-        return Daily_price.get_by_symbol_id(symbol.id, output='df',fromdate = symbol_data.fromdate, todate = symbol_data.todate)
-
+        return DailyPrice.get_by_symbol_id(symbol.id, output='df', fromdate = symbol_data.fromdate, todate = symbol_data.todate)
 
 
 def test_mysql_get_daily_price():
     source = MySQLSource()
     print(source.get_daily_price())
+
 
 if __name__ == '__main__':
     print("Begin")

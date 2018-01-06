@@ -3,8 +3,6 @@
 # from pyquant.models.security import *
 # from pyquant.models.datasource import *
 
-from pyquant.dbModels.symbol import Symbol
-from pyquant.models.datasource import *
 
 class Reporter(object):
     """
@@ -16,6 +14,7 @@ class Reporter(object):
     todate = None
     strategy = None
     starting_cash = 1000
+    end_cash = 1000
     commission = 0
     end_cash = 0
     total_value = 0
@@ -37,7 +36,7 @@ class Reporter(object):
         """
         self._backtest = backtest
 
-    # def as_dict(self):
+    # def to_dict(self):
     #     return {c.name: getattr(self, c.name) for c in self.__dict__}
 
 

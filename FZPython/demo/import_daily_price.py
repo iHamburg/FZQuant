@@ -6,8 +6,8 @@ import tushare as ts
 import pandas as pd
 
 
-from pyquant.dbModels.symbol import Symbol
-from pyquant.dbModels.daily_price import Daily_price
+from pyquant.db_models import Symbol
+from pyquant.db_models import DailyPrice
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -17,11 +17,12 @@ engine = create_engine("mysql+pymysql://root:root@121.42.26.144/fzquant?charset=
 # 创建DBSession类型:
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
-query = session.query(Daily_price)
+query = session.query(DailyPrice)
 
 
 
 def insert_daily_price(symbol):
+    """批量插入数据"""
     print('begin insert', symbol)
     index = (True if symbol.instrument == 'index' else False)
     df = ts.get_k_data(symbol.ticker, index = index, start = '1918-01-01')
@@ -36,7 +37,7 @@ def insert_daily_price(symbol):
                   high_price=float(arr[3]), low_price=float(arr[4]), volume=int(arr[5])))
 
     session.execute(
-        Daily_price.__table__.insert(),
+        DailyPrice.__table__.insert(),
         daily_prices
     )
     session.commit()
@@ -53,19 +54,19 @@ def insert_daily_price2(symbol):
         arr = df.loc[indexs].values
         # print(arr)
 
-        session.add(Daily_price(symbol_id = symbol.id, price_date = arr[0], open_price = float(arr[1]), close_price=float(arr[2]),
-                                high_price = float(arr[3]), low_price = float(arr[4]), volume = int(arr[5])))
+        session.add(DailyPrice(symbol_id = symbol.id, price_date = arr[0], open_price = float(arr[1]), close_price=float(arr[2]),
+                               high_price = float(arr[3]), low_price = float(arr[4]), volume = int(arr[5])))
 
 
     session.commit()
     print('after insert', symbol)
 
 def get_latest_daily_price_by_symbol_id():
-    return  session.query(Daily_price).order_by(Daily_price.symbol_id.desc()).first()
+    return  session.query(DailyPrice).order_by(DailyPrice.symbol_id.desc()).first()
 
 def delete_symbol_id(symbol_id):
     print('delete', symbol_id)
-    query.filter(Daily_price.symbol_id == symbol_id).delete(synchronize_session=False)
+    query.filter(DailyPrice.symbol_id == symbol_id).delete(synchronize_session=False)
     session.commit()
 
 

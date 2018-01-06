@@ -6,7 +6,7 @@ import tushare as ts
 import pandas as pd
 
 
-from pyquant.dbModels.symbol import Symbol
+from pyquant.db_models import Symbol
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker

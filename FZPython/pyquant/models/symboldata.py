@@ -3,7 +3,7 @@
 # from pyquant.models.security import *
 # from pyquant.models.datasource import *
 
-from pyquant.dbModels.symbol import Symbol
+from pyquant.db_models import Symbol
 from pyquant.models.datasource import *
 
 class SymbolData(object):
@@ -28,7 +28,7 @@ class SymbolData(object):
     df = None
     datasource = None
 
-    def __init__(self, symbol, _datasource, **kwargs):
+    def __init__(self, symbol=None, _datasource=None, **kwargs):
         """
         ?? 需要symbol还是symbol_id?
         :param security:
@@ -54,6 +54,8 @@ class SymbolData(object):
 
     def get_daily_price(self):
         return self.datasource.get_daily_price(self)
+
+
 
 
 def test_get_daily_price():
