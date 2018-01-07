@@ -3,23 +3,36 @@
 
 
 from sqlalchemy import Column, String,Integer, Float, DateTime
+from sqlalchemy import Table, Text
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 from pyquant.libs.mysqllib import session, Base
 import pandas as pd
 
+# Many-Many Relation
+symbolgroup_symbol = Table('symbolgroup_symbol', Base.metadata,
+    Column('symbol_id', ForeignKey('symbol.id'), primary_key=True),
+    Column('symbolgroup_id', ForeignKey('symbolgroup.id'), primary_key=True))
+
 
 class User(Base):
-    __tablename__ = 'users'
+    __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    fullname = Column(String)
+    username = Column(String)
+    # fullname = Column(String)
     password = Column(String)
 
-    def __repr__(self):
-        return "<User(name='%s', fullname='%s', password='%s')>" % (
-            self.name, self.fullname, self.password)
+    # def __repr__(self):
+    #     return "<User(name='%s', fullname='%s', password='%s')>" % (
+    #         self.name, self.fullname, self.password)
+
+    def to_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+    @staticmethod
+    def get(_id):
+        return session.query(__class__).get(_id)
 
 
 class Symbol(Base):
@@ -36,6 +49,8 @@ class Symbol(Base):
     instrument = Column(String)
     name = Column(String)
     sector = Column(String)
+    symbolgroup = relationship('SymbolGroup',secondary = symbolgroup_symbol,back_populates = 'symbol')
+
 
     def to_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
@@ -50,18 +65,29 @@ class Symbol(Base):
 
     @staticmethod
     def query():
+        """该类的query"""
         return session.query(__class__)
 
     @staticmethod
-    def find_all(limit=30, offset=0):
+    def find_all(limit=30, offset=0, output='dict'):
         # return session.query(__class__).filter(filter_context).limit(limit).offset(offset).all()
-        return session.query(__class__).limit(limit).offset(offset).all()
+        result = session.query(__class__).limit(limit).offset(offset).all()
 
+        if output == 'dict':
+            return [row.to_dict() for row in result]
+        else:
+            return result
+
+    @staticmethod
+    def get_list_by_symbolgroup_id(symbolgroup_id, limit=30, offset=0):
+        return session.query(Symbol).filter(Symbol.symbolgroup.any(id=symbolgroup_id)).\
+            limit(limit).offset(offset).all()
 
     @staticmethod
     def get_by_ticker(ticker, index=False):
         """
         返回ticker的symbol
+
         :param ticker:
         :param index:
         :return:
@@ -127,25 +153,46 @@ class DailyPrice(Base):
             cols = ['open', 'high', 'close', 'low', 'volume']
             df = df.ix[:, cols]
             return df
-        else:
-
+        elif output == 'dict':
             return [row.to_dict() for row in session.query(DailyPrice).filter(*where).all()]
+        else:
+            return session.query(DailyPrice).filter(*where).all()
 
     @staticmethod
-    def get(id):
-        return session.query(DailyPrice).get(id)
+    def get(_id):
+        return session.query(__class__).get(_id)
 
+
+class SymbolGroup(Base):
+    __tablename__ = 'symbolgroup'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship("User", back_populates="symbolgroup")
+    symbol = relationship('Symbol',secondary = symbolgroup_symbol,back_populates = 'symbolgroup')
+
+
+    def to_dict(self):
+        obj = {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+        return obj
+
+    @staticmethod
+    def get(_id):
+        return session.query(__class__).get(_id)
+
+    @staticmethod
+    def get_system_groups():
+
+        return session.query(__class__).filter(SymbolGroup.user_id == 0).all()
+
+
+# One-Many Relations
 Symbol.daily_price = relationship("DailyPrice", back_populates="symbol")
+User.symbolgroup = relationship("SymbolGroup", back_populates="user")
 
 
-
-def _get():
-    s = Symbol.get(17)
-    print(s.name)
-    print(Symbol.get(17))
-
-def _query():
-    Symbol.query()
 
 
 def _query_relation():
@@ -155,13 +202,42 @@ def _query_relation():
 
 
 def _query_join():
-    pprint.pprint(session.query(DailyPrice).join(Symbol).filter(Symbol.id == 2433).all())
+    pprint.pprint(session.query(DailyPrice).join(Symbol).filter(Symbol.id == 2433).limit(10).all())
 
 
 def _symbol_find_all():
     # print(Symbol.find_all((Symbol.id > 200),10))
     print(Symbol.find_all(limit = 10))
 
+def _add_user_symbolgroup():
+    user = User(username='new user', password='123')
+    print(user)
+
+    sg = SymbolGroup(name='上证50')
+
+    user.symbolgroup = [sg]
+    session.add(user)
+    session.commit()
+
+def _test_m_m_relation1():
+    sd = SymbolGroup.get(3)
+    print(sd.symbol)
+
+def _test_m_m_relation2():
+    query = session.query(Symbol). \
+        filter(Symbol.symbolgroup.any(id=3)). \
+        all()
+    print(query)
+
+def _test_add_m_m_relation():
+    sd = SymbolGroup.get(3)
+    sd.symbol.append(Symbol.get(19))
+    session.commit()
+
+def _test_delete_m_m_relation():
+    sd = SymbolGroup.get(3)
+    sd.symbol.remove(Symbol.get(19))
+    session.commit()
 
 if __name__ == '__main__':
     """"""
@@ -172,5 +248,20 @@ if __name__ == '__main__':
     # print(Symbol.get_by_ticker('000001', True))
     # query_relation()
     # _query_join()
+
     # _symbol_find_all()
     # print(Symbol.query().limit(10).all())
+
+    # print(User.get(1).to_dict())
+    # print(Symbol.get(17).to_dict())
+
+    # query = session.query(Symbol). \
+    #     filter(Symbol.symbolgroup.any(id=3)). \
+    #     all()
+    #
+    # print(query)
+
+    # _test_add_m_m_relation()
+    # _test_delete_m_m_relation()
+
+    print(session.query(SymbolGroup).filter(SymbolGroup.user_id == 0).all())

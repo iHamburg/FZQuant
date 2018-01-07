@@ -1,7 +1,7 @@
 from flask import Flask, url_for, request,abort,Response
 from flask_restful import Resource, Api
-from routes import SymbolRouter, SymbolsRouter, SymbolDailyPriceRouter
-
+# from routes import SymbolRouter, SymbolsRouter, SymbolDailyPricesRouter,
+from routes import *
 
 app = Flask(__name__)
 api = Api(app)
@@ -22,10 +22,11 @@ def login():
 
 # Add Router
 
-
+api.add_resource(UserRouter, '/api/users/<uid>')  #
 api.add_resource(SymbolRouter, '/api/symbols/<id>')
-api.add_resource(SymbolsRouter, '/api/symbols/')
-api.add_resource(SymbolDailyPriceRouter, '/api/symbols/<symbol_id>/dailyprices/')
+api.add_resource(SymbolsRouter, '/api/symbols/', '/api/symbolgroups/<symbolgroup_id>/symbols')
+api.add_resource(SymbolDailyPricesRouter, '/api/symbols/<symbol_id>/dailyprices/')
+api.add_resource(SymbolGroupsRouter, '/api/symbolgroups/', '/api/stock_indexes/')  #股票指数
 
 if __name__ == '__main__':
     print('____main____')

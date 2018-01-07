@@ -33,6 +33,22 @@ export const routerConfig = [
     component: r => require.ensure([], () => r(require('../views/users/login.vue')), '1')
   },
   {
+    path: '/users',
+    meta: {
+      title: '用户首页',
+    },
+    name: '用户首页',
+    component: r => require.ensure([], () => r(require('../views/users/login.vue')), '1')
+  },
+  {
+    path: '/stock_indexes',
+    meta: {
+      title: '股票指数',
+    },
+    name: '股票指数',
+    component: r => require.ensure([], () => r(require('../views/stock_indexes.vue')), '1')
+  },
+  {
     path: '/tutorials/',
     meta: {
       title: 'tutorials',

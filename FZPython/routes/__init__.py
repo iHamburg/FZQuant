@@ -2,7 +2,7 @@
 
 
 from flask_restful import Resource, reqparse
-from pyquant.db_models import Symbol, DailyPrice
+from pyquant.db_models import Symbol, DailyPrice, User, SymbolGroup
 import pyquant.libs.utillib as utillib
 
 parser = reqparse.RequestParser()
@@ -10,6 +10,11 @@ parser.add_argument('limit', default=30)
 parser.add_argument('offset')
 parser.add_argument('todate')
 parser.add_argument('fromdate')
+
+def send_response(obj=None, err=None):
+    if obj:
+        response = {'resCode': '00100000', 'obj': obj};
+        return response, 200, {'Access-Control-Allow-Origin': '*'}
 
 #
 class DailyPriceRouter(Resource):
@@ -25,15 +30,13 @@ class DailyPriceRouter(Resource):
 
         # print(value_list)
 
-        response = {'resCode': '00100000', 'obj':{"list":''}};
-
-        print('response', response)
-        return response, 200,{'Access-Control-Allow-Origin': '*'}
+        return send_response({"hello"})
 
 
 
 
-class SymbolDailyPriceRouter(Resource):
+
+class SymbolDailyPricesRouter(Resource):
     def get(self, symbol_id):
         """
 
@@ -44,43 +47,65 @@ class SymbolDailyPriceRouter(Resource):
 
         daily_prices = DailyPrice.get_by_symbol_id(symbol_id, fromdate=args.fromdate, todate = args.todate)
 
-
-        response = {'resCode': '00100000', 'obj':daily_prices};
-        # print('response', response)
-        return response, 200,{'Access-Control-Allow-Origin': '*'}
+        return send_response({"list": daily_prices})
 
 
 
 class SymbolsRouter(Resource):
-    def get(self):
+    def get(self, symbolgroup_id=None):
         """
+        返回Symbol列表
 
-        :param code:
-        :param fromdate:
+        :param symbolgroup_id:
         :return:
         """
         args = parser.parse_args()
 
-        array = [row.to_dict() for row in Symbol.query().limit(args.limit).offset(args.offset)]
+        if symbolgroup_id: # 返回该symbolgroup下所有的symbol
+            array = [row.to_dict() for row in Symbol.get_list_by_symbolgroup_id(symbolgroup_id)]
+        else:
+            array = Symbol.find_all(limit=args.limit, offset=args.offset, output='dict')
 
-        response = {'resCode': '00100000', 'obj':array};
-
-        return response, 200,{'Access-Control-Allow-Origin': '*'}
+        return send_response({"list":array})
 
 
 
 class SymbolRouter(Resource):
+
     def get(self, id):
         """
+        :param code:
+        :param fromdate:
+        :return:
+        """
+        symbol = Symbol.get(id)
 
+        return send_response(symbol.to_dict())
+
+
+class SymbolGroupsRouter(Resource):
+    def get(self):
+        """
+        :return:
+        """
+
+        # args = parser.parse_args()
+
+        array = [row.to_dict() for row in SymbolGroup.get_system_groups()]
+
+        return send_response({"list":array})
+
+
+#  ===========   User
+class UserRouter(Resource):
+    def get(self, uid):
+        """
         :param code:
         :param fromdate:
         :return:
         """
 
-        symbol = Symbol.get(id)
+        user = User.get(uid)
 
-        response = {'resCode': '00100000', 'obj':symbol.to_dict()};
+        return send_response(user.to_dict())
 
-        # print('response', response)
-        return response, 200,{'Access-Control-Allow-Origin': '*'}

@@ -3,6 +3,6 @@
  */
 
 export default {
-  host: 'http://localhost',
+  host: 'http://121.42.26.144',
   port: '3020',
 }

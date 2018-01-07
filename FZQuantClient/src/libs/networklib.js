@@ -35,7 +35,7 @@ const baseUrl = 'http://localhost:5000/api'
 let get = function(url) {
   return new Promise(function (resolve, reject) {
     Vue.http.get(baseUrl + url).then(obj => {
-        // console.log('data',obj);
+      console.log('data',obj);
       var data = obj.body || {};
 
       if (data.resCode == '00100000') {

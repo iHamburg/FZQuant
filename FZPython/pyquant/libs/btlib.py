@@ -4,7 +4,7 @@
 import backtrader as bt
 import pyquant.utils.utils as utils
 from pyquant.db_models import Symbol
-from pyquant.models.symboldata import SymbolData
+from pyquant.models.symbol_data import SymbolData
 # from pyquant.strategies.fzstrategy import (CrossOver3)
 from pyquant.config import cerebro as config
 
@@ -176,34 +176,23 @@ def test_run_strategy():
         print(item.get_analysis())
     print('==================================================')
 
-def test_run_strategy_mongo():
-    strategy = strat.CrossOver2
-    stock = Stock('002119')
-    sd = SecurityData(stock, MongoSource, fromdate='2017-01-01')
-    df = sd.get_data(
-        output='df'
-    )
 
-    print(df)
-
-    # 运行策略
-    run_strategy(strategy, df)
 
 def test_opt_strategy():
     strategy = strat.CrossOver2
-    stock = Stock('002119')
-    sd = SecurityData(stock, MongoSource, fromdate='2017-01-01')
-    df = sd.get_data()
+    # stock = Stock('002119')
+    # sd = SecurityData(stock, MongoSource, fromdate='2017-01-01')
+    # df = sd.get_data()
 
     # 调试策略
-    strargs = dict(fast=range(5, 10))
+    # strargs = dict(fast=range(5, 10))
 
-    opt_strategy(strategy, df, strargs)
+    # opt_strategy(strategy, df, strargs)
 
 if __name__ == '__main__':
 
     print('=====Begin=======')
-    from pyquant.models.securitydata import *
+    # from pyquant.models.securitydata import *
     import pyquant.strategies.fzstrategy as strat
 
     test_run_strategy()

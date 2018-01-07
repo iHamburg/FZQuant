@@ -15,9 +15,10 @@ import pyquant.utils.utils as utils
 
 # from pyquant.strategies.fzstrategy import (CrossOver3)
 import pyquant.strategies.fzstrategy as strat
-from pyquant.models.securitydata import *
+# from pyquant.models.securitydata import *
 import datetime
 import argparse
+from pyquant.models.symbol_data import SymbolData
 
 
 
@@ -47,9 +48,12 @@ def main():
     # df = datalib.get_df_data(args.code, index=True)
     # df =
 
-    stock = Stock('002119')
-    sd = SecurityData(stock, TushareSource, fromdate=args.fromdate)
-    df = sd.get_data()
+    # stock = Stock('002119')
+    # sd = SecurityData(stock, TushareSource, fromdate=args.fromdate)
+    # df = sd.get_data()
+
+    sd = SymbolData(17, fromdate='2017-01-01')
+    df = sd.get_daily_price(output='df')
 
     kwargs = dict()
     # 开始时间
@@ -93,10 +97,10 @@ def _parse_args():
                         default='000001',
                         help='stock code')
 
-    parser.add_argument('--fromdate', '-f', required=False, default='2013-01-01',
+    parser.add_argument('--fromdate', '-f', required=False, default='2017-01-01',
                         help='Ending date in YYYY-MM-DD format')
 
-    parser.add_argument('--todate', '-t', required=False, default='2013-12-31',
+    parser.add_argument('--todate', '-t', required=False, default=None,
                         help='Ending date in YYYY-MM-DD format')
 
     parser.add_argument('--ktype', '-k', required=False, default='D',
