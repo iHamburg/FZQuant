@@ -11,13 +11,37 @@ import networklib from './networklib'
 
 export default {
 
+  // 返回所有股票指数列表
   get_stock_indexes(callback) {
-    console.log('symbollib getstock');
-    networklib.get('/stock_indexes/').then(obj => {
+    networklib.get('/symbols/?index=1').then(obj => {
       // console.log('get stock', obj);
       callback(null, obj.list);
     })
-      .catch(err => { callback(err) });
-  }
+      .catch(err => {
+        callback(err)
+      });
+  },
+
+  get_symbols_by_group_id(id, callback) {
+    console.log('symbollib get', id);
+    networklib.get('/symbolgroups/' + id + '/symbols').then(obj => {
+
+      callback(null, obj.list);
+    })
+      .catch(err => {
+        callback(err)
+      });
+  },
+
+  queryDailyPrices(symbolId, callback) {
+    networklib.get('/symbols/' + symbolId + '/dailyprices/').then(obj => {
+
+      callback(null, obj.list);
+    })
+      .catch(err => {
+        callback(err)
+      });
+  },
+
 }
 

@@ -10,6 +10,7 @@ parser.add_argument('limit', default=30)
 parser.add_argument('offset')
 parser.add_argument('todate')
 parser.add_argument('fromdate')
+parser.add_argument('index')
 
 def send_response(obj=None, err=None):
     if obj:
@@ -61,8 +62,12 @@ class SymbolsRouter(Resource):
         """
         args = parser.parse_args()
 
+        # print('index', args.index)
+
         if symbolgroup_id: # 返回该symbolgroup下所有的symbol
             array = [row.to_dict() for row in Symbol.get_list_by_symbolgroup_id(symbolgroup_id)]
+        elif args.index:
+            array = [row.to_dict() for row in Symbol.get_index_list()]
         else:
             array = Symbol.find_all(limit=args.limit, offset=args.offset, output='dict')
 

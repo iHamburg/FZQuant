@@ -3,14 +3,14 @@
   <div>
 
 
-    <p>股票指数</p>
+    <p>股票</p>
     <br/><br/>
 
     <!--<p> <input type="search" v-model="searchTerm" placeholder="标题关键词"><button class="btn btn-default" @click="onSearch">搜索</button></p>-->
 
 
 
-    <div v-for="item in items" @click="onPushDetails(item)">{{item.id}}: {{item.name}}</div>
+    <div v-for="item in items" @click="onPushDetails(item)">{{item.name}}</div>
 
     <div><button class="btn btn-default" type="submit">Button</button></div>
 
@@ -19,15 +19,14 @@
 </template>
 
 <script>
-
 import adminnav from 'components/adminnav';
 import symbollib from 'src/libs/symbollib'
-
 export default {
-  name: 'productgroups',
+  name: 'keep_stock_index',
 
   data () {
     return {
+      id: null,
       items: [],
       title: '股票指数',
 
@@ -35,28 +34,37 @@ export default {
   },
   components: {adminnav},
   created() {
+    console.log('id', this.$route.params.id);
 //    this.queryData();
+
   },
   mounted() {
-    console.log('indexes mounted');
-    this.queryData();
+
+    this.id = this.$route.params.id
+    console.log('mounted', this.id);
+    this.querySymbols(this.id)
+    this.queryDailyPrice(this.id)
+
   },
   methods: {
 
-    onPushDetails(item){
+    onPushDetails(item) {
       console.log('goto stock index', item.id);
-
-      this.$router.push({name: 'stock_index', params: {id: item.id}})
-
+//      this.$router.push('/products/'+item.id);
     },
-    queryData() {
-//      console.log('fetch data');
-      symbollib.get_stock_indexes((err, list) => {
+    queryDailyPrice(symbolId) {
+      symbollib.queryDailyPrices(symbolId, (err, list) => {
+        console.log('list', list);
+      })
+    },
+    querySymbols(id) {
+      // 查询指数下的所有股票
+      symbollib.get_symbols_by_group_id(id, (err, list) => {
+//        console.log(err, list);
         if (err) {
-          console.log('err', err);
           return
         }
-        console.log('query response', list);
+
         this.items = list
       })
     }

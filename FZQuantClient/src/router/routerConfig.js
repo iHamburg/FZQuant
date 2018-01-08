@@ -43,10 +43,18 @@ export const routerConfig = [
   {
     path: '/stock_indexes',
     meta: {
-      title: '股票指数',
+      title: '股票指数列表',
     },
-    name: '股票指数',
+    name: '股票指数列表',
     component: r => require.ensure([], () => r(require('../views/stock_indexes.vue')), '1')
+  },
+  {
+    path: '/stock_index/:id',
+    meta: {
+      title: '股票指数列表',
+    },
+    name: 'stock_index',
+    component: r => require.ensure([], () => r(require('../views/stock_index.vue')), '1')
   },
   {
     path: '/tutorials/',

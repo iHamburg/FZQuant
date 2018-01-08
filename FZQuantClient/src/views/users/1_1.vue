@@ -60,7 +60,7 @@ export default {
       onClick(){
         console.log('onClick');
       },
-      fetchData(){
+      queryData(){
 
         networklib.get('1001').then(obj=>{
           // set logoUrl, brands, qrcode
