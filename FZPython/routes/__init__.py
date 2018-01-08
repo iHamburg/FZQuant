@@ -2,8 +2,11 @@
 
 
 from flask_restful import Resource, reqparse
-from pyquant.db_models import (Symbol, DailyPrice, User, SymbolGroup, StockIndex,)
+from pyquant.db_models import (Symbol, DailyPrice, User, SymbolGroup, StockIndex,
+                               Strategy)
 import pyquant.libs.utillib as utillib
+from pyquant.models.backtest import Backtest
+from pyquant.models.symbol_data import SymbolData
 
 parser = reqparse.RequestParser()
 parser.add_argument('limit', default=30)
@@ -16,24 +19,6 @@ def send_response(obj=None, err=None):
     if obj:
         response = {'resCode': '00100000', 'obj': obj};
         return response, 200, {'Access-Control-Allow-Origin': '*'}
-
-#
-# class DailyPriceRouter(Resource):
-#     def get(self, code):
-#         """
-#
-#         :param code:
-#         :param fromdate:
-#         :return:
-#         """
-#         args = parser.parse_args()
-#
-#
-#         # print(value_list)
-#
-#         return send_response({"hello"})
-
-
 
 
 
@@ -117,9 +102,46 @@ class StockIndexRouter(Resource):
             return send_response(dict(list= array))
 
 
+class StragegyRouter(Resource):
+    def get(self, _id=None):
+        """
+        :return:
+        """
+
+        args = parser.parse_args()
 
 
-#  ===========   User
+        if _id:
+            return send_response(Strategy.get_by_id(_id).to_dict())
+        else:
+            array = Strategy.get_all()
+            array = [row.to_dict() for row in array]
+            return send_response(dict(list= array))
+
+
+class StragegyRunRouter(Resource):
+    def get(self, _id):
+        """
+        :return:
+        """
+
+        args = parser.parse_args()
+
+
+        stra = Strategy.get_by_id(_id)
+
+        filePath = stra.filePath
+        import pyquant.strategies.fzstrategy as strat
+        stra = 'strat.CrossOver3'
+        # stra = strat.CrossOver3
+        sd = SymbolData(17, fromdate='2017-01-01', output='df')
+
+        backtest = Backtest(eval(stra), sd)
+
+        backtest.run_strategy(fromdate='2017-01-01')
+        return send_response('run' + filePath )
+
+
 class UserRouter(Resource):
     def get(self, uid):
         """

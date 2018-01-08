@@ -208,6 +208,17 @@ class SymbolGroup(Base):
         return session.query(__class__).filter(SymbolGroup.user_id == 0).all()
 
 
+class Strategy(Base):
+    __tablename__ = 'strategy'
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    user_id = Column(Integer, ForeignKey('user.id'))
+    filePath = Column(String)
+    desc = Column(String)
+
+
+
 # One-Many Relations
 Symbol.daily_price = relationship("DailyPrice", back_populates="symbol")
 User.symbolgroup = relationship("SymbolGroup", back_populates="user")

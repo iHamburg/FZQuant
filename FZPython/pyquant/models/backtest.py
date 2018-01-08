@@ -24,6 +24,7 @@ class Backtest(object):
     # T_Close, T_Day, T_Date, T_None = range(4)
 
     def __init__(self, strategy = None, symboldata = None):
+        print('stra', strategy)
         self.strategy = strategy
         self.symboldata = symboldata
         self.reporter = Reporter(self)

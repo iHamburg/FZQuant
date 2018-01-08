@@ -37,7 +37,7 @@ class SymbolData(object):
         :param kwargs:
         """
         self.symbol_id = symbol_id
-        self.symbol = Symbol.get(symbol_id)
+        self.symbol = Symbol.get_by_id(symbol_id)
         # self.datasource = _datasource()
 
         if 'fromdate' in kwargs.keys():
