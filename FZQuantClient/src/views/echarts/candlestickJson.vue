@@ -10,7 +10,7 @@
 <script type="text/babel">
 
   import IEcharts from 'vue-echarts-v3/src/full.js';
-  import datalib from '../../libs/datalib'
+
 
   export default {
     name: 'candlechart',
@@ -73,15 +73,15 @@
     },
     methods: {
       getData() {
-        datalib.getStock('600191', (err, obj) => {
-          console.log('======== get stock', obj);
-          this.bar.series[0].data = this.candleValues
-          this.bar.xAxis.data = this.dates
-        })
+//        datalib.getStock('600191', (err, obj) => {
+//          console.log('======== get stock', obj);
+//          this.bar.series[0].data = this.candleValues
+//          this.bar.xAxis.data = this.dates
+//        })
       },
 
       splitData(rawData) {
-        var categoryData = [];
+//        var categoryData = [];
         var values = [];
         var volumes = [];
         for (var i = 0; i < rawData.length; i++) {

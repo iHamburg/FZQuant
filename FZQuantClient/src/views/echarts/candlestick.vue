@@ -10,7 +10,7 @@
 <script type="text/babel">
 
   import IEcharts from 'vue-echarts-v3/src/full.js';
-  import datalib from '../../libs/datalib'
+//  import datalib from '../../libs/datalib'
   import talib from '../../libs/talib'
 
   export default {
@@ -117,23 +117,23 @@
       queryData() {
         console.log('======== begin queryData ');
         let self = this
-        datalib.getStock('002119?fromdate=2017-01-01', function(err, obj)  {
-          if (err) {
-            console.log('err ', err);
-          }
-//          console.log('======== get stock', obj);
-          self.rawData = obj
-
-          let data = obj.map(item => {
-//            console.log('item',item);
-            return item[1]
-          })
-          console.log('data', data);
-
-          let data2 = talib.sma(data,10)
-          console.log('sma', data2);
-          self.updateData()
-        })
+//        datalib.getStock('002119?fromdate=2017-01-01', function(err, obj)  {
+//          if (err) {
+//            console.log('err ', err);
+//          }
+////          console.log('======== get stock', obj);
+//          self.rawData = obj
+//
+//          let data = obj.map(item => {
+////            console.log('item',item);
+//            return item[1]
+//          })
+//          console.log('data', data);
+//
+//          let data2 = talib.sma(data,10)
+//          console.log('sma', data2);
+//          self.updateData()
+//        })
       },
       updateData() {
         this.bar.series[0].data = this.candleValues

@@ -42,7 +42,8 @@ export default {
 
     this.id = this.$route.params.id
     console.log('mounted', this.id);
-    this.querySymbols(this.id)
+//    symbollib.get
+//    this.querySymbols(this.id)
     this.queryDailyPrice(this.id)
 
   },

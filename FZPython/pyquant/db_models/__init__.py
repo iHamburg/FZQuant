@@ -53,17 +53,7 @@ class User(Base):
     #     return "<User(name='%s', fullname='%s', password='%s')>" % (
     #         self.name, self.fullname, self.password)
 
-    def to_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
-    @staticmethod
-    def query():
-        """该类的query"""
-        return session.query(__class__)
-
-    @staticmethod
-    def get(_id):
-        return session.query(__class__).get(_id)
 
 
 class Symbol(Base):
@@ -83,8 +73,6 @@ class Symbol(Base):
     symbolgroup = relationship('SymbolGroup',secondary = symbolgroup_symbol,back_populates = 'symbol')
 
 
-    def to_dict(self):
-        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
     def __repr__(self):
         return "<Symbol(id='%s', exchange_id='%s', ticker='%s', instrument='%s', name='%s', sector='%s')>" % (
@@ -151,7 +139,7 @@ class DailyPrice(Base):
             self.symbol_id, self.price_date, self.open_price, self.high_price, self.low_price, self.close_price, self.volume)
 
     def to_dict(self):
-        obj = {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        obj = super(DailyPrice, self).to_dict()
         obj['price_date'] = str(obj['price_date'])
         # obj['symbol'] = self.symbol
         return  obj
@@ -194,9 +182,6 @@ class DailyPrice(Base):
         else:
             return session.query(DailyPrice).filter(*where).all()
 
-    @staticmethod
-    def get(_id):
-        return session.query(__class__).get(_id)
 
 
 class StockIndex(Base):
@@ -206,14 +191,6 @@ class StockIndex(Base):
     name = Column(String)
     symbol_id = Column(Integer, ForeignKey('symbol.id'))
 
-
-    def to_dict(self):
-        obj = {c.name: getattr(self, c.name) for c in self.__table__.columns}
-        return obj
-
-    @staticmethod
-    def get(_id):
-        return session.query(__class__).get(_id)
 
 
 class SymbolGroup(Base):
@@ -225,14 +202,6 @@ class SymbolGroup(Base):
     user = relationship("User", back_populates="symbolgroup")
     symbol = relationship('Symbol', secondary=symbolgroup_symbol, back_populates='symbolgroup')
 
-    def to_dict(self):
-        obj = {c.name: getattr(self, c.name) for c in self.__table__.columns}
-
-        return obj
-
-    @staticmethod
-    def get(_id):
-        return session.query(__class__).get(_id)
 
     @staticmethod
     def get_system_groups():
@@ -270,7 +239,7 @@ def _add_user_symbolgroup():
     session.commit()
 
 def _test_m_m_relation1():
-    sd = SymbolGroup.get(3)
+    sd = SymbolGroup.get_by_id(3)
     print(sd.symbol)
 
 def _test_m_m_relation2():
@@ -316,5 +285,6 @@ if __name__ == '__main__':
 
     # print(session.query(SymbolGroup).filter(SymbolGroup.user_id == 0).all())
     # _symbol_find_all()
-    print(Symbol.get_by_id(17))
+    # print(DailyPrice.get_by_id(100).to_dict())
     # _test_m_m_relation1()
+    print(StockIndex.get_all())

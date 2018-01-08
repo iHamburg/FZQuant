@@ -5,7 +5,7 @@
 export const routerConfig = [
   {
     path: '/',
-    redirect: '/index'
+    redirect: '/stock_indexes'
   },
   /* 商品上线index */
   {

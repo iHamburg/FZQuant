@@ -23,7 +23,7 @@ Vue.http.options.emulateJSON = true
 // 开发
 // const baseUrl = 'http://localhost/api'
 
-const baseUrl = 'http://localhost:5000/api'
+const baseUrl = 'http://localhost:5000'
 // const baseUrl = 'http://localhost:5000/'
 /**
  * GET 请求
@@ -47,7 +47,7 @@ let get = function(url) {
       }
     }
     ).catch(() => {
-      let msg = '网络错误 ' + url;
+      let msg = '网络错误 ' + baseUrl + url;
       console.log(msg);
       reject(msg);
     })

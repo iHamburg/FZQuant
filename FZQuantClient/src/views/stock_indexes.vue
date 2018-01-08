@@ -40,6 +40,7 @@ export default {
   mounted() {
     console.log('indexes mounted');
     this.queryData();
+//    this.querySymbols(17)
   },
   methods: {
 
@@ -50,18 +51,16 @@ export default {
 
     },
     queryData() {
-//      console.log('fetch data');
-      symbollib.get_stock_indexes((err, list) => {
+      symbollib.queryStockIndexes((err, list) => {
         if (err) {
-          console.log('err', err);
+          alert(err)
           return
         }
-        console.log('query response', list);
+
         this.items = list
       })
-    }
+    },
   }
 };
-
 
 </script>
