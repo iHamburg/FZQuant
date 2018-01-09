@@ -4,20 +4,19 @@
 
 """
 
-# from pyquant.strategies.crossover import (CrossOver, CrossOver2)
-from pyquant.strategies.fzstrategy import (CrossOver3)
-import pyquant.datasource.data as datalib
-
-# import pyquant.strategies.entermarketstrategy as enterstra
-
-# 可以读取tushare的pandas的数据
+import argparse
 
 import backtrader as bt
-import datetime
-import argparse
-from backtrader.analyzers import (SQN, AnnualReturn, TimeReturn, SharpeRatio,
-                                  TradeAnalyzer)
+from backtrader.analyzers import (SQN)
+
+import demo.data as datalib
 import pyquant.utils.utils as utils
+# from pyquant.strategies.crossover import (CrossOver, CrossOver2)
+from pyquant.strategies.fzstrategy import (CrossOver3)
+
+
+# import pyquant.strategies.entermarketstrategy as enterstra
+# 可以读取tushare的pandas的数据
 
 
 def runstrat():

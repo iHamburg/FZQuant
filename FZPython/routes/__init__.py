@@ -14,6 +14,8 @@ parser.add_argument('offset')
 parser.add_argument('todate')
 parser.add_argument('fromdate')
 parser.add_argument('index')
+parser.add_argument('symbolgroup')
+parser.add_argument('task')
 
 def send_response(obj=None, err=None):
     if obj:
@@ -21,9 +23,20 @@ def send_response(obj=None, err=None):
         return response, 200, {'Access-Control-Allow-Origin': '*'}
 
 
+class TodoList(Resource):
+
+
+    def post(self):
+        args = parser.parse_args()
+        print('args', args)
+
+        return 'hello', 201
+
+
 
 class DailyPriceRouter(Resource):
-    def get(self, _id=None, symbol_id=None):
+    @staticmethod
+    def get(_id=None, symbol_id=None):
         """
 
         :param symbol_id:
@@ -47,7 +60,8 @@ class DailyPriceRouter(Resource):
 
 class SymbolRouter(Resource):
 
-    def get(self, _id=None, symbolgroup_id=None):
+    @staticmethod
+    def get(_id=None, symbolgroup_id=None):
         """
 
         :return:
@@ -67,7 +81,10 @@ class SymbolRouter(Resource):
 
 
 class SymbolGroupsRouter(Resource):
-    def get(self, _id=None):
+
+
+    @staticmethod
+    def get(_id=None):
         """
         :return:
         """
@@ -83,9 +100,27 @@ class SymbolGroupsRouter(Resource):
         return send_response(response)
 
 
+    def post(self, user_id=None):
+        """
+        user 新增 symbolgroup
+        :return:
+        """
+
+        args = parser.parse_args()
+
+        user = User.get_by_id(user_id)
+
+        symbolgroup = args.symbolgroup
+
+        print('sg', symbolgroup)
+
+
+        return send_response('ok')
+
 class StockIndexRouter(Resource):
 
-    def get(self, _id=None):
+    @staticmethod
+    def get(_id=None):
         """
         :return:
         """
@@ -103,13 +138,14 @@ class StockIndexRouter(Resource):
 
 
 class StragegyRouter(Resource):
-    def get(self, _id=None):
+
+    @staticmethod
+    def get(_id=None):
         """
         :return:
         """
 
         args = parser.parse_args()
-
 
         if _id:
             return send_response(Strategy.get_by_id(_id).to_dict())
@@ -120,7 +156,11 @@ class StragegyRouter(Resource):
 
 
 class StragegyRunRouter(Resource):
-    def get(self, _id):
+    """
+    运行策略
+    """
+    @staticmethod
+    def get(_id):
         """
         :return:
         """
@@ -131,16 +171,20 @@ class StragegyRunRouter(Resource):
         stra = Strategy.get_by_id(_id)
 
         filePath = stra.filePath
-        import pyquant.strategies.fzstrategy as strat
-        stra = 'strat.CrossOver3'
-        # stra = strat.CrossOver3
+
         sd = SymbolData(17, fromdate='2017-01-01', output='df')
 
-        backtest = Backtest(eval(stra), sd)
+        backtest = Backtest(filePath, sd)
 
         backtest.run_strategy(fromdate='2017-01-01')
         return send_response('run' + filePath )
 
+
+class BacktestRouter(Resource):
+
+    @staticmethod
+    def get(action):
+        """"""
 
 class UserRouter(Resource):
     def get(self, uid):

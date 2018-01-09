@@ -15,6 +15,8 @@ import backtrader.analyzers as btanal
 class FZStrategy(bt.Strategy):
 
     name = None
+    buy_signals = []
+    sell_signals = []
 
     def log(self, txt, dt=None, isprint=False):
         if isprint:
@@ -34,7 +36,27 @@ class FZStrategy(bt.Strategy):
     def next(self):
         self.log('Close, %.2f' % (self.dataclose[0]))
 
-    def notify_order(self,order):
+    # def buy(self,data=None,
+    #         size=None, price=None, plimit=None,
+    #         exectype=None, valid=None, tradeid=0, oco=None,
+    #         trailamount=None, trailpercent=None,
+    #         parent=None, transmit=True,
+    #         **kwargs):
+    #     print('=====buy=====')
+    #
+    #     return super(FZStrategy, self).buy(data, size, price, plimit, exectype, valid, tradeid, oco, trailamount, trailpercent,
+    #                                        parent, transmit, **kwargs)
+
+    def notify_order(self, order):
+
+        if order.status == order.Submitted:
+            #发出信号
+            if order.isbuy():
+                self.buy_signals.append(str(self.data.datetime.date(0)))
+            else:
+                self.sell_signals.append(str(self.data.datetime.date(0)))
+
+        # print('====== order.status', self.data.datetime.date(0),  order.status)
         if order.status in [order.Submitted, order.Accepted]:
             # Buy/Sell order submitted/accepted to/by broker - Nothing to do
             return
@@ -54,7 +76,7 @@ class FZStrategy(bt.Strategy):
                           order.executed.value,
                           order.executed.comm), isprint=False)
 
-            # self.bar_executed = len(self)
+
         elif order.status in [order.Canceled, order.Margin, order.Rejected]:
             self.log('Order Canceled/Margin/Rejected',isprint=True)
 
@@ -71,6 +93,7 @@ class FZStrategy(bt.Strategy):
     def stop(self):
         self.log('======Ending Value %.2f' %
                  (self.broker.getvalue()), isprint=True)
+
 
 
 class CrossOver2(FZStrategy):

@@ -19,9 +19,6 @@ engine = create_engine("mysql+pymysql://%s:%s@%s/%s?charset=utf8" %
 DBSession = sessionmaker(bind=engine)
 session = DBSession(autocommit=False)
 
-# Base = declarative_base()
-
-
 class ModelMixin(object):
 
     @classmethod
