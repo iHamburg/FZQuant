@@ -4,7 +4,6 @@
 # from pyquant.models.datasource import *
 
 from pyquant.db_models import (Symbol, DailyPrice)
-# from pyquant.models.datasource import *
 
 
 class SymbolData(object):
@@ -27,9 +26,9 @@ class SymbolData(object):
     values = []
     volume = []
     df = None
-    # datasource = None
 
-    def __init__(self, symbol_id, **kwargs):
+
+    def __init__(self, symbol_id, ticker=None,**kwargs):
         """
         ?? 需要symbol还是symbol_id?
         :param security:
@@ -48,6 +47,10 @@ class SymbolData(object):
 
         if 'time_type' in kwargs.keys():
             self.time_type = kwargs['time_type']
+
+    @classmethod
+    def init_with_ticker(cls, ticker):
+        return
 
     def get_daily_price(self, output='dict'):
         return DailyPrice.get_by_symbol_id(self.symbol_id, fromdate=self.fromdate, todate=self.todate, output=output)
