@@ -82,13 +82,12 @@ class Backtest(object):
         cerebro.addstrategy(self.strategy)
 
         # 加入Analyser
-        
-        # analyzers = [bt.analyzers.SharpeRatio]
-        cerebro.addanalyzer(bt.analyzers.SharpeRatio)
-        cerebro.addanalyzer(bt.analyzers.TradeAnalyzer)
-        cerebro.addanalyzer(bt.analyzers.AnnualReturn)
-        cerebro.addanalyzer(bt.analyzers.DrawDown)
-        cerebro.addanalyzer(bt.analyzers.TimeDrawDown)
+
+        analyzers = [SharpeRatio, TradeAnalyzer, AnnualReturn, DrawDown, TimeDrawDown]
+
+        for analyzer in analyzers:
+            cerebro.addanalyzer(analyzer)
+
 
         thestrats = cerebro.run()
 
