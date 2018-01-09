@@ -1,7 +1,3 @@
-# import pyquant.libs.mongolib as mongolib
-# import pyquant.libs.tusharelib as tusharelib
-# from pyquant.models.security import *
-# from pyquant.models.datasource import *
 
 
 class Reporter(object):
@@ -24,7 +20,9 @@ class Reporter(object):
     symbol_name = None
     total_returns = 0
     sharpe_ratio = 0
-
+    trade_analyzer = None
+    annual_return = None #ordeddict,
+    drawdown = None
 
 
     def __init__(self, backtest, **kwargs):

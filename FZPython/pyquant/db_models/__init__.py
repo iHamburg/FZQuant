@@ -13,33 +13,12 @@ import pandas as pd
 # Many-Many Relation
 symbolgroup_symbol = Table('symbolgroup_symbol', Base.metadata,
     Column('symbol_id', ForeignKey('symbol.id'), primary_key=True),
-    Column('symbolgroup_id', ForeignKey('symbolgroup.id'), primary_key=True),
-                           )
+    Column('symbolgroup_id', ForeignKey('symbolgroup.id'), primary_key=True))
 
-# index_symbol = Table('index_symbol', Base.metadata,
-#     Column('index_id', ForeignKey('symbol.id'), primary_key=True),
-#     Column('symbol_id', ForeignKey('symbol.id'), primary_key=True))
+stockIndex_symbol = Table('stockIndex_symbol', Base.metadata,
+    Column('stockIndex_id', ForeignKey('stockIndex.id'), primary_key=True),
+    Column('symbol_id', ForeignKey('symbol.id'), primary_key=True))
 
-
-# class BaseModel(Base):
-#     __abstract__ = True
-#     __table_args__ = { # 可以省掉子类的 __table_args__ 了
-#         'mysql_engine': 'InnoDB',
-#         'mysql_charset': 'utf8'
-#     }
-#
-#     @classmethod
-#     def query(cls):
-#         """该类的query"""
-#         return session.query(cls)
-#
-#     @classmethod
-#     def get(cls, _id):
-#         return session.query(cls).get(_id)
-    #
-    # @classmethod
-    # def get_by_id(cls, _id):
-    #     return session.query(cls).get(_id)
 
 class User(Base):
     __tablename__ = 'user'
@@ -71,21 +50,34 @@ class Symbol(Base):
     name = Column(String)
     sector = Column(String)
     symbolgroup = relationship('SymbolGroup',secondary = symbolgroup_symbol,back_populates = 'symbol')
-
+    stockIndex = relationship('StockIndex',secondary = stockIndex_symbol,back_populates = 'symbol')
 
 
     def __repr__(self):
         return "<Symbol(id='%s', exchange_id='%s', ticker='%s', instrument='%s', name='%s', sector='%s')>" % (
             self.id, self.exchange_id, self.ticker, self.instrument, self.name, self.sector)
 
-    # @staticmethod
-    # def get(_id):
-    #     return session.query(__class__).get(_id)
-    #
-    # @staticmethod
-    # def query():
-    #     """该类的query"""
-    #     return session.query(__class__)
+    @classmethod
+    def get_stock_by_ticker(cls,  ticker, columns=None, lock_mode=None):
+
+        scalar = False
+        if columns:
+            if isinstance(columns, (tuple, list)):
+                query = session.query(*columns)
+            else:
+                scalar = True  # 只查一个字段
+                query = session.query(columns)
+        else:
+            query = session.query(cls)
+        if lock_mode:
+            query = query.with_lockmode(lock_mode)
+
+        query = query.filter(cls.ticker==ticker, cls.instrument=='stock')
+
+        if scalar:
+            return query.scalar()
+        return query.first()
+
 
     @staticmethod
     def find_all(limit=30, offset=0, output='dict'):
@@ -190,7 +182,7 @@ class StockIndex(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
     symbol_id = Column(Integer, ForeignKey('symbol.id'))
-
+    symbol = relationship('Symbol', secondary=stockIndex_symbol, back_populates='stockIndex')
 
 
 class SymbolGroup(Base):
@@ -253,6 +245,9 @@ def _test_m_m_relation1():
     sd = SymbolGroup.get_by_id(3)
     print(sd.symbol)
 
+    si = StockIndex.get_by_id(1)
+    print(si.symbol)
+
 def _test_m_m_relation2():
     query = session.query(Symbol). \
         filter(Symbol.symbolgroup.any(id=3)). \
@@ -298,4 +293,7 @@ if __name__ == '__main__':
     # _symbol_find_all()
     # print(DailyPrice.get_by_id(100).to_dict())
     # _test_m_m_relation1()
-    print(StockIndex.get_all())
+    # print(StockIndex.get_all())
+    # _test_m_m_relation1()
+
+    print(Symbol.get_stock_by_ticker('600192', columns=['sector','name']))

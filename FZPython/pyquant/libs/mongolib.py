@@ -2,7 +2,7 @@
 # coding: utf8
 
 from pymongo import MongoClient
-from pyquant.configs.configs import mongodb as config
+from pyquant.config import mongodb as config
 import pandas as pd
 import json
 import pydash

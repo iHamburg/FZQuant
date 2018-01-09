@@ -1,11 +1,15 @@
 
+import datetime
+from pprint import pprint
 import backtrader as bt
 import pyquant.utils.utils as utils
 from pyquant.db_models import Symbol
 from pyquant.models.symbol_data import SymbolData
 # from pyquant.strategies.fzstrategy import (CrossOver3)
 from pyquant.models.reporter import Reporter
-import datetime
+from backtrader.analyzers import *
+import pyquant.strategies.fzstrategy as strat
+
 
 
 class Backtest(object):
@@ -23,13 +27,24 @@ class Backtest(object):
 
     # T_Close, T_Day, T_Date, T_None = range(4)
 
-    def __init__(self, strategy=None, symboldata=None, strategyId=None):
-        print('stra', strategy)
+
+    def __init__(self, strategy = None, symboldata = None):
+        """
+
+        :param strategy:   string or obj
+        :param symboldata:
+        """
+
+        if isinstance(strategy, str):
+            strategy = eval(strategy)
+
         self.strategy = strategy
+
         self.symboldata = symboldata
+
         self.reporter = Reporter(self)
 
-    def run_strategy(self, fromdate=None, todate=None):
+    def run_strategy(self, strategy=None, fromdate=None, todate=None):
         """
         """
 
@@ -68,8 +83,12 @@ class Backtest(object):
         cerebro.addstrategy(self.strategy)
 
         # 加入Analyser
-        cerebro.addanalyzer(bt.analyzers.SharpeRatio)
-        cerebro.addanalyzer(bt.analyzers.TradeAnalyzer)
+
+        analyzers = [SharpeRatio, TradeAnalyzer, AnnualReturn, DrawDown, TimeDrawDown]
+
+        for analyzer in analyzers:
+            cerebro.addanalyzer(analyzer)
+
 
         thestrats = cerebro.run()
 
@@ -89,44 +108,72 @@ class Backtest(object):
 
         for strat in thestrats:
             print('--------------------------------------------------')
+
             if type(strat) == list:
                 strat = strat[0]
 
+            print('==== buy signals ', strat.buy_signals)
+            print('==== sell signals ', strat.sell_signals)
+            for trade in strat._trades:
+                print(type(trade), trade)
+
             self.reporter.strategy_params = strat.p._getkwargs()
             for analyzer in strat.analyzers:
-                # print(type(item),item)
+
 
                 # print(analyzer.get_analysis())
                 # analyzer.pprint()
                 name = analyzer.__class__.__name__
-                print('name',name)
+                print('Analyzer ',name)
                 if name == 'SharpeRatio':
                     self.reporter.sharpe_ratio = analyzer.get_analysis()['sharperatio']
-                if name == 'TradeAnalyzer':
+                elif name == 'TradeAnalyzer':
                     obj = analyzer.get_analysis()
-                    print('total', obj['total']['total'])
+                    del obj['long']
+                    del obj['short']
+                    del obj['len']['long']
+                    del obj['len']['short']
+                    self.reporter.trade_analyzer = obj
+                elif name == 'AnnualReturn':
+                    self.reporter.annual_return = analyzer.get_analysis()
+                elif name == 'DrawDown':
+                    # pprint(analyzer.get_analysis())
+                    self.reporter.drawdown = analyzer.get_analysis()
+                elif name == 'TimeDrawDown':
+                    pprint(analyzer.get_analysis())
+                    self.reporter.drawdown = analyzer.get_analysis()
+                    #     print(type(row), row)
+                    # analyzer.pprint()
+
+
+
 
 
 
         # print(self.reporter.__dict__)
 
-        return thestrats
+        return self.reporter
 
 
+    def notify_buy_signal(self):
+        """"""
+        strat = self.strategy
+        symbol_data = self.symboldata
+
+        stra = self.run_strategy()
 
 
 
 def _test_run_strategy():
     strategy = strat.CrossOver3
 
-
     sd = SymbolData(17, fromdate='2017-01-01', output='df')
 
     bt = Backtest(strategy,sd)
 
-    bt.run_strategy(fromdate='2017-01-01')
+    reporter = bt.run_strategy(fromdate='2017-01-01')
 
-    print(bt.reporter.__dict__)
+    print(reporter.__dict__)
 
 
 
@@ -145,8 +192,10 @@ if __name__ == '__main__':
     # stra = strat.CrossOver3
     sd = SymbolData(17, fromdate='2017-01-01', output='df')
 
-    backtest = Backtest(eval(stra), sd)
+    backtest = Backtest('strat.CrossOver3', sd)
 
     backtest.run_strategy(fromdate='2017-01-01')
+
+    _test_run_strategy()
 
     print('=====END=======')
