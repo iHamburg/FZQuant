@@ -23,6 +23,7 @@ class Reporter(object):
     trade_analyzer = None
     annual_return = None #ordeddict,
     drawdown = None
+    timedrawdown = None
 
 
     def __init__(self, backtest, **kwargs):

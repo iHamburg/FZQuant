@@ -23,6 +23,7 @@ class Backtest(object):
     _fromdate = None
     _todate = None
     reporter = None
+    analyzer_dict = {}
     name = 'Kitty'
 
     # T_Close, T_Day, T_Date, T_None = range(4)
@@ -84,7 +85,7 @@ class Backtest(object):
 
         # 加入Analyser
 
-        analyzers = [SharpeRatio, TradeAnalyzer, AnnualReturn, DrawDown, TimeDrawDown]
+        analyzers = [SharpeRatio, TradeAnalyzer, AnnualReturn, DrawDown, TimeDrawDown, Returns]
 
         for analyzer in analyzers:
             cerebro.addanalyzer(analyzer)
@@ -114,43 +115,25 @@ class Backtest(object):
 
             print('==== buy signals ', strat.buy_signals)
             print('==== sell signals ', strat.sell_signals)
-            for trade in strat._trades:
-                print(type(trade), trade)
+
 
             self.reporter.strategy_params = strat.p._getkwargs()
+
+
             for analyzer in strat.analyzers:
 
-
-                # print(analyzer.get_analysis())
                 # analyzer.pprint()
                 name = analyzer.__class__.__name__
-                print('Analyzer ',name)
-                if name == 'SharpeRatio':
-                    self.reporter.sharpe_ratio = analyzer.get_analysis()['sharperatio']
-                elif name == 'TradeAnalyzer':
-                    obj = analyzer.get_analysis()
+                obj = analyzer.get_analysis()
+                if name == 'TradeAnalyzer':
                     del obj['long']
                     del obj['short']
                     del obj['len']['long']
                     del obj['len']['short']
-                    self.reporter.trade_analyzer = obj
-                elif name == 'AnnualReturn':
-                    self.reporter.annual_return = analyzer.get_analysis()
-                elif name == 'DrawDown':
-                    # pprint(analyzer.get_analysis())
-                    self.reporter.drawdown = analyzer.get_analysis()
-                elif name == 'TimeDrawDown':
-                    pprint(analyzer.get_analysis())
-                    self.reporter.drawdown = analyzer.get_analysis()
-                    #     print(type(row), row)
-                    # analyzer.pprint()
+                self.analyzer_dict[name] = obj
 
+            # pprint(self.analyzer_dict)
 
-
-
-
-
-        # print(self.reporter.__dict__)
 
         return self.reporter
 
@@ -173,7 +156,7 @@ def _test_run_strategy():
 
     reporter = bt.run_strategy(fromdate='2017-01-01')
 
-    print(reporter.__dict__)
+    # print(reporter.__dict__)
 
 
 
