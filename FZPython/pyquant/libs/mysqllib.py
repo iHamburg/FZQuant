@@ -5,6 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from pyquant.config import mysql as config
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
+import werkzeug.contrib.cache as cache
 
 __all__ = [
     'session',
@@ -23,25 +24,34 @@ class ModelMixin(object):
 
     @classmethod
     def get_by_id(cls,  id, columns=None, lock_mode=None):
-        if hasattr(cls, 'id'):
-            scalar = False
-            if columns:
-                if isinstance(columns, (tuple, list)):
-                    query = session.query(*columns)
-                else:
-                    scalar = True
-                    query = session.query(columns)
+        if not hasattr(cls, 'id'):
+            return None
+
+        scalar = False
+        if columns:
+            if isinstance(columns, (tuple, list)):
+                query = session.query(*columns)
             else:
-                query = session.query(cls)
-            if lock_mode:
-                query = query.with_lockmode(lock_mode)
+                scalar = True
+                query = session.query(columns)
+        else:
+            query = session.query(cls)
+        if lock_mode:
+            query = query.with_lockmode(lock_mode)
 
-            query = query.filter(cls.id == id)
+        query = query.filter(cls.id == id)
 
-            if scalar:
-                return query.scalar()
-            return query.first()
-        return None
+        mapper = query._only_full_mapper_zero('get')
+
+        # suffix = str(ident)
+
+        key = mapper.class_.generate_cache_prefix('get')
+
+        print('key ', key)
+
+        if scalar:
+            return query.scalar()
+        return query.first()
 
     @classmethod
     def get_all(cls, columns=None, offset=None, limit=30, order_by=None, lock_mode=None):

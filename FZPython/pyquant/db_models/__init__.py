@@ -296,4 +296,6 @@ if __name__ == '__main__':
     # print(StockIndex.get_all())
     # _test_m_m_relation1()
 
-    print(Symbol.get_stock_by_ticker('000001', index=True))
+    # print(Symbol.get_stock_by_ticker('000001', index=True))
+
+    print(Symbol.get_by_id(20))

@@ -6,7 +6,7 @@ import pyquant.libs.tusharelib as tusharelib
 import pyquant.libs.mongolib as mongolib
 from pyquant.models.datasource import MongoSource
 
-print('======== import utillib =========')
+
 def fill_data(code,index):
     """
     从tushare下载数据到mongolib

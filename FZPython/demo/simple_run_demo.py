@@ -29,13 +29,13 @@ cerebro.addsizer(bt.sizers.PercentSizer, percents=10)  #每次投入10%资金
 
 
 sd = SymbolData(17, fromdate='2017-01-01')
-df = sd.get_daily_price(output='df')
+# df = sd.get_daily_price(output='df')
 
-data = bt.feeds.PandasData(dataname=df, fromdate= datetime.datetime.strptime('2017-1-1', '%Y-%m-%d'))
+data = bt.feeds.PandasData(dataname=sd.df, fromdate= datetime.datetime.strptime('2017-1-1', '%Y-%m-%d'))
 cerebro.adddata(data)
 
 cerebro.addstrategy(strat.CrossOver2)
-cerebro.addstrategy(strat.CrossOver3)
+# cerebro.addstrategy(strat.CrossOver3)
 
 
 # stratruns =cerebro.run()

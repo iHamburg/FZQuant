@@ -53,7 +53,7 @@ def main():
     # df = sd.get_data()
 
     sd = SymbolData(17, fromdate='2017-01-01')
-    df = sd.get_daily_price(output='df')
+    # df = sd.get_daily_price(output='df')
 
     kwargs = dict()
     # 开始时间
@@ -64,7 +64,7 @@ def main():
     if args.todate:
         kwargs['todate'] = datetime.datetime.strptime(args.todate, '%Y-%m-%d')
 
-    data = bt.feeds.PandasData(dataname=df,**kwargs)
+    data = bt.feeds.PandasData(dataname=sd.df,**kwargs)
 
     # 时间周期
     if args.ktype == 'D':

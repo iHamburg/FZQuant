@@ -9,7 +9,9 @@ from pyquant.models.symbol_data import SymbolData
 from pyquant.models.reporter import Reporter
 from backtrader.analyzers import *
 import pyquant.strategies.fzstrategy as strat
-import pyquant.libs.utillib as utillib
+import pyquant.strategies.fzstrategy as fzstrategy
+# import pyquant.libs.utillib as utillib
+from pyquant.utils.monitor import listener, Monitor
 
 
 class Backtest(object):
@@ -52,13 +54,11 @@ class Backtest(object):
         self.reporter = Reporter(self)
 
 
-
+    @listener(Monitor)
     def run_strategy(self):
         """
         """
 
-        # params = dict(starting_cash = self.backtest_params['starting_cash'],
-        #               commission = 0.0015)
 
         cerebro = bt.Cerebro()
 
@@ -95,8 +95,8 @@ class Backtest(object):
             cerebro.addanalyzer(analyzer)
 
 
-        # thestrats = cerebro.run()
-        thestrats = utillib.record_time(cerebro.run)
+        thestrats = cerebro.run()
+        # pprint(thestrats)
 
         for strat in thestrats:
             print('--------------------------------------------------')
@@ -156,9 +156,8 @@ class Backtest(object):
 def _test_run_strategy():
     strategy = strat.CrossOver3
 
-    sd = SymbolData(fromdate='2012-01-01')
+    sd = SymbolData(fromdate='2017-01-01')
     sd.symbol = Symbol.get_stock_by_ticker('000001',index=True)
-
 
 
     bt = Backtest()
@@ -166,7 +165,7 @@ def _test_run_strategy():
     bt.symboldata = sd
 
     bt.run_strategy()
-    pprint(bt.reporter.__dict__)
+    # pprint(bt.reporter.__dict__)
 
 
 
@@ -198,6 +197,6 @@ if __name__ == '__main__':
     # print(end - start)
 
 
-    utillib.record_time(_test_run_strategy)
+    _test_run_strategy()
 
     print('=====END=======')

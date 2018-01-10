@@ -76,10 +76,6 @@ class SymbolData(object):
         self._symbol = Symbol.get_by_id(value)
 
 
-    @classmethod
-    def init_with_ticker(cls, ticker):
-        return
-
     def get_daily_price(self, output='dict'):
         return DailyPrice.get_by_symbol_id(self.symbol_id, fromdate=self.fromdate, todate=self.todate, output=output)
 
