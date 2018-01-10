@@ -5,21 +5,23 @@ import functools
 
 class Monitor:
     @staticmethod
-    def startmonitor():
-        return time.clock();
+    def start_monitor():
+        # return time.clock();
+        return time.time();
 
     @staticmethod
-    def endmonitor():
-        return time.clock();
+    def end_monitor():
+        # return time.clock();
+        return time.time();
 
 
 def listener(listen):
     def log(func):
         @functools.wraps(func)
         def wrapper(*args, **kw):
-            startime=listen.startmonitor();
+            startime=listen.start_monitor();
             f=func(*args, **kw);
-            endtime=listen.endmonitor();
+            endtime=listen.end_monitor();
             print("运行【%s】 total time is 【%s】" % (func.__name__, (endtime - startime)));
             return  f;
         return wrapper;
