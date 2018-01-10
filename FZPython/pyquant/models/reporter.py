@@ -18,12 +18,10 @@ class Reporter(object):
     strategy_params = None
     symbol_ticker = None
     symbol_name = None
-    total_returns = 0
-    sharpe_ratio = 0
-    trade_analyzer = None
-    annual_return = None #ordeddict,
-    drawdown = None
-    timedrawdown = None
+    analyzers = None
+
+
+
 
 
     def __init__(self, backtest, **kwargs):

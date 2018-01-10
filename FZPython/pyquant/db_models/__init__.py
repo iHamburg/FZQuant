@@ -58,7 +58,7 @@ class Symbol(Base):
             self.id, self.exchange_id, self.ticker, self.instrument, self.name, self.sector)
 
     @classmethod
-    def get_stock_by_ticker(cls,  ticker, columns=None, lock_mode=None):
+    def get_stock_by_ticker(cls,  ticker, index=False, columns=None, lock_mode=None):
 
         scalar = False
         if columns:
@@ -72,7 +72,7 @@ class Symbol(Base):
         if lock_mode:
             query = query.with_lockmode(lock_mode)
 
-        query = query.filter(cls.ticker==ticker, cls.instrument=='stock')
+        query = query.filter(cls.ticker==ticker, cls.instrument==('index' if index else 'stock'))
 
         if scalar:
             return query.scalar()
@@ -296,4 +296,4 @@ if __name__ == '__main__':
     # print(StockIndex.get_all())
     # _test_m_m_relation1()
 
-    print(Symbol.get_stock_by_ticker('600192', columns=['sector','name']))
+    print(Symbol.get_stock_by_ticker('000001', index=True))

@@ -16,8 +16,8 @@ class SymbolData(object):
 
     """
 
-    symbol = None
-    symbol_id = None
+    _symbol = None
+    # symbol_id = None
     fromdate = None
     todate = None
     time_type = 'D'
@@ -25,18 +25,23 @@ class SymbolData(object):
     date = []
     values = []
     volume = []
-    df = None
+    _df = None
 
 
-    def __init__(self, symbol_id, ticker=None,**kwargs):
+    def __init__(self, symbol_id = None, ticker=None, index=False,**kwargs):
         """
         ?? 需要symbol还是symbol_id?
         :param security:
         :param _datasource: 类名
         :param kwargs:
         """
-        self.symbol_id = symbol_id
-        self.symbol = Symbol.get_by_id(symbol_id)
+
+
+        if ticker:
+            self._symbol = Symbol.get_stock_by_ticker(ticker, index=index)
+        elif symbol_id:
+            self._symbol = Symbol.get_by_id(symbol_id)
+
         # self.datasource = _datasource()
 
         if 'fromdate' in kwargs.keys():
@@ -47,6 +52,29 @@ class SymbolData(object):
 
         if 'time_type' in kwargs.keys():
             self.time_type = kwargs['time_type']
+
+    @property
+    def df(self):
+        if not self._df:
+            self._df = self.get_daily_price(output='df')
+        return self._df
+
+    @property
+    def symbol(self):
+        return self._symbol
+
+    @symbol.setter
+    def symbol(self, value):
+        self._symbol = value
+
+    @property
+    def symbol_id(self):
+        return self._symbol.id
+
+    @symbol_id.setter
+    def symbol_id(self, value):
+        self._symbol = Symbol.get_by_id(value)
+
 
     @classmethod
     def init_with_ticker(cls, ticker):

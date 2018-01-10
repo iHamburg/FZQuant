@@ -15,6 +15,7 @@ import backtrader.analyzers as btanal
 class FZStrategy(bt.Strategy):
 
     name = None
+    desc = None     #策略描述
     buy_signals = []
     sell_signals = []
 
@@ -88,7 +89,7 @@ class FZStrategy(bt.Strategy):
             return
 
         self.log('OPERATION PROFIT, GROSS %.2f, NET %.2f' %
-                 (trade.pnl, trade.pnlcomm), isprint=True)
+                 (trade.pnl, trade.pnlcomm), isprint=False)
 
     def stop(self):
         self.log('======Ending Value %.2f' %

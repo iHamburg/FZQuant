@@ -9,7 +9,7 @@ from pyquant.models.symbol_data import SymbolData
 from pyquant.models.reporter import Reporter
 from backtrader.analyzers import *
 import pyquant.strategies.fzstrategy as strat
-
+import pyquant.libs.utillib as utillib
 
 
 class Backtest(object):
@@ -20,12 +20,17 @@ class Backtest(object):
     strategy = None
     _df = None
     symboldata = None
-    _fromdate = None
-    _todate = None
+    fromdate = None
+    todate = None
     reporter = None
-    analyzer_dict = {}
-    name = 'Kitty'
+    analyzers = [SharpeRatio, TradeAnalyzer, AnnualReturn, DrawDown, TimeDrawDown, Returns]
+    analyzer_results = {}
+    params = {}
+    name = '某次回测'
+    starting_cash = 1000000
+    commission = 0.0015
 
+    backtest_params = {}
     # T_Close, T_Day, T_Date, T_None = range(4)
 
 
@@ -43,28 +48,31 @@ class Backtest(object):
 
         self.symboldata = symboldata
 
+        # self.params
         self.reporter = Reporter(self)
 
-    def run_strategy(self, strategy=None, fromdate=None, todate=None):
+
+
+    def run_strategy(self):
         """
         """
 
-        params = dict(starting_cash = 100000,
-                      commission = 0.0015)
+        # params = dict(starting_cash = self.backtest_params['starting_cash'],
+        #               commission = 0.0015)
 
         cerebro = bt.Cerebro()
 
-        cerebro.broker.setcash(params['starting_cash'])
-        cerebro.broker.setcommission(params['commission'])  # 真实佣金： 0.15%
+        cerebro.broker.setcash(self.starting_cash)
+        cerebro.broker.setcommission(self.commission)  # 真实佣金： 0.15%
         cerebro.addsizer(bt.sizers.PercentSizer, percents=10)  # 每次投入10%资金  风控模块
 
         kwargs = {}
 
-        if not fromdate:
+        if not self.fromdate:
             #  如果没有传fromdate， 就从sd中拿fromedate
             fromdate = self.symboldata.fromdate
 
-        if not todate:
+        if not self.todate:
             todate = self.symboldata.todate
 
 
@@ -74,10 +82,8 @@ class Backtest(object):
         if todate:
             kwargs['todate'] = datetime.datetime.strptime(todate, '%Y-%m-%d')
 
-        # print(kwargs)
-        df = self.symboldata.get_daily_price(output='df')
 
-        data = bt.feeds.PandasData(dataname = df, **kwargs)
+        data = bt.feeds.PandasData(dataname = self.symboldata.df, **kwargs)
 
         cerebro.adddata(data)
 
@@ -85,27 +91,12 @@ class Backtest(object):
 
         # 加入Analyser
 
-        analyzers = [SharpeRatio, TradeAnalyzer, AnnualReturn, DrawDown, TimeDrawDown, Returns]
-
-        for analyzer in analyzers:
+        for analyzer in self.analyzers:
             cerebro.addanalyzer(analyzer)
 
 
-        thestrats = cerebro.run()
-
-
-
-        # 生成reporter
-        self.reporter.start_cash = params['starting_cash']
-        self.reporter.commission = params['commission']
-        self.reporter.strategy_name = self.strategy.name
-        self.reporter.fromdate = fromdate
-        self.reporter.todate = todate
-        self.reporter.symbol_name = self.symboldata.symbol.name
-        self.reporter.symbol_ticker = self.symboldata.symbol.ticker
-        self.reporter.end_cash = cerebro.broker.get_cash()
-        self.reporter.total_value = cerebro.broker.get_value()
-
+        # thestrats = cerebro.run()
+        thestrats = utillib.record_time(cerebro.run)
 
         for strat in thestrats:
             print('--------------------------------------------------')
@@ -113,12 +104,11 @@ class Backtest(object):
             if type(strat) == list:
                 strat = strat[0]
 
-            print('==== buy signals ', strat.buy_signals)
-            print('==== sell signals ', strat.sell_signals)
+            # print('==== buy signals ', strat.buy_signals)
+            # print('==== sell signals ', strat.sell_signals)
 
 
             self.reporter.strategy_params = strat.p._getkwargs()
-
 
             for analyzer in strat.analyzers:
 
@@ -130,12 +120,24 @@ class Backtest(object):
                     del obj['short']
                     del obj['len']['long']
                     del obj['len']['short']
-                self.analyzer_dict[name] = obj
+                self.analyzer_results[name] = obj
+
+        # 生成reporter
+
+
+        self.reporter.strategy_name = self.strategy.name
+        self.reporter.fromdate = fromdate
+        self.reporter.todate = todate
+        self.reporter.symbol_name = self.symboldata.symbol.name
+        self.reporter.symbol_ticker = self.symboldata.symbol.ticker
+        self.reporter.end_cash = cerebro.broker.get_cash()
+        self.reporter.total_value = cerebro.broker.get_value()
+        self.reporter.analyzers = self.analyzer_results
+
 
             # pprint(self.analyzer_dict)
 
 
-        return self.reporter
 
 
     def notify_buy_signal(self):
@@ -145,18 +147,28 @@ class Backtest(object):
 
         stra = self.run_strategy()
 
+    def reporter(self):
+        reporter = {}
+        reporter['']
+
 
 
 def _test_run_strategy():
     strategy = strat.CrossOver3
 
-    sd = SymbolData(17, fromdate='2017-01-01', output='df')
+    sd = SymbolData(fromdate='2012-01-01')
+    sd.symbol = Symbol.get_stock_by_ticker('000001',index=True)
 
-    bt = Backtest(strategy,sd)
 
-    reporter = bt.run_strategy(fromdate='2017-01-01')
 
-    # print(reporter.__dict__)
+    bt = Backtest()
+    bt.strategy = strategy
+    bt.symboldata = sd
+
+    bt.run_strategy()
+    pprint(bt.reporter.__dict__)
+
+
 
 
 
@@ -167,18 +179,25 @@ if __name__ == '__main__':
 
     print('=====Begin=======')
 
-    import pyquant.strategies.fzstrategy as strat
+    # import pyquant.strategies.fzstrategy as strat
+
 
     # _test_run_strategy()
 
-    stra = 'strat.CrossOver3'
-    # stra = strat.CrossOver3
-    sd = SymbolData(17, fromdate='2017-01-01', output='df')
+    # stra = 'strat.CrossOver3'
+    # # stra = strat.CrossOver3
+    # sd = SymbolData(17, fromdate='2017-01-01', output='df')
+    #
+    # backtest = Backtest('strat.CrossOver3', sd)
+    #
+    # backtest.run_strategy(fromdate='2017-01-01')
 
-    backtest = Backtest('strat.CrossOver3', sd)
+    # start = time.clock()
+    # _test_run_strategy()
+    # end = time.clock()
+    # print(end - start)
 
-    backtest.run_strategy(fromdate='2017-01-01')
 
-    _test_run_strategy()
+    utillib.record_time(_test_run_strategy)
 
     print('=====END=======')
