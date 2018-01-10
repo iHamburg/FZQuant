@@ -38,5 +38,5 @@ if __name__ == '__main__':
     # insert_index_to_symbol()
     # download_gem()
     # print(ts.get_k_data('300067'))
-    # download_gz50s()
-    print(ts.get_hs300s())
+    download_gz50s()
+    # print(ts.get_hs300s())
