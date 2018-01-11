@@ -41,14 +41,6 @@ class ModelMixin(object):
 
         query = query.filter(cls.id == id)
 
-        mapper = query._only_full_mapper_zero('get')
-
-        # suffix = str(ident)
-
-        key = mapper.class_.generate_cache_prefix('get')
-
-        print('key ', key)
-
         if scalar:
             return query.scalar()
         return query.first()

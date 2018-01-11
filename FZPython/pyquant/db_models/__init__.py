@@ -2,13 +2,18 @@
 # coding: utf8
 
 
+
 from sqlalchemy import Column, String,Integer, Float, DateTime
 from sqlalchemy import Table, Text
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
+import pandas as pd
 from pyquant.libs.mysqllib import session
 from pyquant.libs.mysqllib import BaseModel as Base
-import pandas as pd
+import pyquant.libs.utillib as utillib
+from pyquant.libs.cachelib import cache
+from pyquant.utils.monitor import listener, Monitor, addCache
+
 
 # Many-Many Relation
 symbolgroup_symbol = Table('symbolgroup_symbol', Base.metadata,
@@ -58,25 +63,36 @@ class Symbol(Base):
             self.id, self.exchange_id, self.ticker, self.instrument, self.name, self.sector)
 
     @classmethod
-    def get_stock_by_ticker(cls,  ticker, index=False, columns=None, lock_mode=None):
+    # @listener(Monitor)
+    def get_stock_by_ticker(cls,  ticker, index=False, lock_mode=None):
 
-        scalar = False
-        if columns:
-            if isinstance(columns, (tuple, list)):
-                query = session.query(*columns)
-            else:
-                scalar = True  # 只查一个字段
-                query = session.query(columns)
-        else:
-            query = session.query(cls)
+        cache_key = '%s-%s-%s-%s-%s' % (cls.__name__,'get_stock_by_ticker',ticker, index, lock_mode)
+        cache_value = cache.get(cache_key)
+
+        if cache_value: #如果有缓存，直接返回缓存
+            return cache_value
+
+        # scalar = False
+        # if columns:
+        #     if isinstance(columns, (tuple, list)):
+        #         query = session.query(*columns)
+        #     else:
+        #         scalar = True  # 只查一个字段
+        #         query = session.query(columns)
+        # else:
+
+        query = session.query(cls)
+
         if lock_mode:
             query = query.with_lockmode(lock_mode)
 
         query = query.filter(cls.ticker==ticker, cls.instrument==('index' if index else 'stock'))
 
-        if scalar:
-            return query.scalar()
-        return query.first()
+        # if scalar:
+        #     return query.scalar()
+        obj =  query.first()
+        cache.set(cache_key, obj)
+        return  obj
 
 
     @staticmethod
@@ -99,17 +115,6 @@ class Symbol(Base):
         return session.query(Symbol).filter(Symbol.instrument == 'index').all()
 
 
-    @staticmethod
-    def get_by_ticker(ticker, index=False):
-        """
-        返回ticker的symbol
-
-        :param ticker:
-        :param index:
-        :return:
-        """
-        return session.query(__class__).filter(Symbol.ticker == ticker,
-                                               Symbol.instrument == ('index' if index else 'stock')).first()
 
 
 class DailyPrice(Base):
@@ -137,8 +142,10 @@ class DailyPrice(Base):
         return  obj
 
 
-    @staticmethod
-    def get_by_symbol_id(symbol_id, fromdate=None, todate=None, output = 'dict'):
+    @classmethod
+    # @listener(Monitor)
+    # @addCache(Monitor)
+    def get_by_symbol_id(cls, symbol_id, fromdate=None, todate=None, output = 'dict'):
         """
         根据symbol_id 查daily price
 
@@ -148,6 +155,19 @@ class DailyPrice(Base):
         :param output:
         :return:
         """
+
+        if not todate:
+            todate = utillib.get_today()
+
+        cache_key = '%s-%s-%s-%s-%s-%s' % (cls.__name__,'get_by_symbol_id',symbol_id, fromdate, todate, output)
+        cache_value = cache.get(cache_key)
+        if isinstance(cache_value, pd.DataFrame):
+            if not cache_value.empty:
+                return cache_value
+
+        if cache_value: #如果有缓存，直接返回缓存
+            return cache_value
+
         where = []
 
         where.append(DailyPrice.symbol_id == symbol_id)
@@ -168,12 +188,26 @@ class DailyPrice(Base):
             df.columns =  ['open', 'high',  'low','close', 'volume']
             cols = ['open', 'high', 'close', 'low', 'volume']
             df = df.ix[:, cols]
+
+            # print('保存缓存', cache_key)
+            cache.set(cache_key, df)
+
             return df
         elif output == 'dict':
-            return [row.to_dict() for row in session.query(DailyPrice).filter(*where).all()]
-        else:
-            return session.query(DailyPrice).filter(*where).all()
 
+            # print('保存缓存', cache_key)
+
+            objs = [row.to_dict() for row in session.query(DailyPrice).filter(*where).all()]
+
+            cache.set(cache_key, objs)
+
+            return objs
+        else:
+            objs = session.query(DailyPrice).filter(*where).all()
+
+            cache.set(cache_key, objs)
+
+            return objs
 
 
 class StockIndex(Base):
@@ -298,4 +332,5 @@ if __name__ == '__main__':
 
     # print(Symbol.get_stock_by_ticker('000001', index=True))
 
-    print(Symbol.get_by_id(20))
+    # print(Symbol.get_by_id(20))
+    print(DailyPrice.get_by_symbol_id(17, fromdate='2017-01-01', output='df'))

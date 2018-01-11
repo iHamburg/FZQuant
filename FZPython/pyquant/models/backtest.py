@@ -1,16 +1,12 @@
 
 import datetime
 from pprint import pprint
-import backtrader as bt
-import pyquant.utils.utils as utils
 from pyquant.db_models import Symbol
 from pyquant.models.symbol_data import SymbolData
-# from pyquant.strategies.fzstrategy import (CrossOver3)
-from pyquant.models.reporter import Reporter
 from backtrader.analyzers import *
 import pyquant.strategies.fzstrategy as strat
 import pyquant.strategies.fzstrategy as fzstrategy
-# import pyquant.libs.utillib as utillib
+import pyquant.libs.utillib as utillib
 from pyquant.utils.monitor import listener, Monitor
 
 
@@ -19,20 +15,26 @@ class Backtest(object):
     Backtest对象直接测试
     """
 
-    strategy = None
-    _df = None
-    symboldata = None
-    fromdate = None
-    todate = None
-    reporter = None
-    analyzers = [SharpeRatio, TradeAnalyzer, AnnualReturn, DrawDown, TimeDrawDown, Returns]
-    analyzer_results = {}
-    params = {}
     name = '某次回测'
     starting_cash = 1000000
     commission = 0.0015
+    fromdate = None
+    todate = None
+
+    strategy = None
+    symboldata = None
+
+    reporter = None
+    # analyzers = [SharpeRatio, TradeAnalyzer, AnnualReturn, DrawDown, TimeDrawDown, Returns]
+    analyzers = [SharpeRatio, AnnualReturn, DrawDown, TimeDrawDown, Returns]
 
     backtest_params = {}
+    strategy_params = {}
+    symboldata_params = {}
+    analyzer_reports = {}
+
+
+
     # T_Close, T_Day, T_Date, T_None = range(4)
 
 
@@ -51,14 +53,13 @@ class Backtest(object):
         self.symboldata = symboldata
 
         # self.params
-        self.reporter = Reporter(self)
+        # self.reporter = Reporter(self)
 
 
     @listener(Monitor)
     def run_strategy(self):
         """
         """
-
 
         cerebro = bt.Cerebro()
 
@@ -70,17 +71,14 @@ class Backtest(object):
 
         if not self.fromdate:
             #  如果没有传fromdate， 就从sd中拿fromedate
-            fromdate = self.symboldata.fromdate
+            self.fromdate = self.symboldata.fromdate
 
         if not self.todate:
-            todate = self.symboldata.todate
+            self.todate = self.symboldata.todate or utillib.get_today()
 
 
-        if fromdate:
-            kwargs['fromdate'] = datetime.datetime.strptime(fromdate, '%Y-%m-%d')
-
-        if todate:
-            kwargs['todate'] = datetime.datetime.strptime(todate, '%Y-%m-%d')
+        kwargs['fromdate'] = datetime.datetime.strptime(self.fromdate, '%Y-%m-%d')
+        kwargs['todate'] = datetime.datetime.strptime(self.todate, '%Y-%m-%d')
 
 
         data = bt.feeds.PandasData(dataname = self.symboldata.df, **kwargs)
@@ -104,12 +102,17 @@ class Backtest(object):
             if type(strat) == list:
                 strat = strat[0]
 
+
             # print('==== buy signals ', strat.buy_signals)
             # print('==== sell signals ', strat.sell_signals)
 
+            self.strategy_params['strategy_class'] = strat.__class__.__name__
+            self.strategy_params['strategy_param'] =  strat.p._getkwargs()
+            self.strategy_params['strategy_name'] = strat.name
+            self.strategy_params['strategy_desc'] = strat.desc
 
-            self.reporter.strategy_params = strat.p._getkwargs()
 
+            # analyzer params
             for analyzer in strat.analyzers:
 
                 # analyzer.pprint()
@@ -120,24 +123,23 @@ class Backtest(object):
                     del obj['short']
                     del obj['len']['long']
                     del obj['len']['short']
-                self.analyzer_results[name] = obj
+                self.analyzer_reports[name] = obj
+
+
 
         # 生成reporter
 
+        # backtest params
+        for key in ['name', 'starting_cash', 'commission', 'fromdate', 'todate']:
+            self.backtest_params[key] = getattr(self, key)
 
-        self.reporter.strategy_name = self.strategy.name
-        self.reporter.fromdate = fromdate
-        self.reporter.todate = todate
-        self.reporter.symbol_name = self.symboldata.symbol.name
-        self.reporter.symbol_ticker = self.symboldata.symbol.ticker
-        self.reporter.end_cash = cerebro.broker.get_cash()
-        self.reporter.total_value = cerebro.broker.get_value()
-        self.reporter.analyzers = self.analyzer_results
+        # symboldata params
+        self.symboldata_params['symbol_ticker'] = self.symboldata.symbol.ticker
+        self.symboldata_params['symbol_name'] = self.symboldata.symbol.name
+        self.symboldata_params['symbol_instrument'] = self.symboldata.symbol.instrument
 
-
-            # pprint(self.analyzer_dict)
-
-
+        self.analyzer_reports['end_cash'] = cerebro.broker.get_cash()
+        self.analyzer_reports['total_value'] = cerebro.broker.get_value()
 
 
     def notify_buy_signal(self):
@@ -147,16 +149,18 @@ class Backtest(object):
 
         stra = self.run_strategy()
 
-    def reporter(self):
-        reporter = {}
-        reporter['']
+    def print_report(self):
+        print(self.backtest_params)
+        print(self.strategy_params)
+        pprint(self.symboldata_params)
+        pprint(self.analyzer_reports)
 
 
 @listener(Monitor)
 def _test_run_strategy():
     strategy = strat.CrossOver3
 
-    sd = SymbolData(fromdate='2017-01-01')
+    sd = SymbolData(fromdate='2010-01-01')
     sd.symbol = Symbol.get_stock_by_ticker('000001',index=True)
 
 
@@ -165,6 +169,9 @@ def _test_run_strategy():
     bt.symboldata = sd
 
     bt.run_strategy()
+    bt.print_report()
+
+
     # pprint(bt.reporter.__dict__)
 
 

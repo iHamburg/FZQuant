@@ -2,39 +2,27 @@
 # coding: utf8
 
 import time
+import datetime
 import pyquant.libs.tusharelib as tusharelib
 import pyquant.libs.mongolib as mongolib
-from pyquant.models.datasource import MongoSource
+# from pyquant.models.datasource import MongoSource
 
 
-def fill_data(code,index):
-    """
-    从tushare下载数据到mongolib
-    :return:
-    """
+# def fill_data(code,index):
+#     """
+#     从tushare下载数据到mongolib
+#     :return:
+#     """
+#
+#     df = tusharelib.get_data(code, index)
+#     col_name = MongoSource.get_col_name(code)
+#     mongolib.insert_data(col_name,df)
+#
+#     return
 
-    df = tusharelib.get_data(code, index)
-    col_name = MongoSource.get_col_name(code)
-    mongolib.insert_data(col_name,df)
-
-    return
-
-def query_to_json(query):
-    arr = []
-    for row in query:
-        arr.append(row.to_dict())
-
-    return arr
-
-def record_time(fcn, **kwargs):
-    # start = time.clock()
-    start = time.time()
-    obj = fcn(**kwargs)
-    # end = time.clock()
-    end = time.time()
-    print('【执行】',fcn.__name__, '消耗时间', end - start)
-
-    return obj
+def get_today():
+    today = datetime.datetime.now().strftime('%Y-%m-%d')
+    return today
 
 if __name__ == '__main__':
     """"""

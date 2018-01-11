@@ -28,14 +28,15 @@ cerebro.broker.setcommission(commission=0.0015) # 真实佣金： 0.15%
 cerebro.addsizer(bt.sizers.PercentSizer, percents=10)  #每次投入10%资金
 
 
-sd = SymbolData(17, fromdate='2017-01-01')
-# df = sd.get_daily_price(output='df')
+# sd = SymbolData(17, fromdate='2017-01-01')
+
+sd = SymbolData(ticker='000001', index=True, fromdate='2017-01-01')
 
 data = bt.feeds.PandasData(dataname=sd.df, fromdate= datetime.datetime.strptime('2017-1-1', '%Y-%m-%d'))
 cerebro.adddata(data)
 
 cerebro.addstrategy(strat.CrossOver2)
-# cerebro.addstrategy(strat.CrossOver3)
+cerebro.addstrategy(strat.CrossOver3)
 
 
 # stratruns =cerebro.run()
@@ -44,9 +45,10 @@ cerebro.addanalyzer(SQN, _name='sqn')
 
 # cerebro.run()
 thestrats = cerebro.run()
+print(thestrats)
 
 # utils.printAnalysers(thestrats)
 
-cerebro.plot(savefile=True)
+# cerebro.plot(savefile=True)
 
 

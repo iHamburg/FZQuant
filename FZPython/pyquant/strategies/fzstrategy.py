@@ -15,9 +15,14 @@ import backtrader.analyzers as btanal
 class FZStrategy(bt.Strategy):
 
     name = None
-    desc = None     #策略描述
+    # _desc = None     #策略描述
     buy_signals = []
     sell_signals = []
+
+    entermarkt_desc = None
+    stop_desc = None
+    leavemarkt_desc = None
+
 
     def log(self, txt, dt=None, isprint=False):
         if isprint:
@@ -30,7 +35,12 @@ class FZStrategy(bt.Strategy):
         self.order = None
         self.buyprice = None
         self.buycomm = None
-    
+
+    @property
+    def desc(self):
+        desc = '入市策略: %s\n止损策略: %s \n 离市策略: %s' % (self.entermarkt_desc, self.stop_desc, self.leavemarkt_desc)
+        return desc
+
     def start(self):
         self.log('=====Strategy start')
 
@@ -115,6 +125,7 @@ class CrossOver2(FZStrategy):
         sma_slow = bt.indicators.MovAv.SMA(period=self.p.slow)
         self.adx = btind.AverageDirectionalMovementIndex(period=18)
 
+        self.name = 'CrossOver2'
         # btind.BollingerBands()
 
         # btind.AverageDirectionalMovementIndex(period=9)
@@ -132,6 +143,7 @@ class CrossOver2(FZStrategy):
             # if self.adx.adx[0] > self.adx.adx[-1] :
             self.buy()
 
+
 class CrossOver3(FZStrategy):
     params = (
         # period for the fast Moving Average
@@ -147,13 +159,14 @@ class CrossOver3(FZStrategy):
         self.log('======Crossover3 init=======', isprint=True)
         sma_fast = bt.indicators.MovAv.SMA(period=self.p.fast)
         sma_slow = bt.indicators.MovAv.SMA(period=self.p.slow)
-        self.adx = btind.AverageDirectionalMovementIndex(period=18)
-        self.adx = btind.AverageDirectionalMovementIndex(period=9)
-        btind.MACD()
+        # self.adx = btind.AverageDirectionalMovementIndex(period=18)
+        # self.adx = btind.AverageDirectionalMovementIndex(period=9)
+        # btind.MACD()
         # btind.BollingerBands()
 
         # btind.AverageDirectionalMovementIndex(period=9)
         self.buysig = btind.CrossOver(sma_fast, sma_slow)
+
 
     def next(self):
         super(CrossOver3,self).next()
@@ -163,13 +176,10 @@ class CrossOver3(FZStrategy):
                 self.sell()
 
         elif self.buysig :
-            self.log('adx[0]: %.2f ,adx[-1]: %.2f' %(self.adx.adx[0],self.adx.adx[-1]))
+            # self.log('adx[0]: %.2f ,adx[-1]: %.2f' %(self.adx.adx[0],self.adx.adx[-1]))
             # if self.adx.adx[0] > self.adx.adx[-1] :
             self.buy()
 
-    # def stop(self):
-    #     self.log('======Fase: %d, Slow: %d, Ending Value %.2f' %
-    #              (self.p.fast, self.p.slow, self.broker.getvalue()), isprint=True)
 
 
 # =========== 处理运行 ==============

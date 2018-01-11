@@ -56,10 +56,8 @@ class SymbolData(object):
 
 
     @property
-    @listener(Monitor)
     def df(self):
         if not self._df:
-
             self._df = DailyPrice.get_by_symbol_id(self.symbol_id, fromdate=self.fromdate, todate=self.todate, output='df')
         return self._df
 
