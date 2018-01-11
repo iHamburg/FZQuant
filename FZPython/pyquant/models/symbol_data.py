@@ -2,6 +2,7 @@
 # import pyquant.libs.tusharelib as tusharelib
 # from pyquant.models.security import *
 # from pyquant.models.datasource import *
+from pyquant.utils.monitor import listener, Monitor
 
 from pyquant.db_models import (Symbol, DailyPrice)
 
@@ -53,10 +54,13 @@ class SymbolData(object):
         if 'time_type' in kwargs.keys():
             self.time_type = kwargs['time_type']
 
+
     @property
+    @listener(Monitor)
     def df(self):
         if not self._df:
-            self._df = self.get_daily_price(output='df')
+
+            self._df = DailyPrice.get_by_symbol_id(self.symbol_id, fromdate=self.fromdate, todate=self.todate, output='df')
         return self._df
 
     @property

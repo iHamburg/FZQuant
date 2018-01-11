@@ -152,7 +152,7 @@ class Backtest(object):
         reporter['']
 
 
-
+@listener(Monitor)
 def _test_run_strategy():
     strategy = strat.CrossOver3
 
