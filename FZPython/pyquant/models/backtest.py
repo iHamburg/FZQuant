@@ -141,6 +141,81 @@ class Backtest(object):
         self.analyzer_reports['end_cash'] = cerebro.broker.get_cash()
         self.analyzer_reports['total_value'] = cerebro.broker.get_value()
 
+    @listener(Monitor)
+    def opt_strategy(self):
+        cerebro = bt.Cerebro()
+
+        cerebro.broker.setcash(self.starting_cash)
+        cerebro.broker.setcommission(self.commission)  # 真实佣金： 0.15%
+        cerebro.addsizer(bt.sizers.PercentSizer, percents=10)  # 每次投入10%资金  风控模块
+
+        kwargs = {}
+
+        if not self.fromdate:
+            #  如果没有传fromdate， 就从sd中拿fromedate
+            self.fromdate = self.symboldata.fromdate
+
+        if not self.todate:
+            self.todate = self.symboldata.todate or utillib.get_today()
+
+        kwargs['fromdate'] = datetime.datetime.strptime(self.fromdate, '%Y-%m-%d')
+        kwargs['todate'] = datetime.datetime.strptime(self.todate, '%Y-%m-%d')
+
+        data = bt.feeds.PandasData(dataname=self.symboldata.df, **kwargs)
+
+        cerebro.adddata(data)
+
+        cerebro.addstrategy(self.strategy)
+
+        # 加入Analyser
+
+        for analyzer in self.analyzers:
+            cerebro.addanalyzer(analyzer)
+
+        thestrats = cerebro.run()
+        # pprint(thestrats)
+
+        for strat in thestrats:
+            print('--------------------------------------------------')
+
+            if type(strat) == list:
+                strat = strat[0]
+
+            # print('==== buy signals ', strat.buy_signals)
+            # print('==== sell signals ', strat.sell_signals)
+
+            self.strategy_params['strategy_class'] = strat.__class__.__name__
+            self.strategy_params['strategy_param'] = strat.p._getkwargs()
+            self.strategy_params['strategy_name'] = strat.name
+            self.strategy_params['strategy_desc'] = strat.desc
+
+            # analyzer params
+            for analyzer in strat.analyzers:
+
+                # analyzer.pprint()
+                name = analyzer.__class__.__name__
+                obj = analyzer.get_analysis()
+                if name == 'TradeAnalyzer':
+                    del obj['long']
+                    del obj['short']
+                    del obj['len']['long']
+                    del obj['len']['short']
+                self.analyzer_reports[name] = obj
+
+        # 生成reporter
+
+        # backtest params
+        for key in ['name', 'starting_cash', 'commission', 'fromdate', 'todate']:
+            self.backtest_params[key] = getattr(self, key)
+
+        # symboldata params
+        self.symboldata_params['symbol_ticker'] = self.symboldata.symbol.ticker
+        self.symboldata_params['symbol_name'] = self.symboldata.symbol.name
+        self.symboldata_params['symbol_instrument'] = self.symboldata.symbol.instrument
+
+        self.analyzer_reports['end_cash'] = cerebro.broker.get_cash()
+        self.analyzer_reports['total_value'] = cerebro.broker.get_value()
+
 
     def notify_buy_signal(self):
         """"""
@@ -154,6 +229,9 @@ class Backtest(object):
         print(self.strategy_params)
         pprint(self.symboldata_params)
         pprint(self.analyzer_reports)
+
+
+
 
 
 @listener(Monitor)

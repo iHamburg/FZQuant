@@ -72,15 +72,16 @@ class CrossOver5(FZStrategy):
     def __init__(self):
         super(CrossOver5, self).__init__()
 
+        self.entermarkt_desc = '快速均线上穿慢速均线'
+        self.leavemarkt_desc = '快速均线下穿慢速均线'
+
         sma_fast = bt.indicators.MovAv.SMA(period=self.p.fast)
         sma_slow = bt.indicators.MovAv.SMA(period=self.p.slow)
 
-        self.name = 'CrossOver4'
+        # self.name = 'CrossOver5'
 
         self.buysig = btind.CrossOver(sma_fast, sma_slow)
 
-        self.entermarkt_desc = '快速均线上穿慢速均线'
-        self.leavemarkt_desc = '快速均线下穿慢速均线'
 
     def next(self):
         # self.log('buysignal %s' % self.buysig[0], isprint=True)
@@ -89,12 +90,12 @@ class CrossOver5(FZStrategy):
         if self.position.size:  # 如果已经有position
             if self.buydate + self.p.leave_days < len(self.data):
                 self.sell()
-                self.log('卖出', isprint=True)
+
 
         elif self.buysig:
             self.buy()
             self.buydate = len(self.data)
-            self.log('购买', isprint=True)
+
 
 
 if __name__ == '__main__':
