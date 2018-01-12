@@ -69,16 +69,17 @@ class CrossOver5(FZStrategy):
         # ('_movav', bt.indicators.MovAv.SMA)
     )
 
+    buydate = 0
+
     def __init__(self):
         super(CrossOver5, self).__init__()
 
         self.entermarkt_desc = '快速均线上穿慢速均线'
-        self.leavemarkt_desc = '快速均线下穿慢速均线'
+        self.leavemarkt_desc = '入市后n天自动离市'
 
         sma_fast = bt.indicators.MovAv.SMA(period=self.p.fast)
         sma_slow = bt.indicators.MovAv.SMA(period=self.p.slow)
 
-        # self.name = 'CrossOver5'
 
         self.buysig = btind.CrossOver(sma_fast, sma_slow)
 

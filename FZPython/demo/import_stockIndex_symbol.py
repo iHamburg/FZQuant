@@ -24,7 +24,7 @@ def download_gem():
     for indexs in df.index:
         row = df.loc[indexs].values
         ticker = row[0]
-        s = Symbol.get_stock_by_ticker(ticker)
+        s = Symbol.get_by_ticker(ticker)
         print(s)
         if not s:
             print('ticker', ticker)

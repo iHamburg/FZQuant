@@ -32,4 +32,3 @@ if __name__ == '__main__':
 
     query = session.query(m_symbol)
 
-    print(query_to_json(query.all()))

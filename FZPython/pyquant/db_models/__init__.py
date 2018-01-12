@@ -64,7 +64,7 @@ class Symbol(Base):
 
     @classmethod
     # @listener(Monitor)
-    def get_stock_by_ticker(cls,  ticker, index=False, lock_mode=None):
+    def get_by_ticker(cls, ticker, index=False, lock_mode=None):
 
         cache_key = '%s-%s-%s-%s-%s' % (cls.__name__,'get_stock_by_ticker',ticker, index, lock_mode)
         cache_value = cache.get(cache_key)

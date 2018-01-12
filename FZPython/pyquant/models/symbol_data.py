@@ -39,7 +39,7 @@ class SymbolData(object):
 
 
         if ticker:
-            self._symbol = Symbol.get_stock_by_ticker(ticker, index=index)
+            self._symbol = Symbol.get_by_ticker(ticker, index=index)
         elif symbol_id:
             self._symbol = Symbol.get_by_id(symbol_id)
 

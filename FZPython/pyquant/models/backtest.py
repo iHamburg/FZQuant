@@ -1,4 +1,4 @@
-
+import time
 import datetime
 from pprint import pprint
 from pyquant.db_models import Symbol
@@ -26,7 +26,7 @@ class Backtest(object):
 
     reporter = None
     # analyzers = [SharpeRatio, TradeAnalyzer, AnnualReturn, DrawDown, TimeDrawDown, Returns]
-    analyzers = [SharpeRatio, AnnualReturn, DrawDown, TimeDrawDown, Returns]
+    analyzers = [SharpeRatio, DrawDown, TimeDrawDown, Returns]
 
     backtest_params = {}
     strategy_params = {}
@@ -61,11 +61,12 @@ class Backtest(object):
         """
         """
 
-        cerebro = bt.Cerebro()
+        cerebro = bt.Cerebro(optreturn=False)
 
         cerebro.broker.setcash(self.starting_cash)
         cerebro.broker.setcommission(self.commission)  # 真实佣金： 0.15%
-        cerebro.addsizer(bt.sizers.PercentSizer, percents=10)  # 每次投入10%资金  风控模块
+        # cerebro.addsizer(bt.sizers.PercentSizer, percents=0)  # 每次投入全部资金  风控模块
+        cerebro.addsizer(bt.sizers.PercentSizer, percents=50)  # 每次投入全部资金  风控模块
 
         kwargs = {}
 
@@ -92,8 +93,9 @@ class Backtest(object):
         for analyzer in self.analyzers:
             cerebro.addanalyzer(analyzer)
 
-
-        thestrats = cerebro.run()
+        before = time.time();
+        thestrats = cerebro.run(runonce=False)
+        print('【运行】cerebro.run ',time.time()-before)
         # pprint(thestrats)
 
         for strat in thestrats:
@@ -141,6 +143,9 @@ class Backtest(object):
         self.analyzer_reports['end_cash'] = cerebro.broker.get_cash()
         self.analyzer_reports['total_value'] = cerebro.broker.get_value()
 
+        # cerebro.plot()
+
+
     @listener(Monitor)
     def opt_strategy(self):
         cerebro = bt.Cerebro()
@@ -165,42 +170,28 @@ class Backtest(object):
 
         cerebro.adddata(data)
 
-        cerebro.addstrategy(self.strategy)
-
+        # cerebro.addstrategy(self.strategy)
+        cerebro.optstrategy(self.strategy, leave_days=range(5,18))
         # 加入Analyser
 
         for analyzer in self.analyzers:
             cerebro.addanalyzer(analyzer)
 
-        thestrats = cerebro.run()
-        # pprint(thestrats)
+        opt_returns = cerebro.run()
 
-        for strat in thestrats:
+
+        for opt_return in opt_returns:
             print('--------------------------------------------------')
+            # print(type(opt_return),opt_return)
+            if isinstance(opt_return, list):
+                opt_return = opt_return[0]
 
-            if type(strat) == list:
-                strat = strat[0]
+            print('params', opt_return.params)
+            print('analyzers', opt_return.analyzers)
+            for analyzer in opt_return.analyzers:
+                print(analyzer.get_analysis())
+            print('p', opt_return.p)
 
-            # print('==== buy signals ', strat.buy_signals)
-            # print('==== sell signals ', strat.sell_signals)
-
-            self.strategy_params['strategy_class'] = strat.__class__.__name__
-            self.strategy_params['strategy_param'] = strat.p._getkwargs()
-            self.strategy_params['strategy_name'] = strat.name
-            self.strategy_params['strategy_desc'] = strat.desc
-
-            # analyzer params
-            for analyzer in strat.analyzers:
-
-                # analyzer.pprint()
-                name = analyzer.__class__.__name__
-                obj = analyzer.get_analysis()
-                if name == 'TradeAnalyzer':
-                    del obj['long']
-                    del obj['short']
-                    del obj['len']['long']
-                    del obj['len']['short']
-                self.analyzer_reports[name] = obj
 
         # 生成reporter
 
@@ -239,7 +230,7 @@ def _test_run_strategy():
     strategy = strat.CrossOver3
 
     sd = SymbolData(fromdate='2010-01-01')
-    sd.symbol = Symbol.get_stock_by_ticker('000001',index=True)
+    sd.symbol = Symbol.get_by_ticker('000001', index=True)
 
 
     bt = Backtest()
