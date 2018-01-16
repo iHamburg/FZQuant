@@ -144,7 +144,7 @@ class DailyPrice(Base):
 
     @classmethod
     # @listener(Monitor)
-    def get_by_symbol_id(cls, symbol_id, fromdate=None, todate=None, output = 'dict'):
+    def get_by_symbol_id(cls, symbol_id, fromdate=None, todate=None, output = 'dict', isCache=True):
         """
         根据symbol_id 查daily price
 
@@ -159,14 +159,8 @@ class DailyPrice(Base):
             todate = utillib.get_today() #%Y-%m-%d'
 
 
-        if isinstance(symbol_id, (list, tuple)):
-            cache_symbol_id = json.dumps(symbol_id)
-        else:
-            cache_symbol_id = symbol_id
-
-
-        cache_key = '%s-%s-%s-%s-%s-%s' % (cls.__name__,'get_by_symbol_id',cache_symbol_id, fromdate, todate, output)
-        print('cache key', cache_key)
+        cache_key = '%s-%s-%s-%s-%s-%s' % (cls.__name__,'get_by_symbol_id',symbol_id, fromdate, todate, output)
+        # print('cache key', cache_key)
 
         cache_value = cache.get(cache_key)
         if isinstance(cache_value, pd.DataFrame):
@@ -178,8 +172,8 @@ class DailyPrice(Base):
 
         where = []
 
-        if isinstance(symbol_id, (list, tuple)):
-            where.append(DailyPrice.symbol_id in symbol_id)
+        if isinstance(symbol_id, (list, tuple)):  #
+            where.append(DailyPrice.symbol_id.in_(symbol_id))
         else:
             where.append(DailyPrice.symbol_id == symbol_id)
 
@@ -195,105 +189,32 @@ class DailyPrice(Base):
         if output == 'df':
             df = pd.read_sql(session.query(DailyPrice).filter(*where).statement, session.bind)
             del df['id']
-            del df['symbol_id']
+            # del df['symbol_id']
             df = df.set_index('price_date')
             df.columns =  ['open', 'high',  'low','close', 'volume']
             cols = ['open', 'high', 'close', 'low', 'volume']
-            df = df.ix[:, cols]
 
-            # print('保存缓存', cache_key)
-            cache.set(cache_key, df)
+            objs = df.ix[:, cols]
 
-            return df
+
         elif output == 'dict':
 
             # print('保存缓存', cache_key)
 
             objs = [row.to_dict() for row in session.query(DailyPrice).filter(*where).all()]
 
-            cache.set(cache_key, objs)
-
-            return objs
         else:
             objs = session.query(DailyPrice).filter(*where).all()
 
-            cache.set(cache_key, objs)
+        cache.set(cache_key, objs)
 
-            return objs
-
-    @classmethod
-    # @listener(Monitor)
-    def get_by_symbol_id2(cls, symbol_id, fromdate=None, todate=None, output = 'dict'):
-        """
-        根据symbol_id 查daily price
-
-        :param symbol_id:
-        :param fromdate:
-        :param todate:
-        :param output:
-        :return:
-        """
-
-        if not todate:
-            todate = utillib.get_today()
-
-        cache_key = '%s-%s-%s-%s-%s-%s' % (cls.__name__,'get_by_symbol_id',symbol_id, fromdate, todate, output)
-        cache_value = cache.get(cache_key)
-        if isinstance(cache_value, pd.DataFrame):
-            if not cache_value.empty:
-                return cache_value
-
-        if cache_value: #如果有缓存，直接返回缓存
-            return cache_value
-
-        where = []
-
-        where.append(DailyPrice.symbol_id == symbol_id)
-
-        if fromdate:
-            where.append(DailyPrice.price_date >= fromdate)
-
-        if todate:
-            where.append(DailyPrice.price_date < todate)
-
-        # print(where)
-
-        if output == 'df':
-            df = pd.read_sql(session.query(DailyPrice).filter(*where).statement, session.bind)
-            del df['id']
-            del df['symbol_id']
-            df = df.set_index('price_date')
-            df.columns =  ['open', 'high',  'low','close', 'volume']
-            cols = ['open', 'high', 'close', 'low', 'volume']
-            df = df.ix[:, cols]
-
-            # print('保存缓存', cache_key)
-            cache.set(cache_key, df)
-
-            return df
-        elif output == 'dict':
-
-            # print('保存缓存', cache_key)
-
-            objs = [row.to_dict() for row in session.query(DailyPrice).filter(*where).all()]
-
-            cache.set(cache_key, objs)
-
-            return objs
-        else:
-            objs = session.query(DailyPrice).filter(*where).all()
-
-            cache.set(cache_key, objs)
-
-            return objs
+        return objs
 
 
 def _test_multi_symbol():
 
-    import  json
-    symbol_list  = [17,18]
-    print(json.dumps(symbol_list))
-    print(utillib.list_to_string(symbol_list))
+    print(DailyPrice.get_by_symbol_id([17,18], fromdate='2017-01-01', output='df')[:5])
+
 
 
 class StockIndex(Base):
@@ -423,6 +344,11 @@ if __name__ == '__main__':
     # print(Symbol.get_by_id(20))
 
 
-    print(DailyPrice.get_by_symbol_id([17,18], fromdate='2017-01-01', output='df')[:5])
+
+    # print(DailyPrice.get_by_symbol_id(17, fromdate='2017-01-01', output='df'))
 
     # _test_multi_symbol()
+
+    # arr = [12,34]
+    # s = 'key:%s' % arr
+    # print(s)
