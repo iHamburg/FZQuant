@@ -20,8 +20,6 @@ del df['code']
 
 print(df.dtypes)
 df['date'] = df['date'].astype('datetime64')
-print(df.dtypes)
-
 df = df.set_index('date')
 # print(df)
 cols = ['open','high','close','low','volume']
