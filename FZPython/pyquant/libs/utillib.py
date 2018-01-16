@@ -24,6 +24,12 @@ def get_today():
     today = datetime.datetime.now().strftime('%Y-%m-%d')
     return today
 
+
+def list_to_string(l):
+    l = [str(item) for item in l]
+    return "".join(l)
+
+
 if __name__ == '__main__':
     """"""
 
