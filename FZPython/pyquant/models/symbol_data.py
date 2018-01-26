@@ -23,9 +23,9 @@ class SymbolData(object):
     todate = None
     time_type = 'D'
 
-    date = []
-    values = []
-    volume = []
+    # date = []
+    # values = []
+    # volume = []
     _df = None
 
 
@@ -43,15 +43,14 @@ class SymbolData(object):
         elif symbol_id:
             self._symbol = Symbol.get_by_id(symbol_id)
 
-        # self.datasource = _datasource()
 
-        if 'fromdate' in kwargs.keys():
+        if 'fromdate' in kwargs:
             self.fromdate = kwargs['fromdate']
 
-        if 'todate' in kwargs.keys():
+        if 'todate' in kwargs:
             self.todate = kwargs['todate']
 
-        if 'time_type' in kwargs.keys():
+        if 'time_type' in kwargs:
             self.time_type = kwargs['time_type']
 
 
@@ -78,8 +77,8 @@ class SymbolData(object):
         self._symbol = Symbol.get_by_id(value)
 
 
-    def get_daily_price(self, output='dict'):
-        return DailyPrice.get_by_symbol_id(self.symbol_id, fromdate=self.fromdate, todate=self.todate, output=output)
+    # def get_daily_price(self, output='dict'):
+    #     return DailyPrice.get_by_symbol_id(self.symbol_id, fromdate=self.fromdate, todate=self.todate, output=output)
 
 
 

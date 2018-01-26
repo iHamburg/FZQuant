@@ -2,87 +2,69 @@
 # coding: utf8
 
 
-import tushare as ts
-import pandas as pd
+
+from pyquant.db_models import *
 
 
-from pyquant.db_models import Symbol
+def import_sz50():
+    """
+    根据 '../datas/上证50_000016.txt'
+    import
+    :return:
+    """
+    file_path = '../datas/上证50_000016.txt'
+    with open(file_path, 'r', encoding='utf') as f:
+        for line in f:
+            obj = json.loads(line)
+            if not Symbol.get_by_ticker(obj['ticker']):
+                print('需要insert', obj)
+                symbol = Symbol(ticker=obj['ticker'], name=obj['name'], instrument='stock')
+                session.add(symbol)
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-
-engine = create_engine("mysql+pymysql://root:root@121.42.26.144/fzquant?charset=utf8")
-
-# 创建DBSession类型:
-DBSession = sessionmaker(bind=engine)
-session = DBSession()
-
-
-
-def download_instutry_classfied():
-    """下载工业数据"""
-    df = ts.get_industry_classified()
-    df.to_excel('industry_classified.xlsx')
-
-def insert_symbol_table():
-    df = pd.read_excel('industry_classified.xlsx', sheet_name='Sheet1')
-
-    for indexs in df.index:
-        arr = df.loc[indexs].values
-        print(arr[0])
-        symbol = Symbol(ticker=str(arr[0]), instrument='stock', name=arr[1], sector=arr[2])
-        # 添加到session:
-        session.add(symbol)
-        # 提交即保存到数据库:
         session.commit()
 
-def batch_insert_symbol_table():
-    df = pd.read_excel('industry_classified.xlsx', sheet_name='Sheet1')
-
-    for indexs in df.index:
-        arr = df.loc[indexs].values
-        print(arr[0])
-        symbol = Symbol(ticker=str(arr[0]), instrument='stock', name=arr[1], sector=arr[2])
-        # 添加到session:
-        session.add(symbol)
-
-    # 提交即保存到数据库:
-    session.commit()
+    print('上证50导入完成')
 
 
-def update_tick():
-    """tick 需要补零"""
-    for instance in session.query(Symbol).filter(Symbol.ticker < 10000):
-        ticker = instance.ticker
-        new_ticker = ''
-        for i in range(6-len(ticker)):
-            new_ticker += '0'
-        new_ticker += ticker
-        instance.ticker = new_ticker
-        print(ticker, new_ticker)
+def import_sz180():
+    """
+    根据 '../datas/上证50_000016.txt'
+    import
+    :return:
+    """
+    file_path = '../datas/上证180_000010.txt'
+    with open(file_path, 'r', encoding='utf') as f:
+        for line in f:
+            obj = json.loads(line)
+            if not Symbol.get_by_ticker(obj['ticker']):
+                print('需要insert', obj)
+                symbol = Symbol(ticker=obj['ticker'], name=obj['name'], instrument='stock')
+                session.add(symbol)
 
-    session.commit()
+        session.commit()
 
-def download_index():
-    """下载指数"""
-    df = ts.get_index()
-    df.to_excel('index.xlsx')
+    print('上证180导入完成')
 
-def insert_index_to_symbol():
-    df = pd.read_excel('index.xlsx', sheet_name='Sheet1')
-    for indexs in df.index:
-        arr = df.loc[indexs].values
-        print(arr)
-        ticker = str(arr[0])
-        new_ticker = ''
-        for i in range(6 - len(ticker)):
-            new_ticker += '0'
-        new_ticker += ticker
 
-        symbol = Symbol(ticker=new_ticker, instrument='index', name=arr[1])
-        session.add(symbol)
 
-    session.commit()
+def import_symbol(file_path):
+    """
+    根据 file_path 导入symbol
+    import
+    :return:
+    """
+    # file_path = '../datas/上证180_000010.txt'
+    with open(file_path, 'r', encoding='utf') as f:
+        for line in f:
+            obj = json.loads(line)
+            if not Symbol.get_by_ticker(obj['ticker']):
+                print('需要导入', obj)
+                symbol = Symbol(ticker=obj['ticker'], name=obj['name'], instrument='stock')
+                session.add(symbol)
+
+        session.commit()
+
+    print(file_path,'导入完成')
 
 if __name__ == '__main__':
     """"""
@@ -90,3 +72,5 @@ if __name__ == '__main__':
     # download_index()
     # insert_index_to_symbol()
 
+    # import_sz180()
+    import_symbol('../datas/沪深300_000300.txt')

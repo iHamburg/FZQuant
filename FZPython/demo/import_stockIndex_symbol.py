@@ -2,34 +2,45 @@
 # coding: utf8
 
 
-import tushare as ts
-import pandas as pd
+
+from pyquant.db_models import *
 
 
-from pyquant.db_models import Symbol
 
-def download_gz50s():
-    """下载上证50"""
-    df = ts.get_sz50s()
+def import_sz50():
+    """
+    导入上证50数据
+    :return:
+    """
 
-    # df = ts.get_gem_classified()
+    file_path = '../datas/上证50_000016.txt'
+    stock_index = StockIndex.get_by_id(2)
+    with open(file_path, 'r', encoding='utf') as f:
+        for line in f:
+            obj = json.loads(line)
+            symbol = Symbol.get_by_ticker(obj['ticker'])
+            stock_index.symbol.append(symbol)
 
-    print(df)
+    session.commit()
+    print('导入完成')
 
+def import_stockindex_symbol(stockindex_id, file_path):
+    """
+    导入上证50数据
+    :return:
+    """
 
-def download_gem():
-    """下载创业板"""
+    # file_path = '../datas/上证50_000016.txt'
+    stock_index = StockIndex.get_by_id(stockindex_id)
 
-    df = ts.get_gem_classified()
-    for indexs in df.index:
-        row = df.loc[indexs].values
-        ticker = row[0]
-        s = Symbol.get_by_ticker(ticker)
-        print(s)
-        if not s:
-            print('ticker', ticker)
+    with open(file_path, 'r', encoding='utf') as f:
+        for line in f:
+            obj = json.loads(line)
+            symbol = Symbol.get_by_ticker(obj['ticker'])
+            stock_index.symbol.append(symbol)
 
-    # print(df)
+    session.commit()
+    print('导入完成')
 
 if __name__ == '__main__':
     """"""
@@ -38,5 +49,5 @@ if __name__ == '__main__':
     # insert_index_to_symbol()
     # download_gem()
     # print(ts.get_k_data('300067'))
-    download_gz50s()
-    # print(ts.get_hs300s())
+    # import_sz50()
+    import_stockindex_symbol(7, '../datas/中证500_000905.txt')

@@ -28,7 +28,6 @@ cerebro.broker.setcommission(commission=0.0015) # 真实佣金： 0.15%
 cerebro.addsizer(bt.sizers.PercentSizer, percents=10)  #每次投入10%资金
 
 
-# sd = SymbolData(17, fromdate='2017-01-01')
 
 sd = SymbolData(ticker='000001', index=True, fromdate='2017-01-01')
 

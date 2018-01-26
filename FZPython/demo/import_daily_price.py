@@ -21,17 +21,16 @@ query = session.query(DailyPrice)
 
 
 
-def insert_daily_price(symbol):
+def insert_daily_price(symbol, fromdate='1900-01-01'):
     """批量插入数据"""
     print('begin insert', symbol)
     index = (True if symbol.instrument == 'index' else False)
-    df = ts.get_k_data(symbol.ticker, index = index, start = '1918-01-01')
+    df = ts.get_k_data(symbol.ticker, index = index, start=fromdate)
     print('下载数据完备',symbol.ticker)
     daily_prices = []
-    # print(df.dtypes)
+
     for indexs in df.index:
         arr = df.loc[indexs].values
-        # print(arr)
 
         daily_prices.append(dict(symbol_id=symbol.id, price_date=arr[0], open_price=float(arr[1]), close_price=float(arr[2]),
                   high_price=float(arr[3]), low_price=float(arr[4]), volume=int(arr[5])))

@@ -1,5 +1,6 @@
 import time
 import datetime
+import json
 from pprint import pprint
 from pyquant.db_models import Symbol
 from pyquant.models.symbol_data import SymbolData
@@ -52,13 +53,12 @@ class Backtest(object):
 
         self.symboldata = symboldata
 
-        # self.params
-        # self.reporter = Reporter(self)
 
 
     @listener(Monitor)
     def run_strategy(self):
         """
+        回测策略
         """
 
         cerebro = bt.Cerebro(optreturn=False)
@@ -81,6 +81,9 @@ class Backtest(object):
         kwargs['fromdate'] = datetime.datetime.strptime(self.fromdate, '%Y-%m-%d')
         kwargs['todate'] = datetime.datetime.strptime(self.todate, '%Y-%m-%d')
 
+        # df =  self.symboldata.df
+        # print(df.dtypes)
+        # return
 
         data = bt.feeds.PandasData(dataname = self.symboldata.df, **kwargs)
 
@@ -103,7 +106,6 @@ class Backtest(object):
 
             if type(strat) == list:
                 strat = strat[0]
-
 
             # print('==== buy signals ', strat.buy_signals)
             # print('==== sell signals ', strat.sell_signals)
@@ -144,6 +146,7 @@ class Backtest(object):
         self.analyzer_reports['total_value'] = cerebro.broker.get_value()
 
         # cerebro.plot()
+
 
 
     @listener(Monitor)
@@ -215,14 +218,45 @@ class Backtest(object):
 
         stra = self.run_strategy()
 
-    def print_report(self):
-        print(self.backtest_params)
-        print(self.strategy_params)
-        pprint(self.symboldata_params)
-        pprint(self.analyzer_reports)
+    def print_report(self, output='console', file_name='backtest_report.txt'):
+        if output == 'console':
+            print(self.backtest_params)
+            print(self.strategy_params)
+            pprint(self.symboldata_params)
+            pprint(self.analyzer_reports)
+        elif output == 'file':
+            # 打印到文件
+            with open(file_name, 'w') as f:
+                report = dict(backtest=self.backtest_params, strategy=self.strategy_params,
+                              symboldata=self.symboldata_params, analyzer=self.analyzer_reports)
+
+                f.write(json.dumps(report, ensure_ascii=False))  # 写
 
 
+    def backtest_strat_with_tickers(self, strategy, tickers):
+        """
+         回测一个确定策略对于一组symbol的结果
 
+        :param strategy:
+        :param tickers:
+        :return:
+        """
+
+        sds = []
+        for ticker in tickers:
+            sd = SymbolData(fromdate='2010-01-01')
+            sd.symbol = Symbol.get_by_ticker(ticker)
+            sds.append(sd)
+
+
+        self.strategy = strategy
+
+        for sd in sds:
+            self.symboldata = sd
+            self.run_strategy()
+            self.print_report(output='file', file_name=sd.symbol.ticker + 'report.json')
+
+        # TODO 生成文件
 
 
 @listener(Monitor)
@@ -238,17 +272,25 @@ def _test_run_strategy():
     bt.symboldata = sd
 
     bt.run_strategy()
-    bt.print_report()
-
-
-    # pprint(bt.reporter.__dict__)
+    bt.print_report(output='file')
 
 
 
 
+def _test_strat_with_symbol_list():
+    """
+    回测一个确定策略对于一组symbol的结果
 
-def _test_run_stra_name():
-    """"""
+
+    :return:
+    """
+
+    strategy = strat.CrossOver3
+    tickers = ['601318', '600887', '601800']
+    bt = Backtest()
+    bt.backtest_strat_with_tickers(strategy, tickers)
+
+
 
 if __name__ == '__main__':
 
@@ -274,5 +316,7 @@ if __name__ == '__main__':
 
 
     _test_run_strategy()
+    # _test_strat_with_symbol_list()
+
 
     print('=====END=======')

@@ -3,6 +3,8 @@
 
 
 import json
+import datetime
+from pprint import pprint
 from sqlalchemy import Column, String,Integer, Float, DateTime
 from sqlalchemy import Table, Text
 from sqlalchemy import ForeignKey
@@ -72,15 +74,6 @@ class Symbol(Base):
         if cache_value: #如果有缓存，直接返回缓存
             return cache_value
 
-        # scalar = False
-        # if columns:
-        #     if isinstance(columns, (tuple, list)):
-        #         query = session.query(*columns)
-        #     else:
-        #         scalar = True  # 只查一个字段
-        #         query = session.query(columns)
-        # else:
-
         query = session.query(cls)
 
         if lock_mode:
@@ -88,33 +81,35 @@ class Symbol(Base):
 
         query = query.filter(cls.ticker==ticker, cls.instrument==('index' if index else 'stock'))
 
-        # if scalar:
-        #     return query.scalar()
         obj =  query.first()
         cache.set(cache_key, obj)
+
         return  obj
-
-
-    @staticmethod
-    def find_all(limit=30, offset=0, output='dict'):
-        # return session.query(__class__).filter(filter_context).limit(limit).offset(offset).all()
-        result = session.query(__class__).limit(limit).offset(offset).all()
-
-        if output == 'dict':
-            return [row.to_dict() for row in result]
-        else:
-            return result
 
     @staticmethod
     def get_list_by_symbolgroup_id(symbolgroup_id, limit=30, offset=0):
         return session.query(Symbol).filter(Symbol.symbolgroup.any(id=symbolgroup_id)).\
             limit(limit).offset(offset).all()
 
-    @staticmethod
-    def get_index_list():
-        return session.query(Symbol).filter(Symbol.instrument == 'index').all()
+    @classmethod
+    def get_index_list(cls):
+        return session.query(cls).filter(Symbol.instrument == 'index').all()
 
 
+    @property
+    def index(self):
+        return True if self.instrument == 'index' else False
+
+
+def _test_get_all():
+    objs = Symbol.get_all(columns='id', limit=None)
+    for row in objs:
+        print(row)
+
+
+def _test_index():
+    symbol = Symbol.get_by_id(2408)
+    print('index', symbol.index)
 
 
 class DailyPrice(Base):
@@ -138,7 +133,7 @@ class DailyPrice(Base):
     def to_dict(self):
         obj = super(DailyPrice, self).to_dict()
         obj['price_date'] = str(obj['price_date'])
-        # obj['symbol'] = self.symbol
+
         return  obj
 
 
@@ -156,19 +151,21 @@ class DailyPrice(Base):
         """
 
         if not todate:
-            todate = utillib.get_today() #%Y-%m-%d'
+            todate = str(datetime.date.today())
 
-
-        cache_key = '%s-%s-%s-%s-%s-%s' % (cls.__name__,'get_by_symbol_id',symbol_id, fromdate, todate, output)
+        cache_key = '%s-%s-%s-%s-%s-%s' % (cls.__name__, 'get_by_symbol_id', symbol_id, fromdate, todate, output)
         # print('cache key', cache_key)
 
-        cache_value = cache.get(cache_key)
-        if isinstance(cache_value, pd.DataFrame):
-            if not cache_value.empty:
+        if isCache: #用cache
+
+            cache_value = cache.get(cache_key)
+            if isinstance(cache_value, pd.DataFrame):
+                if not cache_value.empty:
+                    return cache_value
+
+            if cache_value: #如果有缓存，直接返回缓存
                 return cache_value
 
-        if cache_value: #如果有缓存，直接返回缓存
-            return cache_value
 
         where = []
 
@@ -189,11 +186,17 @@ class DailyPrice(Base):
         if output == 'df':
             df = pd.read_sql(session.query(DailyPrice).filter(*where).statement, session.bind)
             del df['id']
-            # del df['symbol_id']
-            df = df.set_index('price_date')
-            df.columns =  ['open', 'high',  'low','close', 'volume']
-            cols = ['open', 'high', 'close', 'low', 'volume']
+            del df['symbol_id']
+            #设置index
+            df['price_date'] = df['price_date'].astype('datetime64[ns]')
 
+            df = df.set_index('price_date')
+
+            # columns 改名
+            df.columns =  ['open', 'high',  'low','close', 'volume']
+
+            # 更换columns顺序
+            cols = ['open', 'high', 'close', 'low', 'volume']
             objs = df.ix[:, cols]
 
 
@@ -203,12 +206,14 @@ class DailyPrice(Base):
 
             objs = [row.to_dict() for row in session.query(DailyPrice).filter(*where).all()]
 
-        else:
+        else: #models
             objs = session.query(DailyPrice).filter(*where).all()
 
         cache.set(cache_key, objs)
 
         return objs
+
+
 
 
 def _test_multi_symbol():
@@ -226,6 +231,10 @@ class StockIndex(Base):
     symbol = relationship('Symbol', secondary=stockIndex_symbol, back_populates='stockIndex')
 
 
+def _test_get_symbols():
+    stockindex = StockIndex.get_by_id(2)
+    print(stockindex.symbol)
+
 class SymbolGroup(Base):
     __tablename__ = 'symbolgroup'
 
@@ -239,6 +248,7 @@ class SymbolGroup(Base):
     @staticmethod
     def get_system_groups():
         return session.query(__class__).filter(SymbolGroup.user_id == 0).all()
+
 
 
 class Strategy(Base):
@@ -283,17 +293,11 @@ def _add_user_symbolgroup():
     session.commit()
 
 def _test_m_m_relation1():
-    sd = SymbolGroup.get_by_id(3)
-    print(sd.symbol)
+    # sd = SymbolGroup.get_by_id(3)
+    # print(sd.symbol)
 
-    si = StockIndex.get_by_id(1)
+    si = StockIndex.get_by_id(2)
     print(si.symbol)
-
-def _test_m_m_relation2():
-    query = session.query(Symbol). \
-        filter(Symbol.symbolgroup.any(id=3)). \
-        all()
-    print(query)
 
 def _test_add_m_m_relation():
     sd = SymbolGroup.get(3)
@@ -305,7 +309,10 @@ def _test_delete_m_m_relation():
     sd.symbol.remove(Symbol.get(19))
     session.commit()
 
-
+def _test_add_user():
+    user = User(username='new user222', password='123')
+    session.add(user)
+    session.commit()
 
 if __name__ == '__main__':
     """"""
@@ -352,3 +359,9 @@ if __name__ == '__main__':
     # arr = [12,34]
     # s = 'key:%s' % arr
     # print(s)
+    # _test_get_max_date()
+    # _test_get_all()
+    # _test_index()
+    # _test_m_m_relation1()
+    # _test_add_user()
+    _test_get_symbols()

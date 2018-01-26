@@ -54,6 +54,7 @@ def main():
 
     sd = SymbolData(17, fromdate='2017-01-01')
     df = sd.get_daily_price(output='df')
+    # df = sd.df
 
     kwargs = dict()
     # 开始时间

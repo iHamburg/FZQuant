@@ -2,23 +2,25 @@
 # coding: utf8
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from pyquant.config import mysql as config
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
-import werkzeug.contrib.cache as cache
+
+from pyquant.config import mysql as config
+import pymysql
+pymysql.threadsafety = 3
 
 __all__ = [
     'session',
     'engine',
-    'Base'
+
 ]
 
 engine = create_engine("mysql+pymysql://%s:%s@%s/%s?charset=utf8" %
                        (config['user'], config['password'], config['host'], config['db']))
 
 # 创建DBSession类型:
-DBSession = sessionmaker(bind=engine)
-session = DBSession(autocommit=False)
+Session = sessionmaker(bind=engine)
+session = Session(autocommit=False)
 
 class ModelMixin(object):
 
@@ -47,10 +49,11 @@ class ModelMixin(object):
 
     @classmethod
     def get_all(cls, columns=None, offset=None, limit=30, order_by=None, lock_mode=None):
+
         if columns:
             if isinstance(columns, (tuple, list)):
                 query = session.query(*columns)
-            else:
+            else: # 只返回一个字段
                 query = session.query(columns)
                 if isinstance(columns, str):
                     query = query.select_from(cls)
@@ -115,10 +118,18 @@ class ModelMixin(object):
 
 
 
-
 BaseModel = declarative_base(cls=ModelMixin)
+
+def _test_sql():
+    sql = 'SELECT * FROM symbol limit 30'
+
+    for row in session.execute(sql):
+        print(row)
 
 if __name__ == '__main__':
     """"""
 
-
+    # _test_sql()
+    # print(pymysql.threadsafety)
+    # pymysql.threadsafety = 2
+    # print(pymysql.threadsafety)

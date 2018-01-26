@@ -47,7 +47,7 @@ class TushareSource(Datasource):
     def get_data(self, code, output='df', **kwargs):
 
         is_index = TushareSource.is_code_index(code)
-        return tusharelib.get_data(code,is_index, output, **kwargs)
+        return tusharelib.get_daily_data(code, is_index, output, **kwargs)
 
 
 class MongoSource(Datasource):
