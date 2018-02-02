@@ -51,7 +51,7 @@ class Symbol(Base):
     }
 
     id = Column(Integer, primary_key=True)
-    exchange_id = Column(Integer)
+    exchange_id = Column(String)
     ticker = Column(String)
     instrument = Column(String)
     name = Column(String)

@@ -33,20 +33,19 @@ class FZStrategy(bt.Strategy):
         self.log('======FZStrategy init=======')
         self.dataclose = self.data.close
         self.order = None
-        # self.buyprice = None
-        # self.buycomm = None
+        self.buyprice = None
+        self.buycomm = None
 
     @property
     def desc(self):
         desc = '入市策略: %s\n止损策略: %s \n 离市策略: %s' % (self.entermarkt_desc, self.stop_desc, self.leavemarkt_desc)
         return desc
 
-    # def start(self):
-    #     self.log('=====Strategy start')
+    def start(self):
+        self.log('=====Strategy start')
 
-    # def next(self):
-    #     self.log('Close, %.2f' % (self.dataclose[0]))
-
+    def next(self):
+        self.log('Close, %.2f' % (self.dataclose[0]))
 
     # def buy(self,data=None,
     #         size=None, price=None, plimit=None,
@@ -61,32 +60,32 @@ class FZStrategy(bt.Strategy):
 
     def notify_order(self, order):
 
-        # if order.status == order.Submitted:
-        #     #发出信号
-        #     if order.isbuy():
-        #         self.buy_signals.append(str(self.data.datetime.date(0)))
-        #     else:
-        #         self.sell_signals.append(str(self.data.datetime.date(0)))
+        if order.status == order.Submitted:
+            #发出信号
+            if order.isbuy():
+                self.buy_signals.append(str(self.data.datetime.date(0)))
+            else:
+                self.sell_signals.append(str(self.data.datetime.date(0)))
 
         # print('====== order.status', self.data.datetime.date(0),  order.status)
         if order.status in [order.Submitted, order.Accepted]:
             # Buy/Sell order submitted/accepted to/by broker - Nothing to do
             return
 
-        # if order.status in [order.Completed]:
-        #     if order.isbuy():
-        #         self.log(
-        #             'BUY EXECUTED, Price: %.2f, Cost: %.2f, Comm %.2f' %
-        #             (order.executed.price,
-        #              order.executed.value,
-        #              order.executed.comm), isprint=False)
-        #         self.buyprice = order.executed.price
-        #         self.buycomm = order.executed.comm
-        #     elif order.issell():
-        #         self.log('SELL EXECUTED, Price: %.2f, Cost: %.2f, Comm %.2f' %
-        #                  (order.executed.price,
-        #                   order.executed.value,
-        #                   order.executed.comm), isprint=False)
+        if order.status in [order.Completed]:
+            if order.isbuy():
+                self.log(
+                    'BUY EXECUTED, Price: %.2f, Cost: %.2f, Comm %.2f' %
+                    (order.executed.price,
+                     order.executed.value,
+                     order.executed.comm), isprint=False)
+                self.buyprice = order.executed.price
+                self.buycomm = order.executed.comm
+            elif order.issell():
+                self.log('SELL EXECUTED, Price: %.2f, Cost: %.2f, Comm %.2f' %
+                         (order.executed.price,
+                          order.executed.value,
+                          order.executed.comm), isprint=False)
 
 
         elif order.status in [order.Canceled, order.Margin, order.Rejected]:
@@ -109,19 +108,11 @@ class FZStrategy(bt.Strategy):
 
 
 class CrossOver2(FZStrategy):
-    """
-
-
-    """
     params = (
         # period for the fast Moving Average
         ('fast', 9),
         # period for the slow moving average
         ('slow', 18),
-        # 止损率
-        ('stoploss', 0.1)
-        # 离市日期
-        ('leaveDays', 3)
         # moving average to use
         # ('_movav', bt.indicators.MovAv.SMA)
     )
@@ -132,21 +123,18 @@ class CrossOver2(FZStrategy):
         # self.log('======Crossover3 init=======', isprint=True)
         sma_fast = bt.indicators.MovAv.SMA(period=self.p.fast)
         sma_slow = bt.indicators.MovAv.SMA(period=self.p.slow)
-
         self.adx = btind.AverageDirectionalMovementIndex(period=18)
 
         self.name = 'CrossOver2'
+        # btind.BollingerBands()
 
-        #  买入策略是快速均线上穿慢速均线
+        # btind.AverageDirectionalMovementIndex(period=9)
         self.buysig = btind.CrossOver(sma_fast, sma_slow)
-        # self.sellsig =
-
 
     def next(self):
         super(CrossOver2 ,self).next()
 
-        # 判断是否卖出
-        if self.position.size: #如果已经购买
+        if self.position.size:
             if self.buysig < 0:
                 self.sell()
 
@@ -192,54 +180,6 @@ class CrossOver3(FZStrategy):
             # if self.adx.adx[0] > self.adx.adx[-1] :
             self.buy()
 
-
-
-class TempStrategy(FZStrategy):
-    """
-
-
-    """
-    params = (
-        # period for the fast Moving Average
-        ('fast', 9),
-        # period for the slow moving average
-        ('slow', 18),
-        # 止损率
-        ('stoploss', 0.1)
-        # 离市日期
-        ('leaveDays', 3)
-        # moving average to use
-        # ('_movav', bt.indicators.MovAv.SMA)
-    )
-
-    def __init__(self):
-        super(CrossOver2, self).__init__()
-        self.log('======CrossOver2 init=======',isprint=True)
-        # self.log('======Crossover3 init=======', isprint=True)
-        sma_fast = bt.indicators.MovAv.SMA(period=self.p.fast)
-        sma_slow = bt.indicators.MovAv.SMA(period=self.p.slow)
-
-        self.adx = btind.AverageDirectionalMovementIndex(period=18)
-
-        self.name = 'Temp'
-
-        #  买入策略是快速均线上穿慢速均线
-        self.buysig = btind.CrossOver(sma_fast, sma_slow)
-
-
-
-    def next(self):
-        super(TempStrategy ,self).next()
-
-        # 判断是否卖出
-        if self.position.size: #如果已经购买
-            if self.buysig < 0:
-                self.sell()
-
-        elif self.buysig :
-            self.log('adx[0]: %.2f ,adx[-1]: %.2f' %(self.adx.adx[0],self.adx.adx[-1]))
-            # if self.adx.adx[0] > self.adx.adx[-1] :
-            self.buy()
 
 
 # =========== 处理运行 ==============

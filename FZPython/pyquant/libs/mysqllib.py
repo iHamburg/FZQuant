@@ -6,8 +6,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
 
 from pyquant.config import mysql as config
-import pymysql
-pymysql.threadsafety = 3
+# import pymysql
+# pymysql.threadsafety = 3
 
 __all__ = [
     'session',

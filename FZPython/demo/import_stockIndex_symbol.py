@@ -4,7 +4,7 @@
 
 
 from pyquant.db_models import *
-
+import pandas as pd
 
 
 def import_sz50():
@@ -42,6 +42,26 @@ def import_stockindex_symbol(stockindex_id, file_path):
     session.commit()
     print('导入完成')
 
+
+def import_cyb():
+    """
+    导入创业板 sybmol
+    :return:
+    """
+
+    file_path = '../datas/创业板.json'
+    df = pd.read_json(file_path)
+    stock_index = StockIndex.get_by_id(9)
+
+    for row in df.values:
+        symbol = Symbol.get_by_ticker(row[0])
+        stock_index.symbol.append(symbol)
+
+    session.commit()
+    print('导入完成')
+
+
+
 if __name__ == '__main__':
     """"""
     # update_tick()
@@ -50,4 +70,5 @@ if __name__ == '__main__':
     # download_gem()
     # print(ts.get_k_data('300067'))
     # import_sz50()
-    import_stockindex_symbol(7, '../datas/中证500_000905.txt')
+    # import_stockindex_symbol(7, '../datas/中证500_000905.txt')
+    # import_cyb()

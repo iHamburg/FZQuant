@@ -66,6 +66,27 @@ def import_symbol(file_path):
 
     print(file_path,'导入完成')
 
+def import_cyb():
+    """
+    根据 '../datas/创业板.json' 创建所有的symbol
+
+    :return:
+    """
+    file_path = '../datas/创业板.json'
+    df = pd.read_json(file_path)
+
+    for row in df.values:
+        # print(row[0])
+
+        if not Symbol.get_by_ticker(row[0]):
+            print('需要导入', row)
+            symbol = Symbol(ticker=row[0], name=row[1], instrument='stock')
+            session.add(symbol)
+
+    session.commit()
+
+    print(file_path, '导入完成')
+
 if __name__ == '__main__':
     """"""
     # update_tick()
@@ -73,4 +94,5 @@ if __name__ == '__main__':
     # insert_index_to_symbol()
 
     # import_sz180()
-    import_symbol('../datas/沪深300_000300.txt')
+    # import_symbol('../datas/沪深300_000300.txt')
+    import_cyb()
