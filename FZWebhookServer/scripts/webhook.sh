@@ -2,7 +2,7 @@
 
 echo "========= BEGIN webhook =========="
 
-
+git add -A
 git pull
 
 # 需要到各个文件夹下去npm install
