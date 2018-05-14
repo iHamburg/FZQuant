@@ -12,7 +12,7 @@ npm install
 cd ../FZSocketServer
 npm install
 
-pm2 restart all
+pm2 restart fzserver
 
 
 
