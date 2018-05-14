@@ -24,10 +24,11 @@ router.post('/run', function (req, res, next) {
 
   //当前pwd ： FZWebhookServer
   var cmdStr = 'scripts/webhook.sh'
+
   exec(cmdStr, function(err, stdout, stderr) {
     if (err) {
       console.log(cmdStr + ' \n error:' + stderr);
-      return res.send('npm run forever error:' + stderr);
+      return res.send('pm2 restart error:' + stderr);
     } else {
       console.log(cmdStr + '\n  sssuccess ' + stdout + stderr);
       return res.send(cmdStr + '\nsuccess ' + stdout + stderr);

@@ -76,7 +76,6 @@ def import_cyb():
     df = pd.read_json(file_path)
 
     for row in df.values:
-        # print(row[0])
 
         if not Symbol.get_by_ticker(row[0]):
             print('需要导入', row)

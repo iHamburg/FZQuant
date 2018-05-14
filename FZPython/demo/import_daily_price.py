@@ -3,7 +3,6 @@
 
 
 import tushare as ts
-import pandas as pd
 
 
 from pyquant.db_models import Symbol

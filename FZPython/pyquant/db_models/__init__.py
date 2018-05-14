@@ -113,6 +113,10 @@ def _test_index():
 
 
 class DailyPrice(Base):
+    """
+    每日价格
+
+    """
     __tablename__ = 'dailyPrice'
 
     id = Column(Integer, primary_key=True)
