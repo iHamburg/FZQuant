@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo "========= BEGIN fzwebhook =========="
+echo "=========== BEGIN fzwebhook =========="
 
 git add -A
 git pull
