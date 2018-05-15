@@ -16,6 +16,4 @@ npm install
 
 pm2 restart fzserver
 
-
-
 echo "======== END webhook =========="
