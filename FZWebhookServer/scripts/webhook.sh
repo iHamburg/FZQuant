@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo "========= BEGIN webhook =========="
+echo "========= BEGIN fzwebhook =========="
 
 git add -A
 git pull
