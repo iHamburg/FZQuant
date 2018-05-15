@@ -57,11 +57,7 @@ function create (options) {
     var sig   = req.headers['x-hub-signature']
       , event = req.headers['x-github-event']
       , id    = req.headers['x-github-delivery']
-
-    //
-    //
-    //
-    //
+    
     //
     // if (!sig)
     //   return hasError('No X-Hub-Signature found on request')
