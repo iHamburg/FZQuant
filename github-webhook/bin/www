@@ -20,6 +20,21 @@ handler.on('push', function (event) {
   console.log('Received a push event for %s to %s',
     event.payload.repository.name,
     event.payload.ref)
+
+  var exec = require('child_process').exec;
+
+    //当前pwd ： FZWebhookServer
+    var cmdStr = 'scripts/webhook.sh'
+
+    exec(cmdStr, function(err, stdout, stderr) {
+      if (err) {
+        console.error(cmdStr + ' \n error:' + stderr);
+  //      return res.send('pm2 restart error:' + stderr);
+      } else {
+        console.log(cmdStr + '\n  sssuccess ' + stdout + stderr);
+    //    return res.send(cmdStr + '\nsuccess ' + stdout + stderr);
+      }
+    });
 })
 
 handler.on('issues', function (event) {
