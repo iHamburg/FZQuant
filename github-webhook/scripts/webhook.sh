@@ -2,6 +2,8 @@
 
 echo "=========== BEGIN fzwebhook =========="
 
+mkdir ~/1
+
 git add -A
 git pull
 
