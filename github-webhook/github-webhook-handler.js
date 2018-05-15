@@ -77,8 +77,8 @@ function create (options) {
 
       var obj
 
-      if (!verify(sig, data))
-        return hasError('X-Hub-Signature does not match blob signature')
+      // if (!verify(sig, data))
+      //   return hasError('X-Hub-Signature does not match blob signature')
 
       try {
         obj = JSON.parse(data.toString())
