@@ -62,6 +62,7 @@ function create (options) {
     //
     //
     //
+    //
     // if (!sig)
     //   return hasError('No X-Hub-Signature found on request')
 
