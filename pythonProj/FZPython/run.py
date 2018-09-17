@@ -5,23 +5,6 @@ from routes import *
 app = Flask(__name__)
 api = Api(app)
 
-# @app.route('/')
-# def hello_world():
-#     return 'Hello, World!'
-
-
-
-# 同一个route可以接受不同的protocol
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     if request.method == 'POST':
-#         return 'POST request'
-#     else:
-#         return 'GET request'
-
-# Add Router
-
-
 
 
 api.add_resource(UserRouter, '/api/users/<uid>')  #
