@@ -2,7 +2,7 @@
 
 
 git add -A
-git commit -am 'update5'
+git commit -am 'update6'
 git branch -vv
 git status
 #git add -A
