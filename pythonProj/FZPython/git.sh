@@ -1,6 +1,8 @@
 #!/bin/bash
 
 git add -A
-git commit -am 'update2'
-git pull
-git push
+git commit -am 'update3'
+#git pull
+#git push
+
+print('End of Git')
