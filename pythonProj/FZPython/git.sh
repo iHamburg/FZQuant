@@ -5,4 +5,4 @@ git commit -am 'update3'
 #git pull
 #git push
 
-print('End of Git')
+echo 'End of Git'
