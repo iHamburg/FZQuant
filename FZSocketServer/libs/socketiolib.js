@@ -29,6 +29,8 @@ module.exports = {
       client.on('tickDataNotification',onTickDataNotification);
 
       client.on('disconnect', onDisconnect);
+
+      client.emit('news', 'hello world')
     })
   },
 }
