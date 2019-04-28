@@ -2,15 +2,13 @@
  * Created by zhangyiqing on 2017/12/27.
  */
 
-
-
-let sma = function (values, timeperiod='30') {
+let sma = function (values, timeperiod = '30') {
   // if (!(timeperiod instanceof Big || typeof timeperiod === 'string')) throw new Error('Timeperiod should be an instance of Big or string!')
   // var window = []
   // var skip = 0
   // var timeperiodNum = parseInt(typeof timeperiod === 'string' ? timeperiod : timeperiod.toString())
 
-  return values.map(item => {return item[1]})
+  return values.map(item => { return item[1] })
 
   // return values.map((v, i) => {
   //   if (!v instanceof Big) {

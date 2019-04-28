@@ -12,14 +12,14 @@ const dbName = config.db;
 let _client;
 let _db;
 
-MongoClient.connect(url, function(err, client) {
-  if (err) {
-    console.log('connect err', err);
-  }
-  console.log("Connected successfully to server");
-  _db = client.db(dbName);
-  _client = client
-});
+// MongoClient.connect(url, function(err, client) {
+//   if (err) {
+//     console.log('connect err', err);
+//   }
+//   console.log("Connected successfully to server");
+//   _db = client.db(dbName);
+//   _client = client
+// });
 
 module.exports = {
   queryCollection: function (collectionName, callback) {
